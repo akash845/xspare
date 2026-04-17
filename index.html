@@ -946,10 +946,13 @@ footer p {
     <a href="#">Terms</a>
     <a href="#">Contact</a>
   </div>
-  <div class="footer-copy">© 2025 Xspare Technologies Pvt. Ltd. · Made in Kerala 🌴</div>
+  <div class="footer-copy">© 2026 Xspare Technologies Pvt. Ltd. · Made in Kerala 🌴</div>
 </footer>
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 <script>
+  const supabaseUrl = "https://cxxxstxmfgcznsvuuloh.supabase.co";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4eHhzdHhtZmdjem5zdnV1bG9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTcxOTgsImV4cCI6MjA5MTk5MzE5OH0.58KX8QoJ8sYF5JW-_o8WqtCr4skG5OK60v6sTm_3ir4";
+const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 const models = {
   'Maruti Suzuki': ['Alto','Alto K10','Swift','Baleno','Dzire','WagonR','Ertiga','Brezza','Ciaz','Ignis','Celerio','S-Presso','Grand Vitara','Jimny'],
   'Hyundai': ['i10','i20','Creta','Venue','Verna','Xcent','Aura','Santro','Tucson','Alcazar'],
@@ -1048,23 +1051,43 @@ function populateReview() {
   document.getElementById('rev-district').textContent = document.getElementById('cust-district').value || '—';
 }
 
-function submitEnquiry() {
+async function submitEnquiry() {
   const btn = document.getElementById('submit-btn');
   btn.textContent = 'Submitting...';
   btn.disabled = true;
 
-  setTimeout(() => {
-    const id = 'XSP-' + Math.floor(100000 + Math.random() * 900000);
-    document.getElementById('enquiry-id').textContent = id;
-    document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
-    document.getElementById('step-success').classList.add('active');
-    ['dot-1','dot-2','dot-3','dot-4'].forEach(id => {
-      const d = document.getElementById(id);
-      d.className = 'step-dot done';
-    });
-    btn.textContent = 'Submit enquiry';
+  const data = {
+    make: document.getElementById('make').value,
+    model: document.getElementById('model').value,
+    year: document.getElementById('year').value,
+    variant: document.getElementById('variant').value,
+    part: selectedPart || document.getElementById('part-custom').value,
+    notes: document.getElementById('part-notes').value,
+    name: document.getElementById('cust-name').value,
+    phone: document.getElementById('cust-phone').value,
+    district: document.getElementById('cust-district').value
+  };
+
+  const { error } = await supabase
+    .from('enquiries')
+    .insert([data]);
+
+  if (error) {
+    alert("Error submitting enquiry");
+    console.log(error);
     btn.disabled = false;
-  }, 1800);
+    btn.textContent = "Submit enquiry";
+    return;
+  }
+
+  const id = 'XSP-' + Math.floor(100000 + Math.random() * 900000);
+  document.getElementById('enquiry-id').textContent = id;
+
+  document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('step-success').classList.add('active');
+
+  btn.textContent = "Submit enquiry";
+  btn.disabled = false;
 }
 
 function resetForm() {
@@ -1085,6 +1108,7 @@ function resetForm() {
   document.getElementById('cust-district').value = '';
   selectedPart = '';
   photoAttached = false;
+
 }
 </script>
 </body>
