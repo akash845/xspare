@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+  
 :root {
   --orange: #F97316;
   --orange-dark: #C2580A;
@@ -860,7 +861,7 @@ footer p {
             <p class="success-sub">Your enquiry has been sent to matched vendors in your area. You'll receive quotes on WhatsApp and SMS within 1–2 hours.</p>
             <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
               <button class="btn-primary" onclick="resetForm()">New enquiry</button>
-              <button class="btn-ghost">Track this enquiry</button>
+<button class="btn-ghost" onclick="scrollToTrack()">Track this enquiry</button>
             </div>
           </div>
         </div>
@@ -868,7 +869,13 @@ footer p {
       </div>
     </div>
   </div>
+<!-- TRACK ENQUIRY -->
+<div style="margin-top:40px;text-align:center">
+  <input id="track-id" placeholder="Enter enquiry ID (XSP-...)" style="padding:10px;width:250px">
+  <button onclick="trackEnquiry()">Track</button>
+</div>
 
+<div id="track-result" style="margin-top:20px;"></div>
   <!-- HOW IT WORKS -->
   <div class="how-section">
     <div class="section-label">Process</div>
@@ -1119,6 +1126,7 @@ const data = {
   }
 
 document.getElementById('enquiry-id').textContent = enquiryId;
+  document.getElementById('track-id').value = enquiryId;
 
   document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
   document.getElementById('step-success').classList.add('active');
@@ -1128,6 +1136,7 @@ document.getElementById('enquiry-id').textContent = enquiryId;
 }
 
 function resetForm() {
+  
   document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
   document.getElementById('step-1').classList.add('active');
   ['dot-1','dot-2','dot-3','dot-4'].forEach((id, i) => {
@@ -1146,6 +1155,36 @@ function resetForm() {
   selectedPart = '';
   photoAttached = false;
 
+}
+    async function trackEnquiry() {
+  const id = document.getElementById('track-id').value;
+
+  if (!id) {
+    document.getElementById('track-result').innerHTML = "⚠️ Enter enquiry ID";
+    return;
+  }
+
+  document.getElementById('track-result').innerHTML = "Loading...";
+
+  const { data, error } = await supabaseClient
+    .from('enquiries')
+    .select('*')
+    .eq('enquiry_id', id)
+    .single();
+
+  if (error || !data) {
+    document.getElementById('track-result').innerHTML = "❌ Enquiry not found";
+    return;
+  }
+
+  document.getElementById('track-result').innerHTML = `
+    <div style="padding:15px;border:1px solid #ccc;border-radius:10px">
+      <b>Status:</b> ${data.status || 'Pending'} <br>
+      <b>Vehicle:</b> ${data.make} ${data.model} ${data.year} <br>
+      <b>Part:</b> ${data.part} <br>
+      <b>Location:</b> ${data.district}
+    </div>
+  `;
 }
 </script>
 </body>
