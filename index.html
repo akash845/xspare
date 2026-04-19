@@ -1067,6 +1067,7 @@ function populateReview() {
 
 async function submitEnquiry() {
   const btn = document.getElementById('submit-btn');
+  const enquiryId = 'XSP-' + Date.now();
   btn.textContent = 'Submitting...';
   btn.disabled = true;
   let imageUrl = null;
@@ -1077,12 +1078,12 @@ async function submitEnquiry() {
     .from('enquiry-images')
     .upload(fileName, selectedFile);
 
-  if (uploadError) {
-    console.log(uploadError);
-    alert("Image upload failed");
-    btn.disabled = false;
-    return;
-  }
+ if (uploadError) {
+  console.log("UPLOAD ERROR:", uploadError);
+  alert(uploadError.message);
+  btn.disabled = false;
+  return;
+}
 
   const { data: publicUrlData } = supabaseClient.storage
     .from('enquiry-images')
@@ -1092,6 +1093,7 @@ async function submitEnquiry() {
 }
 
 const data = {
+  enquiry_id: enquiryId, // ✅ ADD HERE
   make: document.getElementById('make').value,
   model: document.getElementById('model').value,
   year: document.getElementById('year').value,
@@ -1101,7 +1103,7 @@ const data = {
   name: document.getElementById('cust-name').value,
   phone: document.getElementById('cust-phone').value,
   district: document.getElementById('cust-district').value,
-  image_url: imageUrl // ✅ ADD THIS LINE
+  image_url: imageUrl
 };
 
  const { error } = await supabaseClient
@@ -1116,8 +1118,7 @@ const data = {
     return;
   }
 
-  const id = 'XSP-' + Math.floor(100000 + Math.random() * 900000);
-  document.getElementById('enquiry-id').textContent = id;
+document.getElementById('enquiry-id').textContent = enquiryId;
 
   document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
   document.getElementById('step-success').classList.add('active');
