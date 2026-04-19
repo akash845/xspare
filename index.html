@@ -974,6 +974,7 @@ const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
 
 let selectedPart = '';
 let photoAttached = false;
+    let selectedFile = null;
 
 function updateModels() {
   const make = document.getElementById('make').value;
@@ -1019,16 +1020,19 @@ function selectPart(el, name) {
 
 function handlePhoto(input) {
   if (input.files && input.files[0]) {
+    selectedFile = input.files[0]; // ✅ ADD THIS
     photoAttached = true;
+
     const area = document.getElementById('upload-area');
     area.style.borderColor = 'var(--success)';
     area.style.background = '#F0FDF4';
-    area.innerHTML = `<div style="font-size:28px;margin-bottom:8px">✓</div><div class="upload-text"><strong>${input.files[0].name}</strong></div><div class="upload-sub" style="color:var(--success)">Photo attached</div>`;
-    document.getElementById('rev-photo').textContent = 'Yes ✓';
-    document.getElementById('rev-photo').style.color = 'var(--success)';
+    area.innerHTML = `
+      <div style="font-size:28px;margin-bottom:8px">✓</div>
+      <div class="upload-text"><strong>${selectedFile.name}</strong></div>
+      <div class="upload-sub" style="color:var(--success)">Photo attached</div>
+    `;
   }
 }
-
 function goStep(n) {
   document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
   document.getElementById('step-' + n).classList.add('active');
@@ -1065,18 +1069,40 @@ async function submitEnquiry() {
   const btn = document.getElementById('submit-btn');
   btn.textContent = 'Submitting...';
   btn.disabled = true;
+  let imageUrl = null;
+  if (selectedFile) {
+  const fileName = `enquiry-${Date.now()}-${selectedFile.name}`;
 
-  const data = {
-    make: document.getElementById('make').value,
-    model: document.getElementById('model').value,
-    year: document.getElementById('year').value,
-    variant: document.getElementById('variant').value,
-    part: selectedPart || document.getElementById('part-custom').value,
-    notes: document.getElementById('part-notes').value,
-    name: document.getElementById('cust-name').value,
-    phone: document.getElementById('cust-phone').value,
-    district: document.getElementById('cust-district').value
-  };
+  const { data: uploadData, error: uploadError } = await supabaseClient.storage
+    .from('enquiry-images')
+    .upload(fileName, selectedFile);
+
+  if (uploadError) {
+    console.log(uploadError);
+    alert("Image upload failed");
+    btn.disabled = false;
+    return;
+  }
+
+  const { data: publicUrlData } = supabaseClient.storage
+    .from('enquiry-images')
+    .getPublicUrl(fileName);
+
+  imageUrl = publicUrlData.publicUrl;
+}
+
+const data = {
+  make: document.getElementById('make').value,
+  model: document.getElementById('model').value,
+  year: document.getElementById('year').value,
+  variant: document.getElementById('variant').value,
+  part: selectedPart || document.getElementById('part-custom').value,
+  notes: document.getElementById('part-notes').value,
+  name: document.getElementById('cust-name').value,
+  phone: document.getElementById('cust-phone').value,
+  district: document.getElementById('cust-district').value,
+  image_url: imageUrl // ✅ ADD THIS LINE
+};
 
  const { error } = await supabaseClient
     .from('enquiries')
