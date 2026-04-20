@@ -403,8 +403,8 @@ body{min-height:100vh;display:flex;flex-direction:column;background:var(--bg)}
             <input class="f-input" id="phone-in" type="tel" inputmode="numeric" maxlength="10" placeholder="98xxxxxxxx" style="border-radius:0 var(--r2) var(--r2) 0" oninput="this.value=this.value.replace(/\D/g,'')">
           </div>
         </div>
-        <button class="btn btn-orange btn-full" onclick="goStep(2)">Send OTP →</button>
-        <div style="text-align:center;margin-top:16px;font-size:12px;color:var(--textL)">
+<button class="btn btn-orange btn-full" onclick="sendOTP(); goStep(2)">
+   <div style="text-align:center;margin-top:16px;font-size:12px;color:var(--textL)">
           Already registered? <a href="vendor-dashboard.html" style="color:var(--orange);font-weight:600">Login →</a>
         </div>
       </div>
@@ -424,8 +424,8 @@ body{min-height:100vh;display:flex;flex-direction:column;background:var(--bg)}
           <input class="otp-box" id="o5" type="tel" inputmode="numeric" maxlength="1" oninput="oNav(this,'o4','o6')">
           <input class="otp-box" id="o6" type="tel" inputmode="numeric" maxlength="1" oninput="oNav(this,'o5',null)">
         </div>
-        <button class="btn btn-orange btn-full" id="otp-verify-btn" onclick="goStep(3)">Verify & Continue →</button>
-        <div class="resend-row">Didn't receive? <b onclick="toast('OTP resent','ok')">Resend OTP</b> · <b onclick="goStep(1)">Change number</b></div>
+<button class="btn btn-orange btn-full" id="otp-verify-btn" onclick="verifyOTP(); goStep(3)">
+   <div class="resend-row">Didn't receive? <b onclick="toast('OTP resent','ok')">Resend OTP</b> · <b onclick="goStep(1)">Change number</b></div>
         <div style="text-align:center;margin-top:8px;font-size:11px;color:var(--textL)">Demo: any 6 digits work</div>
       </div>
 
@@ -653,6 +653,50 @@ function toast(msg, type) {
   el.className = 'toast show' + (type ? ' ' + type : '')
   clearTimeout(el._t)
   el._t = setTimeout(() => el.classList.remove('show'), 2600)
+}
+</script>
+   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL = "https://cxxxstxmfgcznsvuuloh.supabase.co";
+const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4eHhzdHhtZmdjem5zdnV1bG9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTcxOTgsImV4cCI6MjA5MTk5MzE5OH0.58KX8QoJ8sYF5JW-_o8WqtCr4skG5OK60v6sTm_3ir4";
+
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+// SEND OTP
+async function sendOTP() {
+  const phone = "+91" + document.getElementById('phone-in').value;
+
+  const { error } = await sb.auth.signInWithOtp({ phone });
+
+  if (error) {
+    toast("OTP failed: " + error.message, "err");
+    return;
+  }
+
+  toast("OTP sent (check Supabase logs)", "ok");
+}
+
+// VERIFY OTP
+async function verifyOTP() {
+  const phone = "+91" + document.getElementById('phone-in').value;
+
+  const otp = ['o1','o2','o3','o4','o5','o6']
+    .map(id => document.getElementById(id).value)
+    .join('');
+
+  const { error } = await sb.auth.verifyOtp({
+    phone,
+    token: otp,
+    type: 'sms'
+  });
+
+  if (error) {
+    toast("Invalid OTP", "err");
+    return;
+  }
+
+  toast("Login success", "ok");
 }
 </script>
 </body>
