@@ -1474,5 +1474,13 @@ document.getElementById("nl-enquiries").addEventListener("click", () => {
   setTimeout(loadEnquiries, 200);
 });
 </script>
+   <script>
+const vendor = localStorage.getItem("vendorLoggedIn");
+
+if (vendor !== "true") {
+  // Not logged in → send to register
+  window.location.href = "vendor-register.html";
+}
+</script>
 </body>
 </html>
