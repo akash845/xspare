@@ -1226,5 +1226,63 @@ function handleVendorLogin() {
   }
 }
 </script>
+  <script>
+const models = {
+  "Maruti Suzuki": ["Swift", "Baleno", "Alto", "Dzire"],
+  "Hyundai": ["i10", "i20", "Creta", "Verna"],
+  "Tata": ["Nexon", "Punch", "Altroz", "Harrier"],
+  "Honda": ["City", "Amaze", "Jazz"],
+  "Toyota": ["Innova", "Fortuner", "Glanza"],
+  "Mahindra": ["Scorpio", "XUV700", "Bolero"],
+  "Ford": ["EcoSport", "Endeavour"],
+  "Volkswagen": ["Polo", "Virtus"],
+  "Renault": ["Kwid", "Triber", "Kiger"],
+  "Kia": ["Seltos", "Sonet", "Carens"],
+  "MG": ["Hector", "Astor"],
+  "Bajaj": ["Pulsar", "Avenger"],
+  "Hero": ["Splendor", "HF Deluxe"],
+  "TVS": ["Apache", "Jupiter"],
+  "Royal Enfield": ["Classic 350", "Himalayan"]
+};
+
+function updateModels() {
+  const make = document.getElementById("make").value;
+  const modelDropdown = document.getElementById("model");
+
+  modelDropdown.innerHTML = '<option value="">Select model</option>';
+
+  if (!make || !models[make]) {
+    modelDropdown.innerHTML = '<option value="">Select make first</option>';
+    return;
+  }
+
+  models[make].forEach(model => {
+    const option = document.createElement("option");
+    option.value = model;
+    option.textContent = model;
+    modelDropdown.appendChild(option);
+  });
+}
+
+// ✅ YEAR DROPDOWN AUTO FILL
+function loadYears() {
+  const yearDropdown = document.getElementById("year");
+  const currentYear = new Date().getFullYear();
+
+  yearDropdown.innerHTML = '<option value="">Select year</option>';
+
+  for (let i = currentYear; i >= 1995; i--) {
+    const option = document.createElement("option");
+    option.value = i;
+    option.textContent = i;
+    yearDropdown.appendChild(option);
+  }
+}
+
+// Run on page load
+window.onload = function () {
+  loadYears();
+};
+</script>
 </body>
 </html>
