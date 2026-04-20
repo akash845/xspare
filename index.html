@@ -1188,7 +1188,7 @@ document.getElementById('year').value = '';
   }
 
   document.getElementById('track-result').innerHTML = "Loading...";
-
+    }
   const { data, error } = await supabaseClient
     .from('enquiries')
     .select('*')
