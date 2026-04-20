@@ -1124,6 +1124,27 @@ const data = {
     btn.textContent = "Submit enquiry";
     return;
   }
+  const { error } = await supabaseClient
+  .from('enquiries')
+  .insert([data]);
+
+if (error) {
+  alert("Error submitting enquiry");
+  console.log(error);
+  btn.disabled = false;
+  btn.textContent = "Submit enquiry";
+  return;
+}
+
+// 🔥 ADD THIS PART HERE
+await fetch('https://xspare.vercel.app/api/enquiries', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    enquiry_id: enquiryId,
+    district: document.getElementById('cust-district').value
+  })
+});
 
 document.getElementById('enquiry-id').textContent = enquiryId;
   document.getElementById('track-id').value = enquiryId;
