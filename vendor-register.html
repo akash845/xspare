@@ -544,7 +544,7 @@ body{min-height:100vh;display:flex;flex-direction:column;background:var(--bg)}
           </div>
         </div>
 
-<button class="btn btn-orange btn-full" onclick="saveVendor(); goStep(5)">
+<button class="btn btn-orange btn-full" onclick="completeRegistration()">
   Continue →
 </button>
          <button class="btn btn-ghost btn-full" onclick="goStep(3)" style="margin-top:8px">← Back</button>
@@ -725,6 +725,18 @@ async function verifyOTP() {
   }
 
   toast("Vendor profile saved", "ok");
+}
+</script>
+   <script>
+function completeRegistration() {
+  // Save login state
+  localStorage.setItem("vendorLoggedIn", "true");
+
+  // Save vendor first (your existing function)
+  saveVendor();
+
+  // Go to dashboard
+  window.location.href = "vendor-dashboard.html";
 }
 </script>
 </body>
