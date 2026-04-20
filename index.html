@@ -999,8 +999,10 @@ function updateModels() {
       modelSel.appendChild(opt);
     });
   }
-}
 
+  // 🔥 ADD THIS LINE
+  updateYears();
+}
 function updateYears() {
   const yearSel = document.getElementById('year');
   yearSel.innerHTML = '<option value="">Year</option>';
@@ -1113,18 +1115,7 @@ const data = {
   image_url: imageUrl
 };
 
- const { error } = await supabaseClient
-    .from('enquiries')
-    .insert([data]);
-
-  if (error) {
-    alert("Error submitting enquiry");
-    console.log(error);
-    btn.disabled = false;
-    btn.textContent = "Submit enquiry";
-    return;
-  }
-  const { error } = await supabaseClient
+const { error } = await supabaseClient
   .from('enquiries')
   .insert([data]);
 
@@ -1134,6 +1125,7 @@ if (error) {
   btn.disabled = false;
   btn.textContent = "Submit enquiry";
   return;
+}
 }
 
 // 🔥 ADD THIS PART HERE
