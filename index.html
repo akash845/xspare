@@ -1179,23 +1179,21 @@ document.getElementById('year').value = '';
   photoAttached = false;
 
 }
-    async function trackEnquiry() {
-  const id = document.getElementById('track-id').value;
-
-  if (!id) {
-    document.getElementById('track-result').innerHTML = "⚠️ Enter enquiry ID";
-    return;
-  }
-
-  document.getElementById('track-result').innerHTML = "Loading...";
-    
-  const { data, error } = await supabaseClient
+async function trackEnquiry() {
+  const id = document.getElementById('track-id').value.trim();
+  const result = document.getElementById('track-result');
+ 
+  if (!id) { result.innerHTML = '<p style="color:#92400E">⚠ Enter your enquiry ID</p>'; return; }
+ 
+  result.innerHTML = '<p style="color:var(--slate)">Looking up...</p>';
+ 
+  const { data, error } = await sb
     .from('enquiries')
     .select('*')
     .eq('enquiry_id', id)
     .single();
-
- if (error || !data) {
+ 
+  if (error || !data) {
     result.innerHTML = '<p style="color:var(--red,#dc2626)">❌ Enquiry not found. Check the ID and try again.</p>';
     return;
   }
