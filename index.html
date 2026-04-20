@@ -1131,9 +1131,8 @@ if (error) {
   btn.textContent = "Submit enquiry";
   return;
 }
-}
 
-// 🔥 ADD THIS PART HERE
+// ✅ MOVE THIS HERE
 await fetch('https://xspare.vercel.app/api/enquiries', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
