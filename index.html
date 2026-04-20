@@ -1195,34 +1195,25 @@ document.getElementById('year').value = '';
     .eq('enquiry_id', id)
     .single();
 
-  if (error || !data) {
-    document.getElementById('track-result').innerHTML = "❌ Enquiry not found";
+ if (error || !data) {
+    result.innerHTML = '<p style="color:var(--red,#dc2626)">❌ Enquiry not found. Check the ID and try again.</p>';
     return;
   }
 
-document.getElementById('track-result').innerHTML = `
-  <div style="
-    padding:20px;
-    border-radius:12px;
-    border:1px solid #e2e8f0;
-    background:#ffffff;
-    max-width:500px;
-    margin:20px auto;
-    box-shadow:0 4px 20px rgba(0,0,0,0.05)
-  ">
-    <h3 style="margin-bottom:12px;color:#0f172a">Enquiry Details</h3>
 
-    <p><b>Status:</b> 
-      <span style="color:#f97316">${data.status || 'Pending'}</span>
-    </p>
-
-    <p><b>Vehicle:</b> ${data.make} ${data.model} ${data.year}</p>
-    <p><b>Part:</b> ${data.part}</p>
-    <p><b>Location:</b> ${data.district}</p>
-
-    ${data.image_url ? `<img src="${data.image_url}" style="width:100%;margin-top:10px;border-radius:8px">` : ''}
-  </div>
-`;
+ result.innerHTML = `
+    <div style="padding:20px;border-radius:12px;border:1px solid #e2e8f0;background:#fff;box-shadow:0 4px 20px rgba(0,0,0,0.05)">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+        <h3 style="color:#0f172a;font-size:16px">${data.enquiry_id}</h3>
+        <span style="background:#FFF4ED;color:#F97316;font-weight:600;font-size:12px;padding:4px 12px;border-radius:99px;border:1px solid rgba(249,115,22,.25)">${(data.status || 'Pending').toUpperCase()}</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;font-size:14px;color:#334155">
+        <div><b style="color:#0f172a">Vehicle:</b> ${data.make || ''} ${data.model || ''} ${data.year || ''}</div>
+        <div><b style="color:#0f172a">Part:</b> ${data.part || '—'}</div>
+        <div><b style="color:#0f172a">Location:</b> ${data.district || '—'}</div>
+      </div>
+      ${data.image_url ? `<img src="${data.image_url}" style="width:100%;margin-top:12px;border-radius:8px;object-fit:cover;max-height:200px">` : ''}
+    </div>`;
 </script>
   <script>
 function handleVendorLogin() {
