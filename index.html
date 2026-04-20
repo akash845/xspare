@@ -989,7 +989,10 @@ function updateModels() {
 
   modelSel.innerHTML = '<option value="">Select model</option>';
 
-  if (!make) return;
+  if (!make) {
+    modelSel.innerHTML = '<option value="">Select make first</option>';
+    return;
+  }
 
   if (models[make]) {
     models[make].forEach(m => {
@@ -1000,6 +1003,8 @@ function updateModels() {
     });
   }
 
+  updateYears(); // keep this
+}
   // 🔥 ADD THIS LINE
   updateYears();
 }
@@ -1157,8 +1162,11 @@ function resetForm() {
     d.className = 'step-dot ' + (i === 0 ? 'active' : 'pending');
   });
   document.getElementById('make').value = '';
-  document.getElementById('model').innerHTML = '<option value="">Select make first</option>';
-  document.getElementById('year').value = '';
+document.getElementById('model').innerHTML = '<option value="">Select make first</option>';
+
+updateYears(); // ✅ ADD THIS LINE
+
+document.getElementById('year').value = '';
   document.querySelectorAll('.part-chip').forEach(c => c.classList.remove('selected'));
   document.getElementById('part-custom').value = '';
   document.getElementById('part-notes').value = '';
