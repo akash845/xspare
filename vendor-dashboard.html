@@ -373,7 +373,6 @@ h3{font-size:1.1rem}
 </style>
 </head>
 <body>
-
 <div class="app-shell" id="app-shell">
 
 <!-- ══════════ TOPBAR ══════════ -->
@@ -1251,6 +1250,210 @@ async function loadLeads() {
 }
 
 loadLeads();
+   async function loadLeads() {
+  const user = (await sb.auth.getUser()).data.user;
+
+  const { data } = await sb
+    .from('leads')
+    .select('*')
+    .eq('vendor_id', user.id);
+
+  const container = document.getElementById('all-enq-cards');
+  container.innerHTML = '';
+
+  data.forEach(lead => {
+    container.innerHTML += `
+      <div class="enq-card fresh">
+        <div class="ec-head">
+          <div>
+            <div class="ec-part">${lead.enquiry_id}</div>
+          </div>
+        </div>
+
+        <div class="ec-actions">
+          <button class="btn btn-orange" onclick="sendQuote('${lead.id}')">
+            Send Quote
+          </button>
+        </div>
+      </div>
+    `;
+  });
+}
+   loadLeads();
+   async function sendQuote(leadId) {
+  const price = prompt("Enter price:");
+
+  if (!price) return;
+
+  const user = (await sb.auth.getUser()).data.user;
+
+  await sb.from('quotations').insert({
+    lead_id: leadId,
+    vendor_id: user.id,
+    price: price
+  });
+
+  alert("Quote sent!");
+}
+</script>
+   <script>
+const sb = supabase.createClient(
+  "https://cxxxstxmfgcznsvuuloh.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4eHhzdHhtZmdjem5zdnV1bG9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTcxOTgsImV4cCI6MjA5MTk5MzE5OH0.58KX8QoJ8sYF5JW-_o8WqtCr4skG5OK60v6sTm_3ir4"
+);
+
+async function loadLeads() {
+  const { data: { user } } = await sb.auth.getUser();
+
+  const { data, error } = await sb
+    .from('leads')
+    .select('*')
+    .eq('vendor_id', user.id);
+
+  if (error) {
+    console.log(error);
+    return;
+  }
+
+  const container = document.getElementById('all-enq-cards');
+  container.innerHTML = '';
+
+  data.forEach(lead => {
+    container.innerHTML += `
+      <div class="enq-card fresh">
+        <div class="ec-head">
+          <div>
+            <div class="ec-vehicle">${lead.vehicle || 'Vehicle'}</div>
+            <div class="ec-part">${lead.part_name || 'Part'}</div>
+          </div>
+        </div>
+
+        <div class="ec-actions">
+          <button class="btn btn-orange" onclick="sendQuote('${lead.id}')">
+            Send Quote
+          </button>
+        </div>
+      </div>
+    `;
+  });
+}
+
+async function sendQuote(leadId) {
+  const price = prompt("Enter price");
+
+  if (!price) return;
+
+  const { data: { user } } = await sb.auth.getUser();
+
+  await sb.from('quotations').insert({
+    lead_id: leadId,
+    vendor_id: user.id,
+    price: price
+  });
+
+  alert("Quote sent");
+}
+
+// load when enquiries page opens
+document.getElementById("nl-enquiries").addEventListener("click", () => {
+  setTimeout(loadLeads, 200);
+});
+      <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</script>
+   <script>
+const supabaseClient = supabase.createClient(
+  "YOUR_SUPABASE_URL",
+  "YOUR_SUPABASE_ANON_KEY"
+);
+
+// 🔥 LOAD ENQUIRIES
+async function loadEnquiries() {
+  const { data: { user } } = await supabaseClient.auth.getUser();
+
+  if (!user) {
+    console.log("User not logged in");
+    return;
+  }
+
+  const { data, error } = await supabaseClient
+    .from('leads')
+    .select('*')
+    .eq('vendor_id', user.id)
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.log(error);
+    return;
+  }
+
+  const container = document.getElementById('all-enq-cards');
+  container.innerHTML = '';
+
+  if (!data || data.length === 0) {
+    container.innerHTML = "<p>No enquiries found</p>";
+    return;
+  }
+
+  data.forEach(lead => {
+    container.innerHTML += `
+      <div class="enq-card ${lead.status === 'quoted' ? 'quoted-card' : 'fresh'}">
+        
+        <div class="ec-head">
+          <div>
+            <div class="ec-vehicle">${lead.vehicle || 'Vehicle not specified'}</div>
+            <div class="ec-part">${lead.part_name || 'Part not specified'}</div>
+          </div>
+        </div>
+
+        <div class="ec-meta">
+          <div class="ec-m">📍 ${lead.location || 'Unknown'}</div>
+          <div class="ec-m">🕒 ${new Date(lead.created_at).toLocaleString()}</div>
+        </div>
+
+        ${lead.notes ? `<div class="ec-notes">${lead.notes}</div>` : ''}
+
+        <div class="ec-actions">
+          <button class="btn btn-orange" onclick="sendQuote('${lead.id}')">
+            Send Quote
+          </button>
+        </div>
+
+      </div>
+    `;
+  });
+}
+
+// 🔥 SEND QUOTE
+async function sendQuote(leadId) {
+  const price = prompt("Enter price");
+
+  if (!price) return;
+
+  const { data: { user } } = await supabaseClient.auth.getUser();
+
+  const { error } = await supabaseClient
+    .from('quotations')
+    .insert({
+      lead_id: leadId,
+      vendor_id: user.id,
+      price: price
+    });
+
+  if (error) {
+    alert("Error sending quote");
+    console.log(error);
+    return;
+  }
+
+  alert("Quote sent successfully");
+  loadEnquiries(); // refresh UI
+}
+
+// 🔥 HOOK INTO YOUR EXISTING NAVIGATION
+document.getElementById("nl-enquiries").addEventListener("click", () => {
+  setTimeout(loadEnquiries, 200);
+});
 </script>
 </body>
 </html>
