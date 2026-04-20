@@ -1123,8 +1123,7 @@ async function submitEnquiry() {
     phone: document.getElementById('cust-phone').value,
     district: document.getElementById('cust-district').value,
     image_url: imageUrl
-  };
-
+      };
   const { error } = await supabaseClient
     .from('enquiries')
     .insert([data]);
@@ -1137,7 +1136,7 @@ async function submitEnquiry() {
     return;
   }
 
-  // ✅ THIS WAS BREAKING YOUR APP BEFORE
+  // ✅ MUST BE INSIDE FUNCTION
   await fetch('https://xspare.vercel.app/api/enquiries', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -1156,7 +1155,6 @@ async function submitEnquiry() {
   btn.textContent = "Submit enquiry";
   btn.disabled = false;
 }
-
 function resetForm() {
   
   document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
