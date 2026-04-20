@@ -1221,6 +1221,36 @@ function toast(msg, type) {
 
 // init
 goPage('dashboard')
+   
+</script>
+   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL = "https://cxxxstxmfgcznsvuuloh.supabase.co";
+const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4eHhzdHhtZmdjem5zdnV1bG9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTcxOTgsImV4cCI6MjA5MTk5MzE5OH0.58KX8QoJ8sYF5JW-_o8WqtCr4skG5OK60v6sTm_3ir4";
+
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+// LOAD LEADS
+async function loadLeads() {
+  const user = (await sb.auth.getUser()).data.user;
+
+  if (!user) {
+    console.log("Not logged in");
+    return;
+  }
+
+  const { data, error } = await sb
+    .from('leads')
+    .select('*')
+    .eq('vendor_id', user.id);
+
+  console.log("Leads:", data);
+
+  // TEMP: just show in console
+}
+
+loadLeads();
 </script>
 </body>
 </html>
