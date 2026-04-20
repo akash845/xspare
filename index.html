@@ -1187,7 +1187,7 @@ async function trackEnquiry() {
  
   result.innerHTML = '<p style="color:var(--slate)">Looking up...</p>';
  
-  const { data, error } = await supabase
+ const { data, error } = await supabaseClient
     .from('enquiries')
     .select('*')
     .eq('enquiry_id', id)
@@ -1198,7 +1198,7 @@ async function trackEnquiry() {
     return;
   }
  
-  result.innerHTML = 
+ result.innerHTML = `
     <div style="padding:20px;border-radius:12px;border:1px solid #e2e8f0;background:#fff;box-shadow:0 4px 20px rgba(0,0,0,0.05)">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
         <h3 style="color:#0f172a;font-size:16px">${data.enquiry_id}</h3>
