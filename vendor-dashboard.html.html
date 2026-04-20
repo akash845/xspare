@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Xspare Vendor Dashboard</title>
+<style>
+/* ═══════════════════════════════════════════
+   XSPARE DESIGN SYSTEM
+   Primary: #F97316  Dark: #0F172A  BG: #FAFAF8
+   ═══════════════════════════════════════════ */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+:root{
+  --orange:   #F97316;
+  --orange2:  #EA6A0A;
+  --orangeL:  #FFF4ED;
+  --orangeB:  rgba(249,115,22,.2);
+  --dark:     #0F172A;
+  --bg:       #FAFAF8;
+  --card:     #FFFFFF;
+  --text:     #64748B;
+  --textD:    #1E293B;
+  --textL:    #94A3B8;
+  --success:  #16A34A;
+  --successL: #F0FDF4;
+  --successB: rgba(22,163,74,.2);
+  --warning:  #D97706;
+  --warningL: #FFFBEB;
+  --red:      #DC2626;
+  --redL:     #FEF2F2;
+  --redB:     rgba(220,38,38,.15);
+  --blue:     #2563EB;
+  --blueL:    #EFF6FF;
+  --border:   rgba(15,23,42,.10);
+  --border2:  rgba(15,23,42,.06);
+  --shadow:   0 1px 3px rgba(15,23,42,.08), 0 1px 2px rgba(15,23,42,.04);
+  --shadow2:  0 4px 16px rgba(15,23,42,.10);
+  --r:        12px;
+  --r2:       8px;
+  --sidebar:  240px;
+  --topbar:   60px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-size:14px}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
+input,select,textarea,button{font-family:'DM Sans',sans-serif}
+a{text-decoration:none;color:inherit}
+
+/* ── TYPOGRAPHY ── */
+.bebas{font-family:'Bebas Neue',cursive;letter-spacing:.5px}
+.mono{font-family:'DM Mono',monospace}
+h1,h2,h3,h4{color:var(--textD);font-weight:600;line-height:1.2}
+h1{font-size:1.75rem}
+h2{font-size:1.375rem}
+h3{font-size:1.1rem}
+
+/* ── LAYOUT ── */
+.app-shell{display:grid;grid-template-columns:var(--sidebar) 1fr;grid-template-rows:var(--topbar) 1fr;height:100vh;overflow:hidden}
+.main-scroll{overflow-y:auto;background:var(--bg)}
+.main-scroll::-webkit-scrollbar{width:4px}
+.main-scroll::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.page{padding:28px;min-height:100%}
+.page.hidden{display:none}
+
+/* ── TOPBAR ── */
+.topbar{grid-column:1/-1;background:var(--card);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;z-index:20;box-shadow:var(--shadow)}
+.topbar-logo{font-family:'Bebas Neue',cursive;font-size:22px;color:var(--dark);letter-spacing:1px}
+.topbar-logo span{color:var(--orange)}
+.topbar-tag{font-size:11px;color:var(--textL);margin-left:12px;padding-left:12px;border-left:1px solid var(--border)}
+.topbar-right{display:flex;align-items:center;gap:8px}
+.icon-btn{width:36px;height:36px;border-radius:var(--r2);border:1px solid var(--border);background:var(--card);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text);transition:all .15s}
+.icon-btn:hover{background:var(--bg);border-color:var(--border)}
+.icon-btn svg{width:18px;height:18px;stroke:currentColor}
+.notif-wrap{position:relative}
+.notif-dot{position:absolute;top:7px;right:7px;width:7px;height:7px;background:var(--red);border-radius:50%;border:2px solid var(--card)}
+.user-chip{display:flex;align-items:center;gap:8px;padding:4px 10px 4px 4px;background:var(--bg);border:1px solid var(--border);border-radius:99px;cursor:pointer;transition:border-color .15s}
+.user-chip:hover{border-color:var(--orange)}
+.user-av{width:28px;height:28px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#fff;font-family:'Bebas Neue',cursive;letter-spacing:.5px}
+.user-name{font-size:13px;font-weight:500;color:var(--textD)}
+
+/* ── SIDEBAR ── */
+.sidebar{background:var(--card);border-right:1px solid var(--border);overflow-y:auto;padding:16px 12px}
+.sidebar::-webkit-scrollbar{width:0}
+.nav-group{margin-bottom:20px}
+.nav-group-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--textL);padding:0 10px;margin-bottom:6px}
+.nav-link{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--r2);cursor:pointer;color:var(--text);font-size:13px;font-weight:500;transition:all .15s;position:relative}
+.nav-link:hover{background:var(--bg);color:var(--textD)}
+.nav-link.active{background:var(--orangeL);color:var(--orange);font-weight:600}
+.nav-link svg{width:16px;height:16px;stroke:currentColor;flex-shrink:0}
+.nav-link .nbadge{margin-left:auto;background:var(--red);color:#fff;font-size:9px;font-weight:700;min-width:16px;height:16px;border-radius:99px;display:flex;align-items:center;justify-content:center;padding:0 4px}
+.nav-link.active .nbadge{background:var(--orange)}
+
+/* ── CARDS ── */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
+.card-body{padding:20px}
+.card-title{font-size:14px;font-weight:600;color:var(--textD);margin-bottom:14px}
+
+/* ── STAT CARDS ── */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:24px}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);display:flex;align-items:flex-start;justify-content:space-between}
+.stat-icon{width:44px;height:44px;border-radius:var(--r2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.stat-icon svg{width:20px;height:20px;stroke:currentColor}
+.stat-label{font-size:12px;color:var(--textL);margin-bottom:6px}
+.stat-val{font-size:26px;font-weight:700;color:var(--textD);line-height:1;font-family:'Bebas Neue',cursive;letter-spacing:.5px}
+.stat-trend{font-size:12px;color:var(--success);margin-top:4px;font-weight:500}
+.stat-trend.neg{color:var(--red)}
+.stat-trend.neu{color:var(--textL)}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:0 16px;height:36px;border-radius:var(--r2);font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .15s;white-space:nowrap}
+.btn:active{transform:scale(.98)}
+.btn svg{width:14px;height:14px;stroke:currentColor;flex-shrink:0}
+.btn-orange{background:var(--orange);color:#fff}
+.btn-orange:hover{background:var(--orange2)}
+.btn-ghost{background:var(--card);color:var(--textD);border:1px solid var(--border)}
+.btn-ghost:hover{border-color:var(--orange);color:var(--orange)}
+.btn-success{background:var(--successL);color:var(--success);border:1px solid var(--successB)}
+.btn-danger{background:var(--redL);color:var(--red);border:1px solid var(--redB)}
+.btn-blue{background:var(--blueL);color:var(--blue);border:1px solid rgba(37,99,235,.2)}
+.btn-lg{height:44px;padding:0 24px;font-size:14px}
+.btn-full{width:100%;justify-content:center;height:44px;font-size:14px}
+
+/* ── TAGS ── */
+.tag{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:99px;font-size:11px;font-weight:600;white-space:nowrap}
+.tag-orange{background:var(--orangeL);color:var(--orange)}
+.tag-green{background:var(--successL);color:var(--success)}
+.tag-red{background:var(--redL);color:var(--red)}
+.tag-blue{background:var(--blueL);color:var(--blue)}
+.tag-amber{background:var(--warningL);color:var(--warning)}
+.tag-gray{background:var(--bg);color:var(--textL);border:1px solid var(--border)}
+.tag-new{background:#FFF4ED;color:var(--orange);border:1.5px solid var(--orangeB);font-weight:700}
+.tag-quoted{background:var(--blueL);color:var(--blue);border:1px solid rgba(37,99,235,.2)}
+.tag-won{background:var(--successL);color:var(--success);border:1px solid var(--successB)}
+
+/* ── FORM FIELDS ── */
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+.field-row{display:grid;gap:12px;grid-template-columns:1fr 1fr}
+.field-row.c3{grid-template-columns:1fr 1fr 1fr}
+.f-label{font-size:12px;font-weight:600;color:var(--textD)}
+.f-label .req{color:var(--red);margin-left:2px}
+.f-input,.f-select,.f-textarea{width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:var(--r2);font-size:13px;font-family:'DM Sans',sans-serif;color:var(--textD);background:var(--card);outline:none;transition:border-color .2s,box-shadow .2s;appearance:none}
+.f-input:focus,.f-select:focus,.f-textarea:focus{border-color:var(--orange);box-shadow:0 0 0 3px var(--orangeB)}
+.f-input::placeholder,.f-textarea::placeholder{color:var(--textL)}
+.f-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2394A3B8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:30px;cursor:pointer}
+.f-textarea{resize:vertical;min-height:80px;line-height:1.5}
+.f-hint{font-size:11px;color:var(--textL)}
+.f-error{font-size:11px;color:var(--red);display:none}
+.f-input.err,.f-select.err{border-color:var(--red)}
+.field.has-err .f-error{display:block}
+
+/* ── CHECKBOX CARD ── */
+.check-card{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:var(--bg);border:1.5px solid var(--border);border-radius:var(--r2);cursor:pointer;transition:border-color .2s}
+.check-card:hover{border-color:var(--orange)}
+.check-card input{width:15px;height:15px;accent-color:var(--orange);margin-top:1px;cursor:pointer;flex-shrink:0}
+.check-card-text{font-size:13px;color:var(--textD);line-height:1.4}
+.check-card-sub{font-size:11px;color:var(--textL);margin-top:2px}
+.check-card.highlight{background:var(--orangeL);border-color:var(--orange)}
+
+/* ── PROGRESS BARS ── */
+.pbar-wrap{margin-bottom:12px}
+.pbar-row{display:flex;justify-content:space-between;margin-bottom:5px;align-items:center}
+.pbar-label{font-size:13px;color:var(--textD)}
+.pbar-val{font-size:13px;font-weight:600;color:var(--textD)}
+.pbar-track{height:8px;background:var(--bg);border:1px solid var(--border);border-radius:4px;overflow:hidden}
+.pbar-fill{height:100%;border-radius:4px;background:var(--orange);transition:width 1s ease}
+.pbar-fill.green{background:var(--success)}
+.pbar-fill.blue{background:var(--blue)}
+
+/* ── UPLOAD ZONE ── */
+.upload-zone{border:2px dashed var(--border);border-radius:var(--r);padding:24px;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg)}
+.upload-zone:hover{border-color:var(--orange);background:var(--orangeL)}
+.uz-ico{font-size:26px;margin-bottom:8px}
+.uz-title{font-size:13px;font-weight:500;color:var(--textD);margin-bottom:3px}
+.uz-sub{font-size:11px;color:var(--textL)}
+
+/* ── PHOTO SLOTS ── */
+.photo-strip{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.photo-slot{width:76px;height:76px;border-radius:var(--r2);border:1.5px dashed var(--border);background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;gap:3px;transition:all .2s;position:relative;overflow:hidden}
+.photo-slot:hover{border-color:var(--orange);background:var(--orangeL)}
+.photo-slot svg{width:18px;height:18px;stroke:var(--textL)}
+.photo-slot span{font-size:10px;color:var(--textL)}
+.photo-slot.filled{border-style:solid;border-color:var(--successB);background:var(--successL)}
+.photo-slot.filled::after{content:'✓';position:absolute;top:4px;right:5px;font-size:10px;color:var(--success);font-weight:700}
+.photo-req{font-size:11px;color:var(--red);margin-left:4px}
+
+/* ── TABLES ── */
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--textL);padding:10px 14px;border-bottom:1px solid var(--border);text-align:left;background:var(--bg)}
+.tbl td{padding:12px 14px;border-bottom:1px solid var(--border2);font-size:13px;vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:#FAFAF8}
+.part-name{font-weight:600;color:var(--textD)}
+.part-sub{font-size:11px;color:var(--textL);margin-top:1px}
+.grade-pill{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:6px;font-weight:700;font-size:13px}
+.gA{background:#F0FDF4;color:var(--success)}
+.gB{background:#FFFBEB;color:var(--warning)}
+.gC{background:#FEF2F2;color:var(--red)}
+
+/* ── NOTICE ── */
+.notice{display:flex;align-items:flex-start;gap:8px;padding:12px 14px;border-radius:var(--r2);font-size:13px;line-height:1.5;margin-bottom:14px}
+.notice svg{width:15px;height:15px;stroke:currentColor;flex-shrink:0;margin-top:1px}
+.notice-info{background:var(--blueL);color:var(--blue);border:1px solid rgba(37,99,235,.15)}
+.notice-warn{background:var(--warningL);color:var(--warning);border:1px solid rgba(217,119,6,.2)}
+.notice-success{background:var(--successL);color:var(--success);border:1px solid var(--successB)}
+.notice-orange{background:var(--orangeL);color:var(--orange);border:1px solid var(--orangeB)}
+
+/* ── SCORE RING ── */
+.score-ring{position:relative;width:96px;height:96px;flex-shrink:0}
+.score-ring svg{transform:rotate(-90deg)}
+.score-ring-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}
+.score-num{font-family:'Bebas Neue',cursive;font-size:28px;color:var(--textD);line-height:1;letter-spacing:.5px}
+.score-sub{font-size:9px;color:var(--textL);text-transform:uppercase;letter-spacing:.08em}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:100;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px)}
+.modal-overlay.open{display:flex}
+.modal{background:var(--card);border-radius:var(--r);box-shadow:0 20px 60px rgba(15,23,42,.2);width:100%;max-width:580px;max-height:92vh;overflow-y:auto}
+.modal-head{padding:20px 24px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--card);z-index:2}
+.modal-title{font-size:16px;font-weight:600;color:var(--textD)}
+.modal-close{width:30px;height:30px;border-radius:6px;border:1px solid var(--border);background:var(--bg);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--textL);font-size:16px}
+.modal-close:hover{color:var(--red)}
+.modal-body{padding:20px 24px}
+.modal-foot{padding:14px 24px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--dark);color:#fff;padding:12px 18px;border-radius:var(--r);font-size:13px;font-weight:500;z-index:999;opacity:0;transform:translateY(6px);transition:all .25s;pointer-events:none;display:flex;align-items:center;gap:8px;box-shadow:var(--shadow2);max-width:340px}
+.toast.show{opacity:1;transform:translateY(0)}
+.toast.ok{background:var(--success)}
+.toast.err{background:var(--red)}
+.toast svg{width:15px;height:15px;stroke:#fff;flex-shrink:0}
+
+/* ── ENQUIRY CARDS ── */
+.enq-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.enq-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;transition:box-shadow .2s}
+.enq-card:hover{box-shadow:var(--shadow2)}
+.enq-card.fresh{border-top:3px solid var(--orange)}
+.enq-card.quoted-card{border-top:3px solid var(--blue)}
+.ec-head{padding:16px 16px 10px;display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.ec-vehicle{font-size:12px;font-weight:600;color:var(--textL);margin-bottom:4px;text-transform:uppercase;letter-spacing:.04em}
+.ec-part{font-size:16px;font-weight:700;color:var(--orange)}
+.ec-meta{padding:0 16px 10px;display:flex;gap:12px;flex-wrap:wrap}
+.ec-m{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--textL)}
+.ec-m svg{width:12px;height:12px;stroke:currentColor}
+.ec-notes{padding:8px 16px;background:var(--bg);border-top:1px solid var(--border2);font-size:12px;color:var(--text);font-style:italic}
+.ec-actions{padding:12px 16px;border-top:1px solid var(--border);display:flex;gap:8px}
+
+/* ── QUICK TIPS ── */
+.tips-banner{background:var(--orange);border-radius:var(--r);padding:20px 24px;color:#fff;margin-top:24px}
+.tips-title{font-family:'Bebas Neue',cursive;font-size:22px;letter-spacing:.5px;margin-bottom:10px;opacity:.95}
+.tips-list{list-style:none;display:flex;flex-direction:column;gap:6px}
+.tips-list li{font-size:13px;opacity:.9;display:flex;align-items:center;gap:6px}
+.tips-list li::before{content:'•';font-size:16px}
+
+/* ── STEPPER ── */
+.stepper{display:flex;align-items:center;margin-bottom:28px;gap:0}
+.step-item{display:flex;align-items:center;gap:0;flex:1}
+.step-circle{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;transition:all .3s;border:2px solid var(--border)}
+.step-circle.done{background:var(--success);border-color:var(--success);color:#fff}
+.step-circle.active{background:var(--orange);border-color:var(--orange);color:#fff}
+.step-circle.pending{background:var(--card);color:var(--textL)}
+.step-info{margin-left:8px}
+.step-name{font-size:12px;font-weight:600;white-space:nowrap}
+.step-name.done{color:var(--success)}
+.step-name.active{color:var(--orange)}
+.step-name.pending{color:var(--textL)}
+.step-desc{font-size:10px;color:var(--textL)}
+.step-line{flex:1;height:2px;background:var(--border);margin:0 8px}
+.step-line.done{background:var(--success)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1024px){
+  :root{--sidebar:56px}
+  .nav-group-label,.nav-link span,.nav-link .nbadge-text,.topbar-tag,.user-name{display:none}
+  .nav-link{justify-content:center;padding:10px}
+  .nav-link svg{width:20px;height:20px}
+  .nav-link .nbadge{position:absolute;top:4px;right:4px;min-width:14px;height:14px;font-size:8px}
+  .sidebar{padding:10px 8px}
+  .nav-group{margin-bottom:8px}
+  .field-row.c3{grid-template-columns:1fr 1fr}
+}
+@media(max-width:700px){
+  :root{--sidebar:0px}
+  .sidebar{display:none}
+  .app-shell{grid-template-columns:1fr}
+  .page{padding:16px}
+  .stats-row{grid-template-columns:1fr 1fr}
+  .enq-cards{grid-template-columns:1fr}
+  .field-row,.field-row.c3{grid-template-columns:1fr}
+  .stepper .step-info,.stepper .step-line{display:none}
+}
+
+</style>
+<style>
+/* ─── ENQUIRY CHAT ─── */
+#pg-chat{display:none;flex-direction:column;height:100%}
+#pg-chat.on{display:flex}
+.chat-topbar{flex-shrink:0;background:var(--card);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow)}
+.chat-back{width:34px;height:34px;border-radius:8px;border:1px solid var(--border);background:var(--bg);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--textL);flex-shrink:0}
+.chat-back:hover{color:var(--textD);border-color:var(--orange)}
+.chat-back svg{width:16px;height:16px;stroke:currentColor}
+.chat-info{flex:1;min-width:0}
+.chat-part{font-size:15px;font-weight:700;color:var(--textD)}
+.chat-vehicle{font-size:12px;color:var(--textL);margin-top:1px}
+.chat-scroll{flex:1;overflow-y:auto;padding:20px 24px;display:flex;flex-direction:column;gap:10px;background:var(--bg)}
+.chat-scroll::-webkit-scrollbar{width:4px}
+.chat-scroll::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.msg{max-width:72%;display:flex;flex-direction:column;gap:3px}
+.msg.vendor{align-self:flex-end;align-items:flex-end}
+.msg.customer{align-self:flex-start;align-items:flex-start}
+.msg-bubble{padding:10px 14px;border-radius:12px;font-size:13px;line-height:1.5}
+.msg.vendor .msg-bubble{background:var(--orange);color:#fff;border-bottom-right-radius:3px}
+.msg.customer .msg-bubble{background:var(--card);color:var(--textD);border:1px solid var(--border);border-bottom-left-radius:3px;box-shadow:var(--shadow)}
+.msg-time{font-size:10px;color:var(--textL);font-family:'DM Mono',monospace}
+.quote-card{background:var(--card);border:1.5px solid var(--orangeB);border-radius:12px;padding:14px;max-width:72%;align-self:flex-end;box-shadow:var(--shadow)}
+.qc-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--orange);margin-bottom:6px;font-family:'DM Mono',monospace}
+.qc-price{font-family:'Bebas Neue',cursive;font-size:28px;color:var(--textD);letter-spacing:.5px;line-height:1}
+.qc-grade{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:4px;margin-left:8px;vertical-align:middle}
+.qc-desc{font-size:12px;color:var(--textL);margin-top:6px;line-height:1.4}
+.qc-time{font-size:10px;color:var(--textL);margin-top:6px;font-family:'DM Mono',monospace}
+.sys-msg{align-self:center;background:var(--bg);border:1px solid var(--border);border-radius:99px;font-size:11px;color:var(--textL);padding:4px 14px;font-family:'DM Mono',monospace}
+.chat-input-bar{flex-shrink:0;background:var(--card);border-top:1px solid var(--border);padding:12px 20px;display:flex;gap:10px;align-items:flex-end}
+.chat-input{flex:1;border:1.5px solid var(--border);border-radius:var(--r);padding:10px 14px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--textD);outline:none;resize:none;max-height:100px;line-height:1.4;background:var(--bg);transition:border-color .2s}
+.chat-input:focus{border-color:var(--orange)}
+.chat-send{width:40px;height:40px;border-radius:var(--r2);background:var(--orange);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:background .15s}
+.chat-send:hover{background:var(--orange2)}
+.chat-send svg{width:16px;height:16px;stroke:#fff}
+.accepted-bar{background:var(--successL);border:1px solid var(--successB);border-radius:var(--r2);padding:10px 16px;margin:0 24px 10px;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--success);font-weight:500}
+.accepted-bar svg{width:16px;height:16px;stroke:currentColor;flex-shrink:0}
+
+/* ─── QUOTE MODAL GRADE ─── */
+.grade-sel{display:flex;gap:8px}
+.gs{flex:1;height:44px;border-radius:var(--r2);border:1.5px solid var(--border);background:var(--bg);font-family:'Bebas Neue',cursive;font-size:18px;letter-spacing:.5px;cursor:pointer;transition:all .2s;color:var(--textL)}
+.gs:hover{border-color:var(--orange)}
+.gs.A{background:var(--successL);border-color:var(--success);color:var(--success)}
+.gs.B{background:var(--warningL);border-color:var(--warning);color:var(--warning)}
+.gs.C{background:var(--redL);border-color:var(--red);color:var(--red)}
+
+/* ─── INVENTORY GRADE FILTER ─── */
+.filter-row{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.filter-chip{padding:5px 13px;border-radius:99px;font-size:12px;font-weight:500;border:1.5px solid var(--border);background:var(--card);color:var(--textL);cursor:pointer;transition:all .15s}
+.filter-chip:hover{border-color:var(--orange);color:var(--orange)}
+.filter-chip.active{background:var(--orange);border-color:var(--orange);color:#fff}
+
+/* ─── PROFILE ─── */
+.profile-av-lg{width:72px;height:72px;border-radius:16px;background:var(--orange);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',cursive;font-size:30px;color:#fff;letter-spacing:1px;flex-shrink:0}
+.doc-item{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r2);margin-bottom:8px}
+.doc-name{font-size:13px;font-weight:500;color:var(--textD)}
+.doc-sub{font-size:11px;color:var(--textL);margin-top:1px}
+
+/* ─── HISTORY ITEM ─── */
+.history-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--border2)}
+.history-item:last-child{border-bottom:none}
+.hi-ico{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.hi-ico svg{width:16px;height:16px;stroke:currentColor}
+.hi-info{flex:1;min-width:0}
+.hi-part{font-size:13px;font-weight:600;color:var(--textD);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hi-vehicle{font-size:11px;color:var(--textL);margin-top:1px}
+.hi-right{text-align:right;flex-shrink:0}
+.hi-status{font-size:11px;font-weight:700}
+.hi-time{font-size:10px;color:var(--textL);margin-top:2px;font-family:'DM Mono',monospace}
+
+/* ─── SCORE DISPLAY ─── */
+.score-display{display:flex;align-items:center;gap:20px}
+
+/* ─── FINANCE CHART ─── */
+.bar-chart{display:flex;align-items:flex-end;gap:4px;height:64px;margin:12px 0 6px}
+.bc-bar{flex:1;border-radius:4px 4px 0 0;background:var(--orangeL);border:1px solid var(--orangeB);border-bottom:none;min-height:6px;transition:height .3s}
+.bc-bar.today{background:var(--orange);border-color:var(--orange)}
+.bc-labels{display:flex;justify-content:space-between}
+.bc-label{flex:1;text-align:center;font-size:10px;color:var(--textL);font-family:'DM Mono',monospace}
+</style>
+</head>
+<body>
+
+<div class="app-shell" id="app-shell">
+
+<!-- ══════════ TOPBAR ══════════ -->
+<header class="topbar">
+  <div style="display:flex;align-items:center;gap:0">
+    <a href="../xspare-customer.html" class="topbar-logo" title="Xspare home" style="text-decoration:none">X<span>spare</span></a>
+    <div class="topbar-tag">Vendor Dashboard</div>
+  </div>
+  <div class="topbar-right">
+    <div class="notif-wrap">
+      <button class="icon-btn" onclick="toast('3 new enquiries','')">
+        <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+      </button>
+      <div class="notif-dot"></div>
+    </div>
+    <div class="user-chip" onclick="goPage('profile')">
+      <div class="user-av" id="top-av">RK</div>
+      <div class="user-name" id="top-name">Rajan Auto Parts</div>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════ SIDEBAR ══════════ -->
+<aside class="sidebar">
+  <div class="nav-group">
+    <div class="nav-group-label">Main</div>
+    <div class="nav-link active" id="nl-dashboard" onclick="goPage('dashboard')">
+      <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+      <span>Dashboard</span>
+    </div>
+    <div class="nav-link" id="nl-enquiries" onclick="goPage('enquiries')">
+      <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+      <span>Enquiries</span>
+      <div class="nbadge" id="enq-badge">3</div>
+    </div>
+    <div class="nav-link" id="nl-orders" onclick="goPage('orders')">
+      <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+      <span>Orders</span>
+    </div>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-label">Inventory</div>
+    <div class="nav-link" id="nl-inventory" onclick="goPage('inventory')">
+      <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
+      <span>Inventory</span>
+    </div>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-label">Account</div>
+    <div class="nav-link" id="nl-score" onclick="goPage('score')">
+      <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+      <span>Reliability Score</span>
+    </div>
+    <div class="nav-link" id="nl-finance" onclick="goPage('finance')">
+      <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      <span>Financials</span>
+    </div>
+    <div class="nav-link" id="nl-profile" onclick="goPage('profile')">
+      <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+      <span>Profile</span>
+    </div>
+    <div class="nav-link" id="nl-history" onclick="goPage('history')">
+      <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      <span>History</span>
+    </div>
+    <div class="nav-link" onclick="window.location.href='vendor-register.html'">
+      <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+      <span>Logout</span>
+    </div>
+  </div>
+</aside>
+
+<!-- ══════════ MAIN ══════════ -->
+<main class="main-scroll" id="main-scroll">
+
+  <!-- ── DASHBOARD ── -->
+  <div class="page" id="pg-dashboard">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:12px">
+      <div>
+        <h1 style="font-family:'Bebas Neue',cursive;font-size:32px;letter-spacing:.5px;color:var(--textD)">Dashboard</h1>
+        <div style="font-size:13px;color:var(--textL);margin-top:2px">Welcome back! Here's your overview</div>
+      </div>
+      <button class="btn btn-orange" onclick="goPage('enquiries')">
+        <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+        View Enquiries
+      </button>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div><div class="stat-label">Total Enquiries</div><div class="stat-val" id="st-enq">42</div><div class="stat-trend">+12% from last week</div></div>
+        <div class="stat-icon" style="background:var(--orangeL);color:var(--orange)">
+          <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div><div class="stat-label">Active Quotes</div><div class="stat-val" id="st-quotes">8</div><div class="stat-trend neu">+5 pending</div></div>
+        <div class="stat-icon" style="background:var(--blueL);color:var(--blue)">
+          <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div><div class="stat-label">Orders Won</div><div class="stat-val" id="st-won">15</div><div class="stat-trend">+3 this week</div></div>
+        <div class="stat-icon" style="background:var(--successL);color:var(--success)">
+          <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div><div class="stat-label">Revenue</div><div class="stat-val">₹125K</div><div class="stat-trend">+18% growth</div></div>
+        <div class="stat-icon" style="background:var(--orangeL);color:var(--orange)">
+          <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 8h6m-5 0a3 3 0 110 6H9l3 3m-3-6h6m6 1a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+      <h3>Recent Enquiries</h3>
+      <span style="font-size:13px;color:var(--orange);cursor:pointer;font-weight:600" onclick="goPage('enquiries')">View All →</span>
+    </div>
+    <div class="enq-cards" id="dash-enq-cards"></div>
+
+    <div class="tips-banner">
+      <div class="tips-title">Quick Tips</div>
+      <ul class="tips-list">
+        <li>Respond to enquiries within 2 hours for better conversion</li>
+        <li>Add clear photos to your quotes for faster approval</li>
+        <li>Keep your inventory updated for quick matching</li>
+        <li>RVSF registration boosts your lead priority score by 20%</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ── ENQUIRIES ── -->
+  <div class="page hidden" id="pg-enquiries">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px">
+      <div>
+        <h2>Enquiries</h2>
+        <div style="font-size:13px;color:var(--textL);margin-top:2px" id="enq-count-label">3 new enquiries waiting</div>
+      </div>
+      <div class="filter-row" style="margin-bottom:0">
+        <div class="filter-chip active" onclick="filterEnq('new',this)">New (3)</div>
+        <div class="filter-chip" onclick="filterEnq('quoted',this)">Quoted (1)</div>
+        <div class="filter-chip" onclick="filterEnq('all',this)">All</div>
+      </div>
+    </div>
+    <div class="enq-cards" id="all-enq-cards"></div>
+  </div>
+
+  <!-- ── ORDERS ── -->
+  <div class="page hidden" id="pg-orders">
+    <h2 style="margin-bottom:6px">Orders</h2>
+    <div style="font-size:13px;color:var(--textL);margin-bottom:20px">Confirmed orders from customers</div>
+    <div id="orders-list">
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:40px;text-align:center;box-shadow:var(--shadow)">
+        <div style="font-size:32px;margin-bottom:12px">📋</div>
+        <div style="font-size:16px;font-weight:600;color:var(--textD);margin-bottom:6px">No orders yet</div>
+        <div style="font-size:13px;color:var(--textL)">When a customer accepts your quote, it moves here.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── INVENTORY ── -->
+  <div class="page hidden" id="pg-inventory">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px">
+      <div>
+        <h2>Inventory</h2>
+        <div style="font-size:13px;color:var(--textL);margin-top:2px">5 parts listed · 2 sold this week</div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-ghost" onclick="toast('Bulk upload via CSV coming soon','')">
+          <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+          Bulk upload
+        </button>
+        <button class="btn btn-orange" onclick="openAddModal()">
+          <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v16m8-8H4"/></svg>
+          Add part
+        </button>
+      </div>
+    </div>
+
+    <div class="notice notice-info" style="margin-bottom:16px">
+      <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      Minimum 2 inspection photos required per part. Parts with photos get 3× more enquiries.
+    </div>
+
+    <div class="card">
+      <table class="tbl" id="inv-tbl">
+        <thead><tr>
+          <th>Part</th><th>Vehicle</th><th>Grade</th><th>Price</th>
+          <th>Photos</th><th>Scrappage</th><th>Status</th><th></th>
+        </tr></thead>
+        <tbody id="inv-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── SCORE ── -->
+  <div class="page hidden" id="pg-score">
+    <h2 style="margin-bottom:4px">Reliability Score</h2>
+    <div style="font-size:13px;color:var(--textL);margin-bottom:20px">Your score determines lead routing priority</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px">
+      <div class="card"><div class="card-body">
+        <div class="card-title">Overall score</div>
+        <div class="score-display">
+          <div class="score-ring">
+            <svg width="96" height="96" viewBox="0 0 96 96">
+              <circle cx="48" cy="48" r="40" fill="none" stroke="#F1F5F9" stroke-width="9"/>
+              <circle cx="48" cy="48" r="40" fill="none" stroke="var(--orange)" stroke-width="9"
+                stroke-dasharray="251" stroke-dashoffset="66" stroke-linecap="round"/>
+            </svg>
+            <div class="score-ring-inner">
+              <div class="score-num">74</div>
+              <div class="score-sub">/ 100</div>
+            </div>
+          </div>
+          <div style="flex:1">
+            <div class="pbar-wrap">
+              <div class="pbar-row"><div class="pbar-label">Response rate</div><div class="pbar-val">80%</div></div>
+              <div class="pbar-track"><div class="pbar-fill green" style="width:80%"></div></div>
+            </div>
+            <div class="pbar-wrap">
+              <div class="pbar-row"><div class="pbar-label">Fulfillment rate</div><div class="pbar-val">65%</div></div>
+              <div class="pbar-track"><div class="pbar-fill blue" style="width:65%"></div></div>
+            </div>
+            <div class="pbar-wrap">
+              <div class="pbar-row"><div class="pbar-label">Customer rating</div><div class="pbar-val">4.2/5</div></div>
+              <div class="pbar-track"><div class="pbar-fill" style="width:84%"></div></div>
+            </div>
+          </div>
+        </div>
+      </div></div>
+
+      <div class="card"><div class="card-body">
+        <div class="card-title">Score formula</div>
+        <div style="font-size:12px;color:var(--textL);margin-bottom:12px;line-height:1.6">Higher score = more leads routed to you. Maintain response rate above 75% to avoid score drops.</div>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--r2);padding:12px;font-family:'DM Mono',monospace;font-size:12px;color:var(--textD);line-height:1.8">
+          score = (response × 0.40)<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ (fulfillment × 0.40)<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ (rating × 20 × 0.20)
+        </div>
+        <div class="notice notice-warn" style="margin-top:12px;margin-bottom:0">
+          <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          Respond within 4 hours to keep response rate above 75%
+        </div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- ── FINANCIALS ── -->
+  <div class="page hidden" id="pg-finance">
+    <h2 style="margin-bottom:4px">Financials</h2>
+    <div style="font-size:13px;color:var(--textL);margin-bottom:20px">Payment tracking and performance</div>
+
+    <div class="stats-row" style="margin-bottom:20px">
+      <div class="stat-card"><div><div class="stat-label">Total earned</div><div class="stat-val">₹2.4L</div><div class="stat-trend">All time</div></div><div class="stat-icon" style="background:var(--successL);color:var(--success)"><svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 8h6m-5 0a3 3 0 110 6H9l3 3m-3-6h6m6 1a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div></div>
+      <div class="stat-card"><div><div class="stat-label">This month</div><div class="stat-val">₹68K</div><div class="stat-trend">8 orders</div></div><div class="stat-icon" style="background:var(--orangeL);color:var(--orange)"><svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/></svg></div></div>
+      <div class="stat-card"><div><div class="stat-label">Pending payout</div><div class="stat-val">₹12K</div><div class="stat-trend neu">In 2 days</div></div><div class="stat-icon" style="background:var(--warningL);color:var(--warning)"><svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div></div>
+      <div class="stat-card"><div><div class="stat-label">Commission paid</div><div class="stat-val">₹19K</div><div class="stat-trend neu">8% of GMV</div></div><div class="stat-icon" style="background:var(--bg);color:var(--textL)"><svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z"/></svg></div></div>
+    </div>
+
+    <div class="card" style="margin-bottom:14px"><div class="card-body">
+      <div class="card-title">Weekly earnings</div>
+      <div class="bar-chart">
+        <div class="bc-bar" style="height:35%"></div><div class="bc-bar" style="height:55%"></div>
+        <div class="bc-bar" style="height:42%"></div><div class="bc-bar" style="height:70%"></div>
+        <div class="bc-bar" style="height:60%"></div><div class="bc-bar" style="height:82%"></div>
+        <div class="bc-bar today" style="height:48%"></div>
+      </div>
+      <div class="bc-labels">
+        <div class="bc-label">Mon</div><div class="bc-label">Tue</div><div class="bc-label">Wed</div>
+        <div class="bc-label">Thu</div><div class="bc-label">Fri</div><div class="bc-label">Sat</div>
+        <div class="bc-label" style="color:var(--orange)">Today</div>
+      </div>
+    </div></div>
+
+    <div class="card"><div class="card-body">
+      <div class="card-title">Transactions</div>
+      <table class="tbl">
+        <thead><tr><th>Date</th><th>Part</th><th>Amount</th><th>Commission</th><th>Payout</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td style="font-size:11px;color:var(--textL);font-family:'DM Mono',monospace">16 Apr</td><td><div class="part-name">Radiator</div><div class="part-sub">Hyundai Creta 2018</div></td><td style="font-weight:600;color:var(--textD)">₹4,200</td><td style="color:var(--red)">-₹336</td><td style="font-weight:600;color:var(--success)">₹3,864</td><td><span class="tag tag-green">Paid</span></td></tr>
+          <tr><td style="font-size:11px;color:var(--textL);font-family:'DM Mono',monospace">14 Apr</td><td><div class="part-name">Gearbox</div><div class="part-sub">Maruti Swift 2017</div></td><td style="font-weight:600;color:var(--textD)">₹9,500</td><td style="color:var(--red)">-₹760</td><td style="font-weight:600;color:var(--success)">₹8,740</td><td><span class="tag tag-green">Paid</span></td></tr>
+          <tr><td style="font-size:11px;color:var(--textL);font-family:'DM Mono',monospace">17 Apr</td><td><div class="part-name">AC Compressor</div><div class="part-sub">Honda City 2019</div></td><td style="font-weight:600;color:var(--textD)">₹6,800</td><td style="color:var(--red)">-₹544</td><td style="font-weight:600;color:var(--warning)">₹6,256</td><td><span class="tag tag-amber">Pending</span></td></tr>
+        </tbody>
+      </table>
+    </div></div>
+  </div>
+
+  <!-- ── PROFILE ── -->
+  <div class="page hidden" id="pg-profile">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px">
+      <h2>Business Profile</h2>
+      <button class="btn btn-orange" onclick="toast('Profile saved ✓','ok')">Save changes</button>
+    </div>
+
+    <div class="notice notice-success" style="margin-bottom:16px">
+      <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      RVSF Registered · KL-RVSF-2024-0142 · Scrappage Policy Compliant
+    </div>
+
+    <!-- completion stepper -->
+    <div class="card" style="margin-bottom:16px"><div class="card-body">
+      <div class="card-title">Profile completion</div>
+      <div class="stepper">
+        <div class="step-item"><div class="step-circle done">✓</div><div class="step-info"><div class="step-name done">Basic info</div></div></div>
+        <div class="step-line done"></div>
+        <div class="step-item"><div class="step-circle done">✓</div><div class="step-info"><div class="step-name done">Verified</div></div></div>
+        <div class="step-line done"></div>
+        <div class="step-item"><div class="step-circle done">✓</div><div class="step-info"><div class="step-name done">RVSF</div></div></div>
+        <div class="step-line"></div>
+        <div class="step-item"><div class="step-circle active">4</div><div class="step-info"><div class="step-name active">Inventory</div></div></div>
+        <div class="step-line"></div>
+        <div class="step-item"><div class="step-circle pending">5</div><div class="step-info"><div class="step-name pending">First sale</div></div></div>
+      </div>
+    </div></div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      <div class="card"><div class="card-body">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px">
+          <div class="profile-av-lg">RK</div>
+          <div>
+            <div style="font-size:16px;font-weight:700;color:var(--textD)">Rajan Auto Parts</div>
+            <div style="font-size:12px;color:var(--textL);margin-top:2px">+91 94471 23456 · Thrissur</div>
+            <div style="margin-top:6px;display:flex;gap:6px"><span class="tag tag-orange">RVSF</span><span class="tag tag-green">Verified</span></div>
+          </div>
+        </div>
+        <div class="card-title">Business information</div>
+        <div class="field-row">
+          <div class="field"><div class="f-label">Business name</div><input class="f-input" value="Rajan Auto Parts"></div>
+          <div class="field"><div class="f-label">Owner name</div><input class="f-input" value="Rajan K."></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><div class="f-label">WhatsApp number</div><input class="f-input" value="+91 94471 23456"></div>
+          <div class="field"><div class="f-label">GST number</div><input class="f-input" value="32AABCU9603R1ZX"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><div class="f-label">District</div><select class="f-select"><option selected>Thrissur</option><option>Ernakulam</option><option>Palakkad</option></select></div>
+          <div class="field"><div class="f-label">Service radius</div><select class="f-select"><option>10 km</option><option selected>20 km</option><option>All Kerala</option></select></div>
+        </div>
+      </div>
+
+      <div class="card"><div class="card-body">
+        <div class="card-title">Documents & compliance</div>
+        <div class="field"><div class="f-label">RVSF Registration number</div><input class="f-input" value="KL-RVSF-2024-0142"></div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px">
+          <div class="doc-item"><div><div class="doc-name">GST Certificate</div></div><span class="tag tag-green">Verified</span></div>
+          <div class="doc-item"><div><div class="doc-name">RVSF Certificate</div></div><span class="tag tag-green">Verified</span></div>
+          <div class="doc-item"><div><div class="doc-name">Aadhaar / PAN</div></div><span class="tag tag-amber">Pending</span></div>
+        </div>
+        <div class="card-title" style="margin-top:16px">Part categories</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <span class="tag tag-orange">Engine</span><span class="tag tag-orange">Gearbox</span>
+          <span class="tag tag-orange">Body parts</span><span class="tag tag-orange">Electrical</span>
+          <span class="tag tag-gray" style="cursor:pointer" onclick="toast('Edit categories — coming soon','')">+ Add</span>
+        </div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- ── HISTORY ── -->
+  <div class="page hidden" id="pg-history">
+    <h2 style="margin-bottom:4px">History</h2>
+    <div style="font-size:13px;color:var(--textL);margin-bottom:20px">All past enquiries — won and not available</div>
+    <div class="card"><div id="history-list"></div></div>
+  </div>
+
+  <!-- ── CHAT ── -->
+  <div id="pg-chat">
+    <div class="chat-topbar">
+      <div class="chat-back" onclick="closeChat()"><svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg></div>
+      <div class="chat-info">
+        <div class="chat-part" id="chat-part-title">—</div>
+        <div class="chat-vehicle" id="chat-vehicle-sub">—</div>
+      </div>
+      <span class="tag" id="chat-badge-tag">QUOTED</span>
+    </div>
+    <div class="chat-scroll" id="chat-messages"></div>
+    <div class="accepted-bar" id="accepted-bar" style="display:none">
+      <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      Order confirmed — customer accepted your quote. Moved to Orders.
+    </div>
+    <div class="chat-input-bar" id="chat-input-bar">
+      <textarea class="chat-input" id="chat-msg-in" rows="1" placeholder="Type a message to customer..." oninput="autoResize(this)"></textarea>
+      <button class="chat-send" onclick="sendChatMsg()"><svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg></button>
+    </div>
+  </div>
+
+</main>
+</div>
+
+<!-- ══════════ QUOTE MODAL ══════════ -->
+<div class="modal-overlay" id="quote-modal" onclick="mbgClose(event,'quote-modal')">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title" id="qm-title">Send Quotation</div>
+      <div class="modal-close" onclick="closeModal('quote-modal')">✕</div>
+    </div>
+    <div class="modal-body">
+      <div class="field-row">
+        <div class="field">
+          <div class="f-label">Your price (₹) <span class="req">*</span></div>
+          <input class="f-input" id="qm-price" type="number" inputmode="numeric" placeholder="e.g. 4500">
+        </div>
+        <div class="field">
+          <div class="f-label">Condition grade <span class="req">*</span></div>
+          <div class="grade-sel">
+            <button class="gs" id="gs-A" onclick="selQG('A')">A</button>
+            <button class="gs" id="gs-B" onclick="selQG('B')">B</button>
+            <button class="gs" id="gs-C" onclick="selQG('C')">C</button>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <div class="f-label">Note to customer</div>
+        <textarea class="f-textarea" id="qm-note" placeholder="Condition details, origin vehicle, availability for inspection..."></textarea>
+      </div>
+      <div class="field">
+        <div class="f-label">Part photos <span class="photo-req">Min 1 recommended</span></div>
+        <div class="photo-strip" id="qm-photos">
+          <div class="photo-slot" onclick="fakePhoto(0,'qm')"><svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg><span>Add photo</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('quote-modal')">Cancel</button>
+      <button class="btn btn-orange" onclick="submitQuote()">
+        <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+        Send Quote
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ ADD PART MODAL ══════════ -->
+<div class="modal-overlay" id="add-modal" onclick="mbgClose(event,'add-modal')">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">Add part to inventory</div>
+      <div class="modal-close" onclick="closeModal('add-modal')">✕</div>
+    </div>
+    <div class="modal-body">
+      <div class="notice notice-info" style="margin-bottom:14px">
+        <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        Minimum 2 inspection photos required. More photos = higher enquiry rate.
+      </div>
+      <div class="field-row">
+        <div class="field"><div class="f-label">Part name <span class="req">*</span></div><input class="f-input" id="ap-part" placeholder="e.g. Radiator"></div>
+        <div class="field"><div class="f-label">Price (₹) <span class="req">*</span></div><input class="f-input" id="ap-price" type="number" placeholder="e.g. 4500"></div>
+      </div>
+      <div class="field-row c3">
+        <div class="field"><div class="f-label">Make</div><input class="f-input" id="ap-make" placeholder="Hyundai"></div>
+        <div class="field"><div class="f-label">Model</div><input class="f-input" id="ap-model" placeholder="Creta"></div>
+        <div class="field"><div class="f-label">Year <span class="req">*</span></div><input class="f-input" id="ap-year" type="number" placeholder="2019" oninput="checkScrap(this.value)"></div>
+      </div>
+      <div class="field">
+        <div class="f-label">Condition grade <span class="req">*</span></div>
+        <div class="grade-sel">
+          <button class="gs" id="ap-A" onclick="selAPG('A')">A — Excellent</button>
+          <button class="gs" id="ap-B" onclick="selAPG('B')">B — Good</button>
+          <button class="gs" id="ap-C" onclick="selAPG('C')">C — Fair</button>
+        </div>
+      </div>
+      <div class="field">
+        <div class="f-label">Inspection photos <span class="photo-req">Min 2 required</span></div>
+        <div class="photo-strip" id="ap-photos">
+          <div class="photo-slot" id="apph-0" onclick="fakePhoto(0,'ap')"><svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg><span>Photo 1</span></div>
+          <div class="photo-slot" id="apph-1" onclick="fakePhoto(1,'ap')"><svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg><span>Photo 2</span></div>
+          <div class="photo-slot" id="apph-2" onclick="fakePhoto(2,'ap')"><svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v16m8-8H4"/></svg><span>More</span></div>
+        </div>
+      </div>
+      <div class="field">
+        <div class="f-label">Scrappage eligibility</div>
+        <label class="check-card" id="scrap-card">
+          <input type="checkbox" id="ap-scrap" style="accent-color:var(--orange)">
+          <div><div class="check-card-text">Pre-2009 vehicle (scrappage policy eligible)</div><div class="check-card-sub">Auto-detected from year. RVSF-sourced parts get priority routing.</div></div>
+        </label>
+      </div>
+      <div class="field"><div class="f-label">Notes</div><textarea class="f-textarea" id="ap-notes" placeholder="Condition notes, origin vehicle, defects..."></textarea></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('add-modal')">Cancel</button>
+      <button class="btn btn-orange" onclick="submitPart()">Add to inventory</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast-el"></div>
+
+<script>
+// ══════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════
+let curEnqFilter = 'new', activeEnqId = null, qGrade = '', apGrade = ''
+let apPhotos = [false,false,false]
+
+const enquiries = [
+  { id:'XSP-482910', part:'Front Bumper', vehicle:'Maruti Suzuki Swift (2018)', district:'Kochi', notes:'White colour only', time:'-69m ago', status:'new', messages:[] },
+  { id:'XSP-371024', part:'Headlight Assembly (Left)', vehicle:'Hyundai i20 (2019)', district:'Trivandrum', notes:'', time:'6m ago', status:'new', messages:[] },
+  { id:'XSP-293847', part:'Rear Bumper', vehicle:'Toyota Innova (2017)', district:'Kozhikode', notes:'Any colour OK', time:'16h ago', status:'quoted', price:3200, grade:'B',
+    messages:[
+      {from:'vendor',isQuote:true,price:3200,grade:'B',note:'Good condition, minor scuff on edge.',time:'14h ago'},
+      {from:'customer',text:'Is it available for inspection?',time:'13h ago'},
+      {from:'vendor',text:'Yes, you can come to our workshop between 9am–6pm.',time:'12h ago'}
+    ]},
+  { id:'XSP-184729', part:'Alternator', vehicle:'Tata Nexon (2021)', district:'Thrissur', notes:'', time:'2d ago', status:'new', messages:[] },
+]
+
+const inventory = [
+  {id:1,part:'Radiator',make:'Maruti',model:'Swift',year:2016,grade:'A',price:3500,photos:2,status:'available'},
+  {id:2,part:'Left Front Door',make:'Hyundai',model:'Creta',year:2018,grade:'B',price:4200,photos:3,status:'available'},
+  {id:3,part:'Gearbox (Manual)',make:'Toyota',model:'Innova',year:2015,grade:'A',price:18000,photos:2,status:'available'},
+  {id:4,part:'Headlight Set (L+R)',make:'Honda',model:'City',year:2019,grade:'B',price:5500,photos:4,status:'sold'},
+  {id:5,part:'AC Compressor',make:'Maruti',model:'Baleno',year:2020,grade:'C',price:2800,photos:1,status:'available'},
+]
+
+const historyItems = [
+  {id:'XSP-001',part:'Starter Motor',vehicle:'Honda City 2016',district:'Kochi',status:'won',time:'2d ago'},
+  {id:'XSP-002',part:'Dashboard Panel',vehicle:'Maruti Baleno 2017',district:'Thrissur',status:'na',time:'3d ago'},
+  {id:'XSP-003',part:'Engine Hood',vehicle:'Tata Nexon 2018',district:'Calicut',status:'won',time:'1w ago'},
+]
+
+// ══════════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════════
+function goPage(id) {
+  // Hide chat
+  document.getElementById('pg-chat').classList.remove('on')
+  document.getElementById('app-shell').style.display = ''
+  // Hide all pages
+  document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'))
+  document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'))
+  const pg = document.getElementById('pg-' + id)
+  if (pg) { pg.classList.remove('hidden') }
+  const nl = document.getElementById('nl-' + id)
+  if (nl) nl.classList.add('active')
+  document.getElementById('main-scroll').scrollTop = 0
+
+  if (id === 'enquiries') renderEnquiries('new')
+  if (id === 'inventory') renderInventory()
+  if (id === 'dashboard') renderDashCards()
+  if (id === 'history') renderHistory()
+}
+
+// ══════════════════════════════════════════════
+// ENQUIRY CARDS
+// ══════════════════════════════════════════════
+function enqCard(e) {
+  return `<div class="enq-card ${e.status==='new'?'fresh':e.status==='quoted'?'quoted-card':''}" id="ec-${e.id}">
+    <div class="ec-head">
+      <div>
+        <div class="ec-vehicle">${e.vehicle}</div>
+        <div class="ec-part">${e.part}</div>
+      </div>
+      <span class="tag ${e.status==='new'?'tag-new':e.status==='quoted'?'tag-quoted':'tag-won'}">${e.status.toUpperCase()}</span>
+    </div>
+    <div class="ec-meta">
+      <div class="ec-m"><svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>${e.district}</div>
+      <div class="ec-m"><svg fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v6l4 2"/></svg>${e.time}</div>
+    </div>
+    ${e.notes ? `<div class="ec-notes">"${e.notes}"</div>` : ''}
+    <div class="ec-actions">
+      ${e.status==='new'
+        ? `<button class="btn btn-ghost" onclick="viewEnq('${e.id}')"><svg fill="none" viewBox="0 0 24 24" style="width:13px;height:13px"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>View</button>
+           <button class="btn btn-orange" onclick="openQuoteModal('${e.id}')"><svg fill="none" viewBox="0 0 24 24" style="width:13px;height:13px"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>Quote</button>
+           <button class="btn btn-danger" onclick="markNA('${e.id}')">Not available</button>`
+        : `<button class="btn btn-blue" style="flex:1" onclick="openChat('${e.id}')">Open Chat →</button>`
+      }
+    </div>
+  </div>`
+}
+
+function renderDashCards() {
+  document.getElementById('dash-enq-cards').innerHTML = enquiries.slice(0,3).map(enqCard).join('')
+}
+
+function filterEnq(f, el) {
+  curEnqFilter = f
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'))
+  el.classList.add('active')
+  renderEnquiries(f)
+}
+
+function renderEnquiries(f) {
+  const shown = f === 'all' ? enquiries : enquiries.filter(e => e.status === f)
+  const el = document.getElementById('all-enq-cards')
+  if (!shown.length) {
+    el.innerHTML = `<div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:40px;text-align:center;box-shadow:var(--shadow)"><div style="font-size:32px;margin-bottom:12px">📭</div><div style="font-size:15px;font-weight:600;color:var(--textD);margin-bottom:6px">No ${f==='all'?'':f} enquiries</div><div style="font-size:13px;color:var(--textL)">New leads will appear here automatically.</div></div>`
+    return
+  }
+  el.innerHTML = shown.map(enqCard).join('')
+  const newC = enquiries.filter(e=>e.status==='new').length
+  document.getElementById('enq-badge').textContent = newC
+  document.getElementById('enq-count-label').textContent = `${newC} new enquir${newC===1?'y':'ies'} waiting`
+}
+
+function viewEnq(id) { toast('View full enquiry details — coming soon','') }
+
+function markNA(id) {
+  const e = enquiries.find(x=>x.id===id)
+  if (!e) return
+  e.status = 'na'
+  historyItems.unshift({id:e.id,part:e.part,vehicle:e.vehicle,district:e.district,status:'na',time:'Just now'})
+  renderEnquiries(curEnqFilter)
+  renderDashCards()
+  updateBadge()
+  toast('Marked not available — moved to History','')
+}
+
+// ══════════════════════════════════════════════
+// QUOTE MODAL
+// ══════════════════════════════════════════════
+function openQuoteModal(id) {
+  activeEnqId = id
+  const e = enquiries.find(x=>x.id===id)
+  document.getElementById('qm-title').textContent = `Quote for ${e.part} — ${e.vehicle}`
+  document.getElementById('qm-price').value = ''
+  document.getElementById('qm-note').value = ''
+  qGrade = ''
+  ;['A','B','C'].forEach(g => document.getElementById('gs-'+g).className = 'gs')
+  document.getElementById('quote-modal').classList.add('open')
+}
+
+function selQG(g) {
+  qGrade = g
+  ;['A','B','C'].forEach(x => document.getElementById('gs-'+x).className = 'gs' + (x===g?' '+x:''))
+}
+
+function submitQuote() {
+  const price = document.getElementById('qm-price').value
+  if (!price || +price<=0) { toast('Enter a valid price','err'); return }
+  if (!qGrade) { toast('Select part condition grade','err'); return }
+  const note = document.getElementById('qm-note').value.trim()
+  const e = enquiries.find(x=>x.id===activeEnqId)
+  e.status = 'quoted'; e.price = +price; e.grade = qGrade
+  e.messages = [{from:'vendor',isQuote:true,price:+price,grade:qGrade,note:note||null,time:'Just now'}]
+  closeModal('quote-modal')
+  renderEnquiries(curEnqFilter)
+  renderDashCards()
+  updateBadge()
+  toast('Quote sent to customer via WhatsApp ✓','ok')
+  setTimeout(()=>openChat(activeEnqId), 400)
+}
+
+// ══════════════════════════════════════════════
+// CHAT
+// ══════════════════════════════════════════════
+function openChat(id) {
+  const e = enquiries.find(x=>x.id===id)
+  if (!e) return
+  activeEnqId = id
+  document.getElementById('chat-part-title').textContent = e.part
+  document.getElementById('chat-vehicle-sub').textContent = e.vehicle + ' · ' + e.district
+  const badgeEl = document.getElementById('chat-badge-tag')
+  badgeEl.textContent = e.status.toUpperCase()
+  badgeEl.className = `tag ${e.status==='quoted'?'tag-quoted':e.status==='won'?'tag-won':'tag-orange'}`
+  document.getElementById('accepted-bar').style.display = e.status==='won'?'flex':'none'
+  document.getElementById('chat-input-bar').style.display = e.status==='won'?'none':'flex'
+  document.getElementById('app-shell').style.display = 'none'
+  document.getElementById('pg-chat').classList.add('on')
+  renderChatMsgs(e)
+  scrollChat()
+}
+
+function renderChatMsgs(e) {
+  const el = document.getElementById('chat-messages')
+  const parts = [`<div class="sys-msg">${e.id} · ${e.vehicle} · ${e.district}</div>`]
+  e.messages.forEach(m => {
+    if (m.isQuote) {
+      const gc = m.grade==='A'?'var(--success)':m.grade==='B'?'var(--warning)':'var(--red)'
+      parts.push(`<div class="quote-card">
+        <div class="qc-label">Your quotation</div>
+        <div class="qc-price">₹${Number(m.price).toLocaleString('en-IN')}
+          <span class="qc-grade" style="background:${gc}18;color:${gc};border:1px solid ${gc}44">Grade ${m.grade}</span>
+        </div>
+        ${m.note?`<div class="qc-desc">${m.note}</div>`:''}
+        <div class="qc-time">${m.time}</div>
+      </div>`)
+    } else {
+      parts.push(`<div class="msg ${m.from}"><div class="msg-bubble">${m.text}</div><div class="msg-time">${m.time}</div></div>`)
+    }
+  })
+  if (e.status==='won') parts.push(`<div class="sys-msg">✓ Customer accepted your quote</div>`)
+  el.innerHTML = parts.join('')
+}
+
+function sendChatMsg() {
+  const inp = document.getElementById('chat-msg-in')
+  const text = inp.value.trim()
+  if (!text) return
+  const e = enquiries.find(x=>x.id===activeEnqId)
+  e.messages.push({from:'vendor',text,time:'Just now'})
+  inp.value = ''; autoResize(inp)
+  renderChatMsgs(e); scrollChat()
+
+  // demo: customer replies and accepts
+  if (e.messages.filter(m=>m.from==='vendor'&&!m.isQuote).length===1) {
+    setTimeout(()=>{
+      e.messages.push({from:'customer',text:'Looks good. I will accept the quote.',time:'Just now'})
+      renderChatMsgs(e); scrollChat()
+      setTimeout(()=>acceptOrder(e), 1500)
+    }, 2000)
+  }
+}
+
+function acceptOrder(e) {
+  e.status = 'won'
+  document.getElementById('chat-badge-tag').textContent = 'WON'
+  document.getElementById('chat-badge-tag').className = 'tag tag-won'
+  document.getElementById('accepted-bar').style.display = 'flex'
+  document.getElementById('chat-input-bar').style.display = 'none'
+  historyItems.unshift({id:e.id,part:e.part,vehicle:e.vehicle,district:e.district,status:'won',time:'Just now'})
+  renderChatMsgs(e); scrollChat()
+  updateBadge()
+  toast('🎉 Order confirmed! Customer accepted quote','ok')
+}
+
+function closeChat() {
+  document.getElementById('pg-chat').classList.remove('on')
+  document.getElementById('app-shell').style.display = ''
+  goPage('enquiries')
+}
+
+function scrollChat() { const s = document.getElementById('chat-messages'); setTimeout(()=>s.scrollTop=s.scrollHeight,60) }
+function autoResize(el) { el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,100)+'px' }
+
+// ══════════════════════════════════════════════
+// INVENTORY
+// ══════════════════════════════════════════════
+function renderInventory() {
+  const tb = document.getElementById('inv-tbody')
+  tb.innerHTML = inventory.map(p=>{
+    const scrap = p.year < 2009
+    return `<tr>
+      <td><div class="part-name">${p.part}</div></td>
+      <td><div class="part-sub" style="font-size:12px">${p.make} ${p.model} ${p.year}</div></td>
+      <td><div class="grade-pill g${p.grade}">${p.grade}</div></td>
+      <td style="font-weight:600;color:var(--textD)">₹${p.price.toLocaleString('en-IN')}</td>
+      <td>
+        <div style="display:flex;align-items:center;gap:6px">
+          <span style="font-size:13px">${p.photos}×</span>
+          ${p.photos<2?`<span style="font-size:10px;color:var(--red);font-weight:600">Need ${2-p.photos} more</span>`:''}
+        </div>
+      </td>
+      <td>${scrap?`<span class="tag tag-amber">Pre-2009</span>`:`<span style="color:var(--textL);font-size:12px">—</span>`}</td>
+      <td><span class="tag ${p.status==='available'?'tag-green':'tag-gray'}">${p.status}</span></td>
+      <td><button class="btn btn-ghost" style="height:28px;padding:0 10px;font-size:11px" onclick="toast('Edit coming soon','')">Edit</button></td>
+    </tr>`
+  }).join('')
+}
+
+function openAddModal() {
+  apGrade = ''; apPhotos = [false,false,false]
+  ;['ap-part','ap-price','ap-make','ap-model','ap-year','ap-notes'].forEach(id=>document.getElementById(id).value='')
+  ;['A','B','C'].forEach(g=>document.getElementById('ap-'+g).className='gs')
+  ;[0,1,2].forEach(i=>{ const s=document.getElementById('apph-'+i); if(s) s.classList.remove('filled') })
+  document.getElementById('ap-scrap').checked = false
+  document.getElementById('add-modal').classList.add('open')
+}
+
+function selAPG(g) {
+  apGrade = g
+  ;['A','B','C'].forEach(x=>document.getElementById('ap-'+x).className='gs'+(x===g?' '+x:''))
+}
+
+function checkScrap(yr) { document.getElementById('ap-scrap').checked = parseInt(yr) > 0 && parseInt(yr) < 2009 }
+
+function submitPart() {
+  const part = document.getElementById('ap-part').value.trim()
+  const price = document.getElementById('ap-price').value
+  if (!part||!price) { toast('Enter part name and price','err'); return }
+  if (!apGrade) { toast('Select condition grade','err'); return }
+  if (apPhotos.filter(Boolean).length < 2) { toast('Add at least 2 photos','err'); return }
+  inventory.unshift({
+    id:Date.now(),part,
+    make:document.getElementById('ap-make').value||'—',
+    model:document.getElementById('ap-model').value||'—',
+    year:parseInt(document.getElementById('ap-year').value)||0,
+    grade:apGrade,price:parseInt(price),
+    photos:apPhotos.filter(Boolean).length,status:'available'
+  })
+  closeModal('add-modal')
+  renderInventory()
+  toast('Part added to inventory ✓','ok')
+}
+
+// ══════════════════════════════════════════════
+// HISTORY
+// ══════════════════════════════════════════════
+function renderHistory() {
+  const el = document.getElementById('history-list')
+  if (!historyItems.length) {
+    el.innerHTML = '<div style="padding:40px;text-align:center;font-size:13px;color:var(--textL)">No history yet</div>'
+    return
+  }
+  el.innerHTML = historyItems.map(h=>{
+    const won = h.status==='won'
+    const ic = won ? `background:var(--successL);color:var(--success)` : `background:var(--redL);color:var(--red)`
+    const path = won ? 'M5 13l4 4L19 7' : 'M6 18L18 6M6 6l12 12'
+    return `<div class="history-item">
+      <div class="hi-ico" style="${ic}"><svg fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${path}"/></svg></div>
+      <div class="hi-info">
+        <div class="hi-part">${h.part}</div>
+        <div class="hi-vehicle">${h.vehicle||''} · ${h.district}</div>
+      </div>
+      <div class="hi-right">
+        <div class="hi-status" style="color:${won?'var(--success)':'var(--red)'}">${won?'WON':'NOT AVAILABLE'}</div>
+        <div class="hi-time">${h.time}</div>
+      </div>
+    </div>`
+  }).join('')
+}
+
+// ══════════════════════════════════════════════
+// UTIL
+// ══════════════════════════════════════════════
+function fakePhoto(idx, prefix) {
+  if (prefix==='ap') {
+    apPhotos[idx] = true
+    const s = document.getElementById(`apph-${idx}`)
+    if (s) s.classList.add('filled')
+  }
+  toast('Photo selected (simulated)','ok')
+}
+
+function closeModal(id) { document.getElementById(id).classList.remove('open') }
+function mbgClose(e, id) { if(e.target.id===id) closeModal(id) }
+function openAddPart() { goPage('inventory'); setTimeout(openAddModal,100) }
+
+function updateBadge() {
+  const n = enquiries.filter(e=>e.status==='new').length
+  document.getElementById('enq-badge').textContent = n
+}
+
+function toast(msg, type) {
+  const el = document.getElementById('toast-el')
+  const ico = type==='ok'?`<svg fill="none" viewBox="0 0 24 24"><path stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>`:
+              type==='err'?`<svg fill="none" viewBox="0 0 24 24"><path stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>`:
+              `<svg fill="none" viewBox="0 0 24 24"><path stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`
+  el.innerHTML = ico + msg
+  el.className = 'toast show' + (type?' '+type:'')
+  clearTimeout(el._t)
+  el._t = setTimeout(()=>el.classList.remove('show'), 2800)
+}
+
+// init
+goPage('dashboard')
+</script>
+</body>
+</html>
