@@ -544,8 +544,10 @@ body{min-height:100vh;display:flex;flex-direction:column;background:var(--bg)}
           </div>
         </div>
 
-        <button class="btn btn-orange btn-full" onclick="goStep(5)" style="margin-top:8px">Continue →</button>
-        <button class="btn btn-ghost btn-full" onclick="goStep(3)" style="margin-top:8px">← Back</button>
+<button class="btn btn-orange btn-full" onclick="saveVendor(); goStep(5)">
+  Continue →
+</button>
+         <button class="btn btn-ghost btn-full" onclick="goStep(3)" style="margin-top:8px">← Back</button>
       </div>
 
       <!-- ── STEP 5: DONE ── -->
@@ -697,6 +699,32 @@ async function verifyOTP() {
   }
 
   toast("Login success", "ok");
+}
+   async function saveVendor() {
+  const user = (await sb.auth.getUser()).data.user;
+
+  if (!user) {
+    toast("User not logged in", "err");
+    return;
+  }
+
+  const categories = Array.from(document.querySelectorAll('.cat-chip.sel'))
+    .map(el => el.dataset.cat);
+
+  const { error } = await sb.from('vendors').upsert({
+    id: user.id,
+    name: document.getElementById('biz-name').value,
+    phone: document.getElementById('phone-in').value,
+    district: document.getElementById('district').value,
+    part_categories: categories
+  });
+
+  if (error) {
+    toast("Error saving vendor", "err");
+    return;
+  }
+
+  toast("Vendor profile saved", "ok");
 }
 </script>
 </body>
