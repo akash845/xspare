@@ -581,7 +581,7 @@ footer p {
   <div class="logo">X<span>spare</span></div>
   <ul class="nav-links">
     <li><a href="#">How it works</a></li>
-    <li><a href="#">Vendor Login</a></li>
+    <a href="#" onclick="handleVendorLogin()">Vendor Login</a>
     <li><a href="#">Track enquiry</a></li>
     <li><a href="#find-parts" class="nav-cta">Find parts</a></li>
   </ul>
@@ -1223,6 +1223,19 @@ document.getElementById('track-result').innerHTML = `
     ${data.image_url ? `<img src="${data.image_url}" style="width:100%;margin-top:10px;border-radius:8px">` : ''}
   </div>
 `;
+</script>
+  <script>
+function handleVendorLogin() {
+  const vendor = localStorage.getItem("vendorLoggedIn");
+
+  if (vendor === "true") {
+    // Already logged in → go dashboard
+    window.location.href = "vendor-dashboard.html";
+  } else {
+    // Not registered → go register page
+    window.location.href = "vendor-register.html";
+  }
+}
 </script>
 </body>
 </html>
