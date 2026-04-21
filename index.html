@@ -8,23 +8,27 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  
+
+/* ── TOKENS ── */
 :root {
-  --orange: #F97316;
-  --orange-dark: #C2580A;
+  --orange:       #F97316;
+  --orange-dark:  #C2580A;
   --orange-light: #FFF0E6;
-  --navy: #0F172A;
-  --navy-2: #1E293B;
-  --navy-3: #334155;
-  --slate: #64748B;
-  --slate-light: #CBD5E1;
-  --white: #FFFFFF;
-  --cream: #FAFAF8;
-  --success: #16A34A;
-  --border: rgba(15,23,42,0.10);
+  --navy:         #0F172A;
+  --navy-2:       #1E293B;
+  --navy-3:       #334155;
+  --slate:        #64748B;
+  --slate-light:  #CBD5E1;
+  --white:        #FFFFFF;
+  --cream:        #FAFAF8;
+  --success:      #16A34A;
+  --success-bg:   #DCFCE7;
+  --red:          #DC2626;
+  --border:       rgba(15,23,42,0.10);
 }
-  
+
 * { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
 
 body {
   font-family: 'DM Sans', sans-serif;
@@ -34,7 +38,7 @@ body {
   overflow-x: hidden;
 }
 
-/* NAV */
+/* ── NAV ── */
 nav {
   display: flex;
   align-items: center;
@@ -46,19 +50,20 @@ nav {
   top: 0;
   z-index: 100;
 }
-
 .logo {
   font-family: 'Bebas Neue', cursive;
   font-size: 28px;
   color: var(--white);
   letter-spacing: 2px;
+  text-decoration: none;
+  cursor: pointer;
 }
 .logo span { color: var(--orange); }
-
 .nav-links {
   display: flex;
   gap: 28px;
   list-style: none;
+  align-items: center;
 }
 .nav-links a {
   color: var(--slate-light);
@@ -68,20 +73,18 @@ nav {
   transition: color .15s;
 }
 .nav-links a:hover { color: var(--white); }
-
 .nav-cta {
-  background: var(--orange);
+  background: var(--orange) !important;
   color: var(--white) !important;
-  padding: 8px 18px;
-  border-radius: 6px;
+  padding: 8px 18px !important;
+  border-radius: 6px !important;
   font-weight: 500 !important;
-  font-size: 14px;
-  text-decoration: none;
-  transition: background .15s;
+  font-size: 14px !important;
+  transition: background .15s !important;
 }
-.nav-cta:hover { background: var(--orange-dark) !important; color: var(--white) !important; }
+.nav-cta:hover { background: var(--orange-dark) !important; }
 
-/* HERO */
+/* ── HERO ── */
 .hero {
   background: var(--navy);
   padding: 72px 32px 80px;
@@ -89,24 +92,20 @@ nav {
   position: relative;
   overflow: hidden;
 }
-
 .hero::before {
   content: '';
-  position: absolute;
-  top: -60px; right: -60px;
+  position: absolute; top: -60px; right: -60px;
   width: 300px; height: 300px;
   background: radial-gradient(circle, rgba(249,115,22,0.15) 0%, transparent 70%);
   pointer-events: none;
 }
 .hero::after {
   content: '';
-  position: absolute;
-  bottom: -40px; left: -40px;
+  position: absolute; bottom: -40px; left: -40px;
   width: 200px; height: 200px;
   background: radial-gradient(circle, rgba(249,115,22,0.10) 0%, transparent 70%);
   pointer-events: none;
 }
-
 .hero-kicker {
   display: inline-block;
   font-family: 'DM Mono', monospace;
@@ -120,7 +119,6 @@ nav {
   border-radius: 99px;
   margin-bottom: 24px;
 }
-
 .hero h1 {
   font-family: 'Bebas Neue', cursive;
   font-size: clamp(48px, 8vw, 88px);
@@ -130,7 +128,6 @@ nav {
   margin-bottom: 20px;
 }
 .hero h1 span { color: var(--orange); }
-
 .hero-sub {
   font-size: 17px;
   color: var(--slate-light);
@@ -140,7 +137,7 @@ nav {
   font-weight: 300;
 }
 
-/* STATS BAR */
+/* ── STATS BAR ── */
 .stats-bar {
   display: flex;
   justify-content: center;
@@ -167,14 +164,12 @@ nav {
   letter-spacing: .06em;
 }
 
-/* MAIN LAYOUT */
+/* ── MAIN ── */
 .main {
   max-width: 960px;
   margin: 0 auto;
   padding: 56px 24px 80px;
 }
-
-/* SECTION HEADERS */
 .section-label {
   font-family: 'DM Mono', monospace;
   font-size: 11px;
@@ -191,7 +186,7 @@ nav {
   line-height: 1.2;
 }
 
-/* ENQUIRY FORM */
+/* ── FORM CARD ── */
 .form-card {
   background: var(--white);
   border: 1px solid var(--border);
@@ -199,7 +194,6 @@ nav {
   overflow: hidden;
   box-shadow: 0 4px 32px rgba(15,23,42,0.07);
 }
-
 .form-header {
   background: var(--navy);
   padding: 28px 36px;
@@ -221,12 +215,7 @@ nav {
   margin-top: 3px;
   font-weight: 300;
 }
-
-.step-indicators {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
+.step-indicators { display: flex; gap: 8px; align-items: center; }
 .step-dot {
   width: 28px; height: 28px;
   border-radius: 50%;
@@ -234,26 +223,21 @@ nav {
   font-size: 12px; font-weight: 600;
   transition: all .3s;
 }
-.step-dot.done { background: var(--success); color: var(--white); }
-.step-dot.active { background: var(--orange); color: var(--white); }
+.step-dot.done    { background: var(--success); color: var(--white); }
+.step-dot.active  { background: var(--orange);  color: var(--white); }
 .step-dot.pending { background: rgba(255,255,255,0.1); color: var(--slate); }
-.step-line {
-  width: 24px; height: 1px;
-  background: rgba(255,255,255,0.15);
-}
-
+.step-line { width: 24px; height: 1px; background: rgba(255,255,255,0.15); }
 .form-body { padding: 36px; }
 
-/* STEP PANELS */
+/* ── STEP PANELS ── */
 .step-panel { display: none; }
 .step-panel.active { display: block; animation: fadeSlide .3s ease; }
-
 @keyframes fadeSlide {
   from { opacity: 0; transform: translateX(12px); }
   to   { opacity: 1; transform: translateX(0); }
 }
 
-/* FORM ELEMENTS */
+/* ── FIELDS ── */
 .field-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -262,7 +246,6 @@ nav {
 }
 .field-row.single { grid-template-columns: 1fr; }
 .field-row.triple { grid-template-columns: 1fr 1fr 1fr; }
-
 .field { display: flex; flex-direction: column; gap: 6px; }
 .field label {
   font-size: 12px;
@@ -272,7 +255,6 @@ nav {
   letter-spacing: .06em;
   font-family: 'DM Mono', monospace;
 }
-
 .field select,
 .field input,
 .field textarea {
@@ -288,7 +270,13 @@ nav {
   appearance: none;
   -webkit-appearance: none;
 }
-.field select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2364748B' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; cursor: pointer; }
+.field select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2364748B' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+  cursor: pointer;
+}
 .field select:focus,
 .field input:focus,
 .field textarea:focus {
@@ -297,7 +285,7 @@ nav {
 }
 .field textarea { resize: vertical; min-height: 90px; }
 
-/* PART CHIPS */
+/* ── PART CHIPS ── */
 .parts-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
@@ -316,11 +304,12 @@ nav {
   background: var(--cream);
   color: var(--navy-3);
   user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
-.part-chip:hover { border-color: var(--orange); color: var(--orange); background: var(--orange-light); }
+.part-chip:hover   { border-color: var(--orange); color: var(--orange); background: var(--orange-light); }
 .part-chip.selected { border-color: var(--orange); background: var(--orange); color: var(--white); }
 
-/* BUTTONS */
+/* ── BUTTONS ── */
 .btn-primary {
   background: var(--orange);
   color: var(--white);
@@ -336,9 +325,9 @@ nav {
   align-items: center;
   gap: 8px;
 }
-.btn-primary:hover { background: var(--orange-dark); }
-.btn-primary:active { transform: scale(0.98); }
-
+.btn-primary:hover    { background: var(--orange-dark); }
+.btn-primary:active   { transform: scale(0.98); }
+.btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 .btn-ghost {
   background: transparent;
   color: var(--slate);
@@ -350,9 +339,10 @@ nav {
   font-family: 'DM Sans', sans-serif;
   cursor: pointer;
   transition: all .2s;
+  display: inline-flex;
+  align-items: center;
 }
 .btn-ghost:hover { border-color: var(--navy-3); color: var(--navy); }
-
 .btn-row {
   display: flex;
   align-items: center;
@@ -361,7 +351,7 @@ nav {
   flex-wrap: wrap;
 }
 
-/* CONFIRMATION */
+/* ── CONFIRM ── */
 .confirm-box {
   background: var(--cream);
   border: 1.5px solid var(--border);
@@ -382,14 +372,11 @@ nav {
 .confirm-key { color: var(--slate); font-weight: 400; flex-shrink: 0; }
 .confirm-val { color: var(--navy); font-weight: 500; text-align: right; }
 
-/* SUCCESS */
-.success-panel {
-  text-align: center;
-  padding: 20px 0;
-}
+/* ── SUCCESS ── */
+.success-panel { text-align: center; padding: 20px 0; }
 .success-icon {
   width: 72px; height: 72px;
-  background: #DCFCE7;
+  background: var(--success-bg);
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   margin: 0 auto 24px;
@@ -414,8 +401,212 @@ nav {
   margin: 0 auto 28px;
 }
 
-/* HOW IT WORKS */
-.how-section { margin-top: 72px; }
+/* ── UPLOAD ── */
+.upload-area {
+  border: 2px dashed var(--slate-light);
+  border-radius: 10px;
+  padding: 28px;
+  text-align: center;
+  cursor: pointer;
+  transition: all .2s;
+  background: var(--cream);
+  margin-bottom: 20px;
+}
+.upload-area:hover    { border-color: var(--orange); background: var(--orange-light); }
+.upload-area.has-photo { border-color: var(--success); border-style: solid; background: #F0FDF4; }
+.upload-icon { font-size: 28px; margin-bottom: 8px; }
+.upload-text { font-size: 14px; color: var(--slate); }
+.upload-text strong { color: var(--navy); }
+.upload-sub { font-size: 12px; color: var(--slate-light); margin-top: 4px; }
+
+/* ── NOTICE ── */
+.notice {
+  background: #FFF7ED;
+  border: 1px solid #FED7AA;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 13px;
+  color: #92400E;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+/* ── TRACK SECTION ── */
+.track-section {
+  margin-top: 56px;
+  scroll-margin-top: 80px;
+}
+.track-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 32px rgba(15,23,42,0.07);
+}
+.track-header {
+  background: var(--navy-2);
+  padding: 22px 32px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.track-header-icon {
+  width: 44px; height: 44px;
+  background: rgba(249,115,22,0.15);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.track-header-title {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 22px;
+  color: var(--white);
+  letter-spacing: 1px;
+}
+.track-header-sub { font-size: 12px; color: var(--slate); margin-top: 2px; }
+.track-body { padding: 28px 32px; }
+.track-input-row { display: flex; gap: 10px; align-items: stretch; }
+.track-input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 1.5px solid var(--slate-light);
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: 'DM Mono', monospace;
+  color: var(--navy);
+  background: var(--cream);
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+  letter-spacing: .03em;
+}
+.track-input::placeholder {
+  color: var(--slate-light);
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0;
+  font-size: 14px;
+}
+.track-input:focus {
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px rgba(249,115,22,0.1);
+}
+.track-btn {
+  background: var(--orange);
+  color: var(--white);
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: background .2s;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.track-btn:hover    { background: var(--orange-dark); }
+.track-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.track-result { margin-top: 20px; }
+.track-result-card {
+  background: var(--cream);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  animation: fadeSlide .3s ease;
+}
+.track-result-header {
+  padding: 16px 20px;
+  background: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.track-result-id {
+  font-family: 'DM Mono', monospace;
+  font-size: 14px;
+  color: var(--orange);
+  font-weight: 500;
+}
+.status-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 99px;
+}
+.status-badge.pending { background: rgba(249,115,22,0.15); color: var(--orange);  border: 1px solid rgba(249,115,22,0.3); }
+.status-badge.matched { background: rgba(22,163,74,0.12);  color: var(--success); border: 1px solid rgba(22,163,74,0.25); }
+.status-badge.closed  { background: rgba(100,116,139,0.12); color: var(--slate);  border: 1px solid rgba(100,116,139,0.25); }
+.track-result-body { padding: 20px; }
+.track-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.track-detail-item {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+.track-detail-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--slate);
+  margin-bottom: 4px;
+}
+.track-detail-value { font-size: 14px; font-weight: 600; color: var(--navy); }
+.track-result-photo {
+  width: 100%;
+  border-radius: 8px;
+  object-fit: cover;
+  max-height: 200px;
+  border: 1px solid var(--border);
+  display: block;
+}
+.track-error {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #991B1B;
+  animation: fadeSlide .3s ease;
+}
+.track-loading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  font-size: 14px;
+  color: var(--slate);
+}
+.spinner {
+  width: 16px; height: 16px;
+  border: 2px solid var(--slate-light);
+  border-top-color: var(--orange);
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+  flex-shrink: 0;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── HOW IT WORKS ── */
+.how-section { margin-top: 72px; scroll-margin-top: 80px; }
 .steps-row {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -427,7 +618,6 @@ nav {
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 24px 20px;
-  position: relative;
 }
 .step-num {
   font-family: 'Bebas Neue', cursive;
@@ -446,9 +636,9 @@ nav {
   opacity: 0.3;
 }
 .step-card h3 { font-size: 16px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
-.step-card p { font-size: 13px; color: var(--slate); line-height: 1.55; }
+.step-card p  { font-size: 13px; color: var(--slate); line-height: 1.55; }
 
-/* WHY XSPARE */
+/* ── WHY XSPARE ── */
 .why-section { margin-top: 72px; }
 .why-grid {
   display: grid;
@@ -474,9 +664,9 @@ nav {
   background: var(--orange-light);
 }
 .why-card h4 { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
-.why-card p { font-size: 13px; color: var(--slate); line-height: 1.5; }
+.why-card p  { font-size: 13px; color: var(--slate); line-height: 1.5; }
 
-/* FOOTER */
+/* ── FOOTER ── */
 footer {
   background: var(--navy);
   padding: 40px 32px;
@@ -490,11 +680,7 @@ footer {
   margin-bottom: 12px;
 }
 .footer-logo span { color: var(--orange); }
-footer p {
-  font-size: 13px;
-  color: var(--slate);
-  line-height: 1.6;
-}
+footer p { font-size: 13px; color: var(--slate); line-height: 1.6; }
 .footer-links {
   display: flex;
   gap: 24px;
@@ -518,86 +704,62 @@ footer p {
   font-family: 'DM Mono', monospace;
 }
 
-/* UPLOAD AREA */
-.upload-area {
-  border: 2px dashed var(--slate-light);
-  border-radius: 10px;
-  padding: 28px;
-  text-align: center;
-  cursor: pointer;
-  transition: all .2s;
-  background: var(--cream);
-}
-.upload-area:hover { border-color: var(--orange); background: var(--orange-light); }
-.upload-icon { font-size: 28px; margin-bottom: 8px; }
-.upload-text { font-size: 14px; color: var(--slate); }
-.upload-text strong { color: var(--navy); }
-.upload-sub { font-size: 12px; color: var(--slate-light); margin-top: 4px; }
-
-/* MOBILE */
-@media (max-width: 600px) {
+/* ── MOBILE ── */
+@media (max-width: 640px) {
   nav { padding: 0 16px; }
   .nav-links { display: none; }
   .hero { padding: 48px 16px 56px; }
   .hero h1 { font-size: 52px; }
-  .stats-bar { gap: 28px; padding: 20px 16px; }
-  .main { padding: 40px 16px 60px; }
-  .form-body { padding: 24px 20px; }
-  .form-header { padding: 22px 20px; }
-  .field-row { grid-template-columns: 1fr; }
-  .field-row.triple { grid-template-columns: 1fr 1fr; }
+  .stats-bar { gap: 20px; padding: 20px 16px; }
+  .stat-val { font-size: 26px; }
+  .main { padding: 32px 16px 60px; }
+  .form-body  { padding: 20px 16px; }
+  .form-header { padding: 20px 16px; }
+  .field-row,
+  .field-row.triple { grid-template-columns: 1fr !important; }
+  .parts-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
+  .part-chip  { padding: 9px 10px; font-size: 12px; }
+  .btn-row { flex-direction: column; align-items: stretch; }
+  .btn-primary,
+  .btn-ghost { justify-content: center; width: 100%; }
+  .confirm-row { flex-direction: column; gap: 2px; }
+  .confirm-val { text-align: left; }
   .why-grid { grid-template-columns: 1fr; }
   .steps-row { grid-template-columns: 1fr 1fr; }
-}
-
-.tag {
-  display: inline-block;
-  background: var(--orange-light);
-  color: var(--orange-dark);
-  padding: 3px 9px;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: 500;
-  font-family: 'DM Mono', monospace;
-}
-
-.notice {
-  background: #FFF7ED;
-  border: 1px solid #FED7AA;
-  border-radius: 8px;
-  padding: 12px 14px;
-  font-size: 13px;
-  color: #92400E;
-  display: flex;
-  gap: 10px;
-  align-items: flex-start;
-  margin-bottom: 20px;
+  .track-body  { padding: 20px 16px; }
+  .track-input-row { flex-direction: column; }
+  .track-btn   { justify-content: center; }
+  .track-detail-grid { grid-template-columns: 1fr; }
+  footer { padding: 32px 16px; }
+  .footer-links { gap: 16px; }
 }
 </style>
- 
 </head>
 <body>
 
+<!-- ── NAV ── -->
 <nav>
   <div class="logo">X<span>spare</span></div>
   <ul class="nav-links">
-    <li><a href="#">How it works</a></li>
-    <a href="#" onclick="handleVendorLogin()">Vendor Login</a>
-    <li><a href="#">Track enquiry</a></li>
+    <li><a href="#how-it-works">How it works</a></li>
+    <li><a href="#" onclick="handleVendorLogin(); return false;">Vendor Login</a></li>
+    <li><a href="#track-enquiry">Track enquiry</a></li>
     <li><a href="#find-parts" class="nav-cta">Find parts</a></li>
   </ul>
 </nav>
 
+<!-- ── HERO ── -->
 <section class="hero">
   <div class="hero-kicker">Kerala's used auto parts network</div>
   <h1>Find any <span>spare part</span><br>in Kerala</h1>
   <p class="hero-sub">Submit one enquiry. Get quotes from multiple verified salvage vendors near you. No classifieds. No phone calls to strangers.</p>
-  <a href="#find-parts" class="btn-primary" style="font-size:16px;padding:16px 36px">
+  <a href="#find-parts" class="btn-primary" style="font-size:16px;padding:16px 36px;display:inline-flex">
     Start enquiry
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </a>
 </section>
 
+<!-- ── STATS BAR ── -->
 <div class="stats-bar">
   <div class="stat"><div class="stat-val">200+</div><div class="stat-label">Verified vendors</div></div>
   <div class="stat"><div class="stat-val">2 Hrs</div><div class="stat-label">Avg response time</div></div>
@@ -605,6 +767,7 @@ footer p {
   <div class="stat"><div class="stat-val">A/B/C</div><div class="stat-label">Graded parts</div></div>
 </div>
 
+<!-- ── MAIN ── -->
 <div class="main">
 
   <!-- ENQUIRY FORM -->
@@ -619,7 +782,7 @@ footer p {
           <div class="form-header-sub">Free to submit — no account required</div>
         </div>
         <div class="step-indicators">
-          <div class="step-dot active" id="dot-1">1</div>
+          <div class="step-dot active"  id="dot-1">1</div>
           <div class="step-line"></div>
           <div class="step-dot pending" id="dot-2">2</div>
           <div class="step-line"></div>
@@ -631,7 +794,7 @@ footer p {
 
       <div class="form-body">
 
-        <!-- STEP 1: Vehicle -->
+        <!-- STEP 1 -->
         <div class="step-panel active" id="step-1">
           <div class="section-label" style="margin-bottom:20px">Step 1 of 4 — Vehicle details</div>
           <div class="field-row triple">
@@ -691,68 +854,76 @@ footer p {
             </div>
           </div>
           <div class="btn-row">
-            <button class="btn-primary" onclick="goStep(2)">Next: Select part →</button>
+            <button class="btn-primary" onclick="goStep(2)">
+              Next: Select part
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
           </div>
         </div>
 
-        <!-- STEP 2: Part -->
+        <!-- STEP 2 -->
         <div class="step-panel" id="step-2">
           <div class="section-label" style="margin-bottom:4px">Step 2 of 4 — Part needed</div>
-          <p style="font-size:13px;color:var(--slate);margin-bottom:20px">Select part category or type the exact part name below</p>
+          <p style="font-size:13px;color:var(--slate);margin-bottom:20px">Tap a category or type the exact part name below</p>
 
           <div class="parts-grid" id="parts-grid">
-            <div class="part-chip" onclick="selectPart(this,'Engine')">Engine</div>
-            <div class="part-chip" onclick="selectPart(this,'Gearbox')">Gearbox</div>
-            <div class="part-chip" onclick="selectPart(this,'Bumper (front)')">Bumper (front)</div>
-            <div class="part-chip" onclick="selectPart(this,'Bumper (rear)')">Bumper (rear)</div>
-            <div class="part-chip" onclick="selectPart(this,'Door panel')">Door panel</div>
-            <div class="part-chip" onclick="selectPart(this,'Bonnet / Hood')">Bonnet / Hood</div>
-            <div class="part-chip" onclick="selectPart(this,'Headlight')">Headlight</div>
-            <div class="part-chip" onclick="selectPart(this,'Taillight')">Taillight</div>
-            <div class="part-chip" onclick="selectPart(this,'Radiator')">Radiator</div>
-            <div class="part-chip" onclick="selectPart(this,'Alternator')">Alternator</div>
-            <div class="part-chip" onclick="selectPart(this,'AC compressor')">AC compressor</div>
-            <div class="part-chip" onclick="selectPart(this,'Starter motor')">Starter motor</div>
-            <div class="part-chip" onclick="selectPart(this,'Suspension arm')">Suspension arm</div>
-            <div class="part-chip" onclick="selectPart(this,'Axle shaft')">Axle shaft</div>
-            <div class="part-chip" onclick="selectPart(this,'Steering rack')">Steering rack</div>
-            <div class="part-chip" onclick="selectPart(this,'Fuel pump')">Fuel pump</div>
-            <div class="part-chip" onclick="selectPart(this,'Catalytic converter')">Cat converter</div>
-            <div class="part-chip" onclick="selectPart(this,'Dashboard')">Dashboard</div>
-            <div class="part-chip" onclick="selectPart(this,'Seat assembly')">Seat assembly</div>
-            <div class="part-chip" onclick="selectPart(this,'Wheel rim')">Wheel rim</div>
+            <div class="part-chip" data-part="Engine">Engine</div>
+            <div class="part-chip" data-part="Gearbox">Gearbox</div>
+            <div class="part-chip" data-part="Bumper (front)">Bumper (front)</div>
+            <div class="part-chip" data-part="Bumper (rear)">Bumper (rear)</div>
+            <div class="part-chip" data-part="Door panel">Door panel</div>
+            <div class="part-chip" data-part="Bonnet / Hood">Bonnet / Hood</div>
+            <div class="part-chip" data-part="Headlight">Headlight</div>
+            <div class="part-chip" data-part="Taillight">Taillight</div>
+            <div class="part-chip" data-part="Radiator">Radiator</div>
+            <div class="part-chip" data-part="Alternator">Alternator</div>
+            <div class="part-chip" data-part="AC compressor">AC compressor</div>
+            <div class="part-chip" data-part="Starter motor">Starter motor</div>
+            <div class="part-chip" data-part="Suspension arm">Suspension arm</div>
+            <div class="part-chip" data-part="Axle shaft">Axle shaft</div>
+            <div class="part-chip" data-part="Steering rack">Steering rack</div>
+            <div class="part-chip" data-part="Fuel pump">Fuel pump</div>
+            <div class="part-chip" data-part="Catalytic converter">Cat converter</div>
+            <div class="part-chip" data-part="Dashboard">Dashboard</div>
+            <div class="part-chip" data-part="Seat assembly">Seat assembly</div>
+            <div class="part-chip" data-part="Wheel rim">Wheel rim</div>
           </div>
 
           <div class="field" style="margin-bottom:16px">
             <label>Or type exact part name</label>
-            <input type="text" id="part-custom" placeholder="e.g. Left front door hinge, EGR valve...">
+            <input type="text" id="part-custom" placeholder="e.g. Left front door hinge, EGR valve..." oninput="onCustomPartInput()">
           </div>
-
           <div class="field" style="margin-bottom:0">
             <label>Additional notes (optional)</label>
             <textarea id="part-notes" placeholder="Any specific condition, colour, or details that help vendors match better..."></textarea>
           </div>
 
           <div class="btn-row">
-            <button class="btn-primary" onclick="goStep(3)">Next: Upload photo →</button>
-            <button class="btn-ghost" onclick="goStep(1)">← Back</button>
+            <button class="btn-primary" onclick="goStep(3)">
+              Next: Upload photo
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button class="btn-ghost" onclick="goStep(1)">&#8592; Back</button>
           </div>
         </div>
 
-        <!-- STEP 3: Photo + Contact -->
+        <!-- STEP 3 -->
         <div class="step-panel" id="step-3">
-          <div class="section-label" style="margin-bottom:20px">Step 3 of 4 — Photo & Contact</div>
+          <div class="section-label" style="margin-bottom:20px">Step 3 of 4 — Photo &amp; Contact</div>
 
           <div class="notice">
-            <span>💡</span>
-            <span>A photo of the damaged part or your vehicle helps vendors confirm fitment. Enquiries with photos get 2x faster responses.</span>
+            <span>&#128161;</span>
+            <span>A photo of the damaged part or your vehicle helps vendors confirm fitment. Enquiries with photos get 2&#215; faster responses.</span>
           </div>
 
-          <div class="upload-area" onclick="document.getElementById('photo-input').click()" style="margin-bottom:20px" id="upload-area">
+          <!-- The file input lives permanently inside this area — we never destroy it -->
+          <div class="upload-area" id="upload-area" onclick="document.getElementById('photo-input').click()">
             <input type="file" id="photo-input" accept="image/*" style="display:none" onchange="handlePhoto(this)">
-            <div class="upload-icon">📷</div>
-            <div class="upload-text"><strong>Upload photo</strong> or tap to browse</div>
-            <div class="upload-sub">JPG, PNG — max 10MB</div>
+            <div id="upload-inner">
+              <div class="upload-icon">&#128247;</div>
+              <div class="upload-text"><strong>Upload photo</strong> or tap to browse</div>
+              <div class="upload-sub">JPG, PNG — max 10MB</div>
+            </div>
           </div>
 
           <div class="field-row">
@@ -800,48 +971,30 @@ footer p {
           </div>
 
           <div class="btn-row">
-            <button class="btn-primary" onclick="goStep(4)">Review enquiry →</button>
-            <button class="btn-ghost" onclick="goStep(2)">← Back</button>
+            <button class="btn-primary" onclick="goStep(4)">
+              Review enquiry
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button class="btn-ghost" onclick="goStep(2)">&#8592; Back</button>
           </div>
         </div>
 
-        <!-- STEP 4: Review + Submit -->
+        <!-- STEP 4 -->
         <div class="step-panel" id="step-4">
-          <div class="section-label" style="margin-bottom:20px">Step 4 of 4 — Review & submit</div>
+          <div class="section-label" style="margin-bottom:20px">Step 4 of 4 — Review &amp; submit</div>
 
           <div class="confirm-box">
-            <div class="confirm-row">
-              <span class="confirm-key">Vehicle</span>
-              <span class="confirm-val" id="rev-vehicle">—</span>
-            </div>
-            <div class="confirm-row">
-              <span class="confirm-key">Part needed</span>
-              <span class="confirm-val" id="rev-part">—</span>
-            </div>
-            <div class="confirm-row">
-              <span class="confirm-key">Notes</span>
-              <span class="confirm-val" id="rev-notes" style="font-style:italic;color:var(--slate)">None</span>
-            </div>
-            <div class="confirm-row">
-              <span class="confirm-key">Your name</span>
-              <span class="confirm-val" id="rev-name">—</span>
-            </div>
-            <div class="confirm-row">
-              <span class="confirm-key">Mobile</span>
-              <span class="confirm-val" id="rev-phone">—</span>
-            </div>
-            <div class="confirm-row">
-              <span class="confirm-key">Location</span>
-              <span class="confirm-val" id="rev-district">—</span>
-            </div>
-            <div class="confirm-row">
-              <span class="confirm-key">Photo attached</span>
-              <span class="confirm-val" id="rev-photo">No</span>
-            </div>
+            <div class="confirm-row"><span class="confirm-key">Vehicle</span><span class="confirm-val" id="rev-vehicle">&#8212;</span></div>
+            <div class="confirm-row"><span class="confirm-key">Part needed</span><span class="confirm-val" id="rev-part">&#8212;</span></div>
+            <div class="confirm-row"><span class="confirm-key">Notes</span><span class="confirm-val" id="rev-notes" style="font-style:italic;color:var(--slate)">None</span></div>
+            <div class="confirm-row"><span class="confirm-key">Your name</span><span class="confirm-val" id="rev-name">&#8212;</span></div>
+            <div class="confirm-row"><span class="confirm-key">Mobile</span><span class="confirm-val" id="rev-phone">&#8212;</span></div>
+            <div class="confirm-row"><span class="confirm-key">Location</span><span class="confirm-val" id="rev-district">&#8212;</span></div>
+            <div class="confirm-row"><span class="confirm-key">Photo attached</span><span class="confirm-val" id="rev-photo">No</span></div>
           </div>
 
           <p style="font-size:13px;color:var(--slate);margin-bottom:20px;line-height:1.6">
-            By submitting you agree to our <a href="#" style="color:var(--orange)">Terms & Conditions</a> and <a href="#" style="color:var(--orange)">Privacy Policy</a>. Your details are shared only with matched vendors.
+            By submitting you agree to our <a href="#" style="color:var(--orange)">Terms &amp; Conditions</a> and <a href="#" style="color:var(--orange)">Privacy Policy</a>. Your details are shared only with matched vendors.
           </p>
 
           <div class="btn-row">
@@ -849,66 +1002,63 @@ footer p {
               Submit enquiry
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
-            <button class="btn-ghost" onclick="goStep(3)">← Back</button>
+            <button class="btn-ghost" onclick="goStep(3)">&#8592; Back</button>
           </div>
         </div>
 
         <!-- SUCCESS -->
         <div class="step-panel" id="step-success">
           <div class="success-panel">
-            <div class="success-icon">✓</div>
+            <div class="success-icon">&#10003;</div>
             <h2 style="font-size:24px;font-weight:600;color:var(--navy)">Enquiry submitted!</h2>
             <div class="success-id" id="enquiry-id">XSP-000000</div>
-            <p class="success-sub">Your enquiry has been sent to matched vendors in your area. You'll receive quotes on WhatsApp and SMS within 1–2 hours.</p>
+            <p class="success-sub">Your enquiry has been sent to matched vendors in your area. You'll receive quotes on WhatsApp and SMS within 1&#8211;2 hours.</p>
             <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
               <button class="btn-primary" onclick="resetForm()">New enquiry</button>
-<button class="btn-ghost" onclick="scrollToTrack()">Track this enquiry</button>
+              <button class="btn-ghost" onclick="scrollToTrack()">Track this enquiry</button>
             </div>
           </div>
         </div>
 
-      </div>
-    </div>
-  </div>
-<!-- TRACK ENQUIRY -->
-<!-- TRACK ENQUIRY -->
-<div class="track-section" id="track-enquiry">
-  <div class="section-label">Enquiry status</div>
-  <div class="section-title">Track your enquiry</div>
+      </div><!-- /form-body -->
+    </div><!-- /form-card -->
+  </div><!-- /#find-parts -->
 
-  <div class="track-card">
-    <div class="track-header">
-      <div class="track-header-icon">🔍</div>
-      <div>
-        <div class="track-header-title">Enquiry Tracker</div>
-        <div class="track-header-sub">
-          Enter your ID to see status and vendor responses
+  <!-- ── TRACK ENQUIRY ── -->
+  <div class="track-section" id="track-enquiry">
+    <div class="section-label">Enquiry status</div>
+    <div class="section-title">Track your enquiry</div>
+
+    <div class="track-card">
+      <div class="track-header">
+        <div class="track-header-icon">&#128269;</div>
+        <div>
+          <div class="track-header-title">Enquiry Tracker</div>
+          <div class="track-header-sub">Enter your ID to see status and vendor responses</div>
         </div>
       </div>
-    </div>
-
-    <div class="track-body">
-      <div class="track-input-row">
-        <input
-          type="text"
-          id="track-id"
-          class="track-input"
-          placeholder="Enter enquiry ID e.g. XSP-1234567890"
-          onkeydown="if(event.key==='Enter') trackEnquiry()"
-        >
-        <button class="track-btn" onclick="trackEnquiry()">
-          → Track
-        </button>
+      <div class="track-body">
+        <div class="track-input-row">
+          <input
+            type="text"
+            id="track-id"
+            class="track-input"
+            placeholder="Enter enquiry ID  e.g. XSP-1234567890"
+            onkeydown="if(event.key==='Enter') trackEnquiry()"
+          >
+          <button class="track-btn" id="track-btn" onclick="trackEnquiry()">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1.5 7.5h12M9 3l4.5 4.5L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Track
+          </button>
+        </div>
+        <!-- single track-result div — no duplicate -->
+        <div class="track-result" id="track-result"></div>
       </div>
-
-      <div class="track-result" id="track-result"></div>
     </div>
   </div>
-</div>
 
-<div id="track-result" style="margin-top:20px;"></div>
-  <!-- HOW IT WORKS -->
-  <div class="how-section">
+  <!-- ── HOW IT WORKS ── -->
+  <div class="how-section" id="how-it-works">
     <div class="section-label">Process</div>
     <div class="section-title">How Xspare works</div>
     <div class="steps-row">
@@ -929,392 +1079,360 @@ footer p {
       </div>
       <div class="step-card">
         <div class="step-num" data-n="04">04</div>
-        <h3>Choose & collect</h3>
+        <h3>Choose &amp; collect</h3>
         <p>Pick the best quote. Pay securely and arrange pickup or delivery from the vendor.</p>
       </div>
     </div>
   </div>
 
-  <!-- WHY XSPARE -->
+  <!-- ── WHY XSPARE ── -->
   <div class="why-section">
     <div class="section-label">Why Xspare</div>
     <div class="section-title">Not your typical classifieds</div>
     <div class="why-grid">
       <div class="why-card">
-        <div class="why-icon">🔍</div>
-        <div>
-          <h4>One enquiry, multiple quotes</h4>
-          <p>Instead of calling 10 shops, submit once and let vendors compete for your business.</p>
-        </div>
+        <div class="why-icon">&#128269;</div>
+        <div><h4>One enquiry, multiple quotes</h4><p>Instead of calling 10 shops, submit once and let vendors compete for your business.</p></div>
       </div>
       <div class="why-card">
-        <div class="why-icon">✅</div>
-        <div>
-          <h4>Graded parts — A, B, C</h4>
-          <p>Every part is graded on condition with photos. Know what you're getting before you pay.</p>
-        </div>
+        <div class="why-icon">&#9989;</div>
+        <div><h4>Graded parts &#8212; A, B, C</h4><p>Every part is graded on condition with photos. Know what you're getting before you pay.</p></div>
       </div>
       <div class="why-card">
-        <div class="why-icon">📍</div>
-        <div>
-          <h4>Kerala-focused network</h4>
-          <p>Vendors across all 14 districts. We know the local salvage market — OLX doesn't.</p>
-        </div>
+        <div class="why-icon">&#128205;</div>
+        <div><h4>Kerala-focused network</h4><p>Vendors across all 14 districts. We know the local salvage market &#8212; OLX doesn't.</p></div>
       </div>
       <div class="why-card">
-        <div class="why-icon">💬</div>
-        <div>
-          <h4>WhatsApp-native flow</h4>
-          <p>No app to download. Quotes come to you on WhatsApp the way you already communicate.</p>
-        </div>
+        <div class="why-icon">&#128172;</div>
+        <div><h4>WhatsApp-native flow</h4><p>No app to download. Quotes come to you on WhatsApp the way you already communicate.</p></div>
       </div>
     </div>
   </div>
 
-</div>
+</div><!-- /main -->
 
+<!-- ── FOOTER ── -->
 <footer>
   <div class="footer-logo">X<span>spare</span></div>
-  <p>Kerala's used auto parts sourcing platform.<br>Thrissur, Kerala — serving all 14 districts.</p>
+  <p>Kerala's used auto parts sourcing platform.<br>Thrissur, Kerala &#8212; serving all 14 districts.</p>
   <div class="footer-links">
-    <a href="#">How it works</a>
-     <a href="#" onclick="handleVendorLogin()">Vendor Login</a>
-    <a href="#">Track enquiry</a>
+    <a href="#how-it-works">How it works</a>
+    <a href="#" onclick="handleVendorLogin(); return false;">For vendors</a>
+    <a href="#track-enquiry">Track enquiry</a>
     <a href="#">Privacy policy</a>
     <a href="#">Terms</a>
     <a href="#">Contact</a>
   </div>
-  <div class="footer-copy">© 2026 Xspare Technologies Pvt. Ltd. · Made in Kerala 🌴</div>
+  <div class="footer-copy">&#169; 2026 Xspare Technologies Pvt. Ltd. &#183; Made in Kerala &#127796;</div>
 </footer>
+
+<!-- ════════════════════════════════════════
+     ONE script block. Zero duplicates.
+     ════════════════════════════════════════ -->
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-  <script>
-    window.onerror = function(msg) {
-  alert("JS Error: " + msg);
-};
-  const supabaseUrl = "https://cxxxstxmfgcznsvuuloh.supabase.co";
-const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4eHhzdHhtZmdjem5zdnV1bG9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTcxOTgsImV4cCI6MjA5MTk5MzE5OH0.58KX8QoJ8sYF5JW-_o8WqtCr4skG5OK60v6sTm_3ir4";
-const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
-  const models = {
+<script>
+
+/* ── SUPABASE ── */
+var supabaseUrl = "https://cxxxstxmfgcznsvuuloh.supabase.co";
+var supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4eHhzdHhtZmdjem5zdnV1bG9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTcxOTgsImV4cCI6MjA5MTk5MzE5OH0.58KX8QoJ8sYF5JW-_o8WqtCr4skG5OK60v6sTm_3ir4";
+var supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+/* ── MODEL DATA — declared ONCE ── */
+var MODELS = {
   'Maruti Suzuki': ['Alto','Alto K10','Swift','Baleno','Dzire','WagonR','Ertiga','Brezza','Ciaz','Ignis','Celerio','S-Presso','Grand Vitara','Jimny'],
-  'Hyundai': ['i10','i20','Creta','Venue','Verna','Xcent','Aura','Santro','Tucson','Alcazar'],
-  'Tata': ['Nexon','Harrier','Safari','Punch','Tiago','Tigor','Altroz','Nano'],
-  'Honda': ['City','Amaze','Jazz','WR-V','Elevate','CR-V'],
-  'Toyota': ['Innova Crysta','Fortuner','Glanza','Urban Cruiser','Camry','Yaris'],
-  'Mahindra': ['Scorpio','Bolero','XUV700','XUV300','Thar','KUV100','Marazzo'],
-  'Ford': ['Figo','EcoSport','Endeavour','Aspire','Freestyle'],
-  'Volkswagen': ['Polo','Vento','Taigun','Virtus'],
-  'Renault': ['Kwid','Triber','Kiger','Duster'],
-  'Kia': ['Seltos','Sonet','Carens','EV6'],
-  'MG': ['Hector','Astor','Gloster','ZS EV'],
-  'Bajaj': ['Pulsar 150','Pulsar 200','Dominar','Avenger','Platina','CT100'],
-  'Hero': ['Splendor','HF Deluxe','Passion','Glamour','Xpulse','Destini'],
-  'TVS': ['Apache','Jupiter','Ntorq','Star City','Radeon'],
+  'Hyundai':       ['i10','i20','Creta','Venue','Verna','Xcent','Aura','Santro','Tucson','Alcazar'],
+  'Tata':          ['Nexon','Harrier','Safari','Punch','Tiago','Tigor','Altroz','Nano'],
+  'Honda':         ['City','Amaze','Jazz','WR-V','Elevate','CR-V'],
+  'Toyota':        ['Innova Crysta','Fortuner','Glanza','Urban Cruiser','Camry','Yaris'],
+  'Mahindra':      ['Scorpio','Bolero','XUV700','XUV300','Thar','KUV100','Marazzo'],
+  'Ford':          ['Figo','EcoSport','Endeavour','Aspire','Freestyle'],
+  'Volkswagen':    ['Polo','Vento','Taigun','Virtus'],
+  'Renault':       ['Kwid','Triber','Kiger','Duster'],
+  'Kia':           ['Seltos','Sonet','Carens','EV6'],
+  'MG':            ['Hector','Astor','Gloster','ZS EV'],
+  'Bajaj':         ['Pulsar 150','Pulsar 200','Dominar','Avenger','Platina','CT100'],
+  'Hero':          ['Splendor','HF Deluxe','Passion','Glamour','Xpulse','Destini'],
+  'TVS':           ['Apache','Jupiter','Ntorq','Star City','Radeon'],
   'Royal Enfield': ['Classic 350','Bullet 350','Meteor 350','Hunter 350','Himalayan','Thunderbird'],
-  'Other': ['Other / Not listed']
+  'Other':         ['Other / Not listed']
 };
 
-let selectedPart = '';
-let photoAttached = false;
-    let selectedFile = null;
+/* ── STATE ── */
+var selectedPart  = '';
+var selectedFile  = null;
+var photoAttached = false;
 
-function updateModels() {
-  const make = document.getElementById('make').value;
-  const modelSel = document.getElementById('model');
+/* ── INIT ── */
+document.addEventListener('DOMContentLoaded', function() {
+  loadYears();
+  attachChipListeners();
+});
 
-  modelSel.innerHTML = '<option value="">Select model</option>';
-
-  if (!make) {
-    modelSel.innerHTML = '<option value="">Select make first</option>';
-    return;
-  }
-
-  if (models[make]) {
-    models[make].forEach(m => {
-      const opt = document.createElement('option');
-      opt.value = m;
-      opt.textContent = m;
-      modelSel.appendChild(opt);
-    });
-  }
-
-  updateYears(); // keep this
-}
-  // 🔥 ADD THIS LINE
-  updateYears();
-
-function updateYears() {
-  const yearSel = document.getElementById('year');
-  yearSel.innerHTML = '<option value="">Year</option>';
-
-  const now = new Date().getFullYear();
-
-  for (let y = now; y >= 1995; y--) {
-    const opt = document.createElement('option');
+/* ── YEARS ── */
+function loadYears() {
+  var sel = document.getElementById('year');
+  sel.innerHTML = '<option value="">Year</option>';
+  var now = new Date().getFullYear();
+  for (var y = now; y >= 1995; y--) {
+    var opt = document.createElement('option');
     opt.value = y;
     opt.textContent = y;
-    yearSel.appendChild(opt);
+    sel.appendChild(opt);
   }
 }
 
-// IMPORTANT
-updateYears();
-
-function selectPart(el, name) {
-  document.querySelectorAll('.part-chip').forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
-  selectedPart = name;
-  document.getElementById('part-custom').value = '';
+/* ── MAKE → MODEL ── */
+function updateModels() {
+  var make = document.getElementById('make').value;
+  var sel  = document.getElementById('model');
+  sel.innerHTML = '<option value="">Select model</option>';
+  if (!make || !MODELS[make]) {
+    sel.innerHTML = '<option value="">Select make first</option>';
+    return;
+  }
+  MODELS[make].forEach(function(m) {
+    var opt = document.createElement('option');
+    opt.value = m;
+    opt.textContent = m;
+    sel.appendChild(opt);
+  });
 }
 
+/* ── CHIPS — event delegation, not inline onclick ── */
+function attachChipListeners() {
+  document.getElementById('parts-grid').addEventListener('click', function(e) {
+    var chip = e.target.closest('.part-chip');
+    if (!chip) return;
+    document.querySelectorAll('.part-chip').forEach(function(c) { c.classList.remove('selected'); });
+    chip.classList.add('selected');
+    selectedPart = chip.dataset.part;
+    document.getElementById('part-custom').value = '';
+  });
+}
+
+function onCustomPartInput() {
+  if (document.getElementById('part-custom').value.trim()) {
+    document.querySelectorAll('.part-chip').forEach(function(c) { c.classList.remove('selected'); });
+    selectedPart = '';
+  }
+}
+
+/* ── PHOTO ── */
 function handlePhoto(input) {
-  if (input.files && input.files[0]) {
-    selectedFile = input.files[0]; // ✅ ADD THIS
-    photoAttached = true;
-
-    const area = document.getElementById('upload-area');
-    area.style.borderColor = 'var(--success)';
-    area.style.background = '#F0FDF4';
-    area.innerHTML = `
-      <div style="font-size:28px;margin-bottom:8px">✓</div>
-      <div class="upload-text"><strong>${selectedFile.name}</strong></div>
-      <div class="upload-sub" style="color:var(--success)">Photo attached</div>
-    `;
-  }
+  if (!input.files || !input.files[0]) return;
+  selectedFile  = input.files[0];
+  photoAttached = true;
+  var area  = document.getElementById('upload-area');
+  var inner = document.getElementById('upload-inner');
+  area.classList.add('has-photo');
+  inner.innerHTML =
+    '<div style="font-size:28px;margin-bottom:8px">&#9989;</div>' +
+    '<div class="upload-text"><strong>' + selectedFile.name + '</strong></div>' +
+    '<div class="upload-sub" style="color:var(--success)">Photo attached &#183; tap to change</div>';
 }
+
+/* ── STEP NAV ── */
 function goStep(n) {
-  document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.step-panel').forEach(function(p) { p.classList.remove('active'); });
   document.getElementById('step-' + n).classList.add('active');
-  ['dot-1','dot-2','dot-3','dot-4'].forEach((id, i) => {
-    const dot = document.getElementById(id);
+  ['dot-1','dot-2','dot-3','dot-4'].forEach(function(id, i) {
+    var dot = document.getElementById(id);
     dot.className = 'step-dot';
-    if (i + 1 < n) dot.classList.add('done');
+    if      (i + 1 < n)  dot.classList.add('done');
     else if (i + 1 === n) dot.classList.add('active');
-    else dot.classList.add('pending');
+    else                  dot.classList.add('pending');
   });
   if (n === 4) populateReview();
-  document.querySelector('.form-card').scrollIntoView({behavior:'smooth', block:'start'});
+  document.querySelector('.form-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
+/* ── REVIEW ── */
 function populateReview() {
-  const make = document.getElementById('make').value;
-  const model = document.getElementById('model').value;
-  const year = document.getElementById('year').value;
-  const variant = document.getElementById('variant').value;
-  document.getElementById('rev-vehicle').textContent = [make, model, year, variant].filter(Boolean).join(' ') || '—';
-
-  const part = selectedPart || document.getElementById('part-custom').value;
-  document.getElementById('rev-part').textContent = part || '—';
-
-  const notes = document.getElementById('part-notes').value;
-  document.getElementById('rev-notes').textContent = notes || 'None';
-
-  document.getElementById('rev-name').textContent = document.getElementById('cust-name').value || '—';
-  document.getElementById('rev-phone').textContent = document.getElementById('cust-phone').value || '—';
+  var make    = document.getElementById('make').value;
+  var model   = document.getElementById('model').value;
+  var year    = document.getElementById('year').value;
+  var variant = document.getElementById('variant').value;
+  document.getElementById('rev-vehicle').textContent  = [make, model, year, variant].filter(Boolean).join(' ') || '—';
+  var part = selectedPart || document.getElementById('part-custom').value.trim();
+  document.getElementById('rev-part').textContent     = part || '—';
+  document.getElementById('rev-notes').textContent    = document.getElementById('part-notes').value || 'None';
+  document.getElementById('rev-name').textContent     = document.getElementById('cust-name').value || '—';
+  document.getElementById('rev-phone').textContent    = document.getElementById('cust-phone').value || '—';
   document.getElementById('rev-district').textContent = document.getElementById('cust-district').value || '—';
+  document.getElementById('rev-photo').textContent    = photoAttached ? 'Yes ✓' : 'No';
 }
 
+/* ── SUBMIT ── */
 async function submitEnquiry() {
-  const btn = document.getElementById('submit-btn');
-  const enquiryId = 'XSP-' + Date.now();
+  var btn = document.getElementById('submit-btn');
+  btn.disabled    = true;
+  btn.textContent = 'Submitting…';
 
-  btn.textContent = 'Submitting...';
-  btn.disabled = true;
-
-  let imageUrl = null;
+  var enquiryId = 'XSP-' + Date.now();
+  var imageUrl  = null;
 
   if (selectedFile) {
-    const fileName = `enquiry-${Date.now()}-${selectedFile.name}`;
-
-    const { error: uploadError } = await supabaseClient.storage
+    var fileName = 'enquiry-' + Date.now() + '-' + selectedFile.name;
+    var uploadResult = await supabaseClient.storage
       .from('enquiry-images')
       .upload(fileName, selectedFile);
 
-    if (uploadError) {
-      alert(uploadError.message);
-      btn.disabled = false;
+    if (uploadResult.error) {
+      alert('Photo upload failed: ' + uploadResult.error.message);
+      btn.disabled    = false;
+      btn.textContent = 'Submit enquiry';
       return;
     }
-
-    const { data: publicUrlData } = supabaseClient.storage
-      .from('enquiry-images')
-      .getPublicUrl(fileName);
-
-    imageUrl = publicUrlData.publicUrl;
+    var urlResult = supabaseClient.storage.from('enquiry-images').getPublicUrl(fileName);
+    imageUrl = urlResult.data.publicUrl;
   }
 
-  const data = {
+  var payload = {
     enquiry_id: enquiryId,
-    make: document.getElementById('make').value,
-    model: document.getElementById('model').value,
-    year: document.getElementById('year').value,
-    variant: document.getElementById('variant').value,
-    part: selectedPart || document.getElementById('part-custom').value,
-    notes: document.getElementById('part-notes').value,
-    name: document.getElementById('cust-name').value,
-    phone: document.getElementById('cust-phone').value,
-    district: document.getElementById('cust-district').value,
-    image_url: imageUrl
-      };
-  const { error } = await supabaseClient
-    .from('enquiries')
-    .insert([data]);
+    make:       document.getElementById('make').value,
+    model:      document.getElementById('model').value,
+    year:       document.getElementById('year').value,
+    variant:    document.getElementById('variant').value,
+    part:       selectedPart || document.getElementById('part-custom').value.trim(),
+    notes:      document.getElementById('part-notes').value,
+    name:       document.getElementById('cust-name').value,
+    phone:      document.getElementById('cust-phone').value,
+    district:   document.getElementById('cust-district').value,
+    image_url:  imageUrl
+  };
 
-  if (error) {
-    alert("Error submitting enquiry");
-    console.log(error);
-    btn.disabled = false;
-    btn.textContent = "Submit enquiry";
+  var insertResult = await supabaseClient.from('enquiries').insert([payload]);
+
+  if (insertResult.error) {
+    alert('Error submitting enquiry: ' + insertResult.error.message);
+    btn.disabled    = false;
+    btn.textContent = 'Submit enquiry';
     return;
   }
 
-  // ✅ MUST BE INSIDE FUNCTION
-  await fetch('https://xspare.vercel.app/api/enquiries', {
-    method: 'POST',
+  /* notify Vercel — non-blocking */
+  fetch('https://xspare.vercel.app/api/enquiries', {
+    method:  'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      enquiry_id: enquiryId,
-      district: data.district
-    })
-  });
+    body:    JSON.stringify({ enquiry_id: enquiryId, district: payload.district })
+  }).catch(function() {});
 
   document.getElementById('enquiry-id').textContent = enquiryId;
-  document.getElementById('track-id').value = enquiryId;
-
-  document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('track-id').value         = enquiryId;
+  document.querySelectorAll('.step-panel').forEach(function(p) { p.classList.remove('active'); });
   document.getElementById('step-success').classList.add('active');
 
-  btn.textContent = "Submit enquiry";
-  btn.disabled = false;
+  btn.disabled    = false;
+  btn.textContent = 'Submit enquiry';
 }
+
+/* ── RESET ── */
 function resetForm() {
-  
-  document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
-  document.getElementById('step-1').classList.add('active');
-  ['dot-1','dot-2','dot-3','dot-4'].forEach((id, i) => {
-    const d = document.getElementById(id);
-    d.className = 'step-dot ' + (i === 0 ? 'active' : 'pending');
-  });
-  document.getElementById('make').value = '';
-document.getElementById('model').innerHTML = '<option value="">Select make first</option>';
+  document.getElementById('make').value             = '';
+  document.getElementById('model').innerHTML        = '<option value="">Select make first</option>';
+  document.getElementById('variant').value          = '';
+  document.getElementById('vtype').value            = '';
+  document.getElementById('part-custom').value      = '';
+  document.getElementById('part-notes').value       = '';
+  document.getElementById('cust-name').value        = '';
+  document.getElementById('cust-phone').value       = '';
+  document.getElementById('cust-district').value    = '';
+  document.getElementById('cust-source').value      = '';
+  document.getElementById('photo-input').value      = '';
+  document.querySelectorAll('.part-chip').forEach(function(c) { c.classList.remove('selected'); });
 
-updateYears(); // ✅ ADD THIS LINE
-
-document.getElementById('year').value = '';
-  document.querySelectorAll('.part-chip').forEach(c => c.classList.remove('selected'));
-  document.getElementById('part-custom').value = '';
-  document.getElementById('part-notes').value = '';
-  document.getElementById('cust-name').value = '';
-  document.getElementById('cust-phone').value = '';
-  document.getElementById('cust-district').value = '';
-  selectedPart = '';
+  selectedPart  = '';
+  selectedFile  = null;
   photoAttached = false;
 
+  loadYears();
+
+  var area  = document.getElementById('upload-area');
+  var inner = document.getElementById('upload-inner');
+  area.classList.remove('has-photo');
+  inner.innerHTML =
+    '<div class="upload-icon">&#128247;</div>' +
+    '<div class="upload-text"><strong>Upload photo</strong> or tap to browse</div>' +
+    '<div class="upload-sub">JPG, PNG — max 10MB</div>';
+
+  goStep(1);
 }
+
+/* ── SCROLL TO TRACK ── */
+function scrollToTrack() {
+  document.getElementById('track-enquiry').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* ── TRACK ENQUIRY ── */
 async function trackEnquiry() {
-  const id = document.getElementById('track-id').value.trim();
-  const result = document.getElementById('track-result');
- 
-  if (!id) { result.innerHTML = '<p style="color:#92400E">⚠ Enter your enquiry ID</p>'; return; }
- 
-  result.innerHTML = '<p style="color:var(--slate)">Looking up...</p>';
- 
- const { data, error } = await supabaseClient
+  var id     = document.getElementById('track-id').value.trim();
+  var result = document.getElementById('track-result');
+  var btn    = document.getElementById('track-btn');
+
+  if (!id) {
+    result.innerHTML = '<div class="track-error">&#9888;&#65039; Please enter your enquiry ID (e.g. XSP-1234567890)</div>';
+    return;
+  }
+
+  result.innerHTML = '<div class="track-loading"><div class="spinner"></div> Looking up ' + id + '&#8230;</div>';
+  btn.disabled = true;
+
+  var res = await supabaseClient
     .from('enquiries')
     .select('*')
     .eq('enquiry_id', id)
     .single();
- 
-  if (error || !data) {
-    result.innerHTML = '<p style="color:var(--red,#dc2626)">❌ Enquiry not found. Check the ID and try again.</p>';
+
+  btn.disabled = false;
+
+  if (res.error || !res.data) {
+    result.innerHTML = '<div class="track-error">&#10060; Enquiry not found. Double-check the ID and try again.</div>';
     return;
   }
- 
- result.innerHTML = `
-    <div style="padding:20px;border-radius:12px;border:1px solid #e2e8f0;background:#fff;box-shadow:0 4px 20px rgba(0,0,0,0.05)">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
-        <h3 style="color:#0f172a;font-size:16px">${data.enquiry_id}</h3>
-        <span style="background:#FFF4ED;color:#F97316;font-weight:600;font-size:12px;padding:4px 12px;border-radius:99px;border:1px solid rgba(249,115,22,.25)">${(data.status || 'Pending').toUpperCase()}</span>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:6px;font-size:14px;color:#334155">
-        <div><b style="color:#0f172a">Vehicle:</b> ${data.make || ''} ${data.model || ''} ${data.year || ''}</div>
-        <div><b style="color:#0f172a">Part:</b> ${data.part || '—'}</div>
-        <div><b style="color:#0f172a">Location:</b> ${data.district || '—'}</div>
-      </div>
-      ${data.image_url ? `<img src="${data.image_url}" style="width:100%;margin-top:12px;border-radius:8px;object-fit:cover;max-height:200px">` : ''}
-    </div>`;
+
+  var data      = res.data;
+  var status    = (data.status || 'pending').toLowerCase();
+  var statusTxt = status.charAt(0).toUpperCase() + status.slice(1);
+  var vehicle   = [data.make, data.model, data.year].filter(Boolean).join(' ') || '&#8212;';
+  var submitted = data.created_at
+    ? new Date(data.created_at).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' })
+    : '&#8212;';
+  var notesHtml = data.notes
+    ? '<p style="font-size:13px;color:var(--slate);padding:10px 14px;background:var(--cream);border-radius:8px;border:1px solid var(--border);margin-bottom:12px"><em>&ldquo;' + data.notes + '&rdquo;</em></p>'
+    : '';
+  var photoHtml = data.image_url
+    ? '<img src="' + data.image_url + '" class="track-result-photo" alt="Part photo">'
+    : '';
+
+  result.innerHTML =
+    '<div class="track-result-card">' +
+      '<div class="track-result-header">' +
+        '<span class="track-result-id">' + data.enquiry_id + '</span>' +
+        '<span class="status-badge ' + status + '">' + statusTxt + '</span>' +
+      '</div>' +
+      '<div class="track-result-body">' +
+        '<div class="track-detail-grid">' +
+          '<div class="track-detail-item"><div class="track-detail-label">Vehicle</div><div class="track-detail-value">' + vehicle + '</div></div>' +
+          '<div class="track-detail-item"><div class="track-detail-label">Part needed</div><div class="track-detail-value">' + (data.part || '&#8212;') + '</div></div>' +
+          '<div class="track-detail-item"><div class="track-detail-label">Location</div><div class="track-detail-value">' + (data.district || '&#8212;') + '</div></div>' +
+          '<div class="track-detail-item"><div class="track-detail-label">Submitted</div><div class="track-detail-value" style="font-size:13px">' + submitted + '</div></div>' +
+        '</div>' +
+        notesHtml +
+        photoHtml +
+      '</div>' +
+    '</div>';
 }
-    
-</script>
-  <script>
+
+/* ── VENDOR LOGIN ── */
 function handleVendorLogin() {
-  const vendor = localStorage.getItem("vendorLoggedIn");
-
-  if (vendor === "true") {
-    // Already logged in → go dashboard
-    window.location.href = "vendor-dashboard.html";
+  var vendor = localStorage.getItem('vendorLoggedIn');
+  if (vendor === 'true') {
+    window.location.href = 'vendor-dashboard.html';
   } else {
-    // Not registered → go register page
-    window.location.href = "vendor-register.html";
-  }
-}
-</script>
-  <script>
-const models = {
-  "Maruti Suzuki": ["Swift", "Baleno", "Alto", "Dzire"],
-  "Hyundai": ["i10", "i20", "Creta", "Verna"],
-  "Tata": ["Nexon", "Punch", "Altroz", "Harrier"],
-  "Honda": ["City", "Amaze", "Jazz"],
-  "Toyota": ["Innova", "Fortuner", "Glanza"],
-  "Mahindra": ["Scorpio", "XUV700", "Bolero"],
-  "Ford": ["EcoSport", "Endeavour"],
-  "Volkswagen": ["Polo", "Virtus"],
-  "Renault": ["Kwid", "Triber", "Kiger"],
-  "Kia": ["Seltos", "Sonet", "Carens"],
-  "MG": ["Hector", "Astor"],
-  "Bajaj": ["Pulsar", "Avenger"],
-  "Hero": ["Splendor", "HF Deluxe"],
-  "TVS": ["Apache", "Jupiter"],
-  "Royal Enfield": ["Classic 350", "Himalayan"]
-};
-
-function updateModels() {
-  const make = document.getElementById("make").value;
-  const modelDropdown = document.getElementById("model");
-
-  modelDropdown.innerHTML = '<option value="">Select model</option>';
-
-  if (!make || !models[make]) {
-    modelDropdown.innerHTML = '<option value="">Select make first</option>';
-    return;
-  }
-
-  models[make].forEach(model => {
-    const option = document.createElement("option");
-    option.value = model;
-    option.textContent = model;
-    modelDropdown.appendChild(option);
-  });
-}
-
-// ✅ YEAR DROPDOWN AUTO FILL
-function loadYears() {
-  const yearDropdown = document.getElementById("year");
-  const currentYear = new Date().getFullYear();
-
-  yearDropdown.innerHTML = '<option value="">Select year</option>';
-
-  for (let i = currentYear; i >= 1995; i--) {
-    const option = document.createElement("option");
-    option.value = i;
-    option.textContent = i;
-    yearDropdown.appendChild(option);
+    window.location.href = 'vendor-register.html';
   }
 }
 
-// Run on page load
-window.onload = function () {
-  loadYears();
-};
 </script>
 </body>
 </html>
