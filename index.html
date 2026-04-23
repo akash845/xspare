@@ -932,10 +932,18 @@ footer p { font-size: 13px; color: var(--slate); line-height: 1.6; }
             <div class="field">
               <label>Your name</label>
               <input type="text" id="cust-name" placeholder="Full name">
+        <div id="recaptcha-container" style="margin-top:10px;"></div>
             </div>
             <div class="field">
               <label>Mobile number</label>
               <input type="tel" id="cust-phone" placeholder="+91 98xxxxxxxx">
+              <div id="recaptcha-container" style="margin-top:10px;"></div>
+
+<button type="button" onclick="sendOTP()">Send OTP</button>
+
+<input type="text" id="otp" placeholder="Enter OTP">
+
+<button type="button" onclick="verifyOTP()">Verify OTP</button>
             </div>
           </div>
           <div class="field-row">
@@ -1445,6 +1453,11 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
+</script>
+  <script>
+window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+  size: 'normal'
+});
 </script>
 </body>
 </html>
