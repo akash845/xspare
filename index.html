@@ -1311,7 +1311,7 @@ async function submitEnquiry() {
   }
 
   /* notify Vercel — non-blocking */
-  fetch('https://xspare.vercel.app/api/enquiries', {
+  fetch('https://xspare-backend.vercel.app/api/enquiries', {
     method:  'POST',
     headers: { 'Content-Type': 'application/json' },
     body:    JSON.stringify({ enquiry_id: enquiryId, district: payload.district })
