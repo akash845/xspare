@@ -734,6 +734,8 @@ footer p { font-size: 13px; color: var(--slate); line-height: 1.6; }
   .footer-links { gap: 16px; }
 }
 </style>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"></script>
 </head>
 <body>
 
@@ -1433,6 +1435,16 @@ function handleVendorLogin() {
   }
 }
 
+</script>
+  <script>
+const firebaseConfig = {
+  apiKey: "AIzaSyCdFeY7nmiy8F_zH0BwIXIEGPesZBAwPwQ",
+  authDomain: "xspare-502fc.firebaseapp.com",
+  projectId: "xspare-502fc",
+};
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
 </script>
 </body>
 </html>
