@@ -932,7 +932,7 @@ footer p { font-size: 13px; color: var(--slate); line-height: 1.6; }
             <div class="field">
               <label>Your name</label>
               <input type="text" id="cust-name" placeholder="Full name">
-        <div id="recaptcha-container" style="margin-top:10px;"></div>
+        
             </div>
             <div class="field">
               <label>Mobile number</label>
@@ -1458,6 +1458,33 @@ const auth = firebase.auth();
 window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
   size: 'normal'
 });
+</script>
+  <script>
+function sendOTP() {
+  const phoneNumber = document.getElementById('cust-phone').value;
+
+  firebase.auth().signInWithPhoneNumber(phoneNumber, window.recaptchaVerifier)
+    .then((confirmationResult) => {
+      window.confirmationResult = confirmationResult;
+      alert("OTP sent ✅");
+    })
+    .catch((error) => {
+      console.error(error);
+      alert("Error sending OTP ❌");
+    });
+}
+
+function verifyOTP() {
+  const code = document.getElementById('otp').value;
+
+  confirmationResult.confirm(code)
+    .then(() => {
+      alert("Login success ✅");
+    })
+    .catch(() => {
+      alert("Invalid OTP ❌");
+    });
+}
 </script>
 </body>
 </html>
