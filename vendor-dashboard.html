@@ -1221,266 +1221,150 @@ function toast(msg, type) {
 // init
 goPage('dashboard')
    
+<!-- PASTE THIS replacing everything after goPage('dashboard') — from the closing </script> 
+     of the main script block, all the way to </body> in vendor-dashboard.html -->
+
 </script>
-   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 
 <script>
-const SUPABASE_URL = "https://cxxxstxmfgcznsvuuloh.supabase.co";
-const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4eHhzdHhtZmdjem5zdnV1bG9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTcxOTgsImV4cCI6MjA5MTk5MzE5OH0.58KX8QoJ8sYF5JW-_o8WqtCr4skG5OK60v6sTm_3ir4";
-
-const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
-
-// LOAD LEADS
-async function loadLeads() {
-  const user = (await sb.auth.getUser()).data.user;
-
-  if (!user) {
-    console.log("Not logged in");
-    return;
-  }
-
-  const { data, error } = await sb
-    .from('leads')
-    .select('*')
-    .eq('vendor_id', user.id);
-
-  console.log("Leads:", data);
-
-  // TEMP: just show in console
-}
-
-loadLeads();
-   async function loadLeads() {
-  const user = (await sb.auth.getUser()).data.user;
-
-  const { data } = await sb
-    .from('leads')
-    .select('*')
-    .eq('vendor_id', user.id);
-
-  const container = document.getElementById('all-enq-cards');
-  container.innerHTML = '';
-
-  data.forEach(lead => {
-    container.innerHTML += `
-      <div class="enq-card fresh">
-        <div class="ec-head">
-          <div>
-            <div class="ec-part">${lead.enquiry_id}</div>
-          </div>
-        </div>
-
-        <div class="ec-actions">
-          <button class="btn btn-orange" onclick="sendQuote('${lead.id}')">
-            Send Quote
-          </button>
-        </div>
-      </div>
-    `;
-  });
-}
-   loadLeads();
-   async function sendQuote(leadId) {
-  const price = prompt("Enter price:");
-
-  if (!price) return;
-
-  const user = (await sb.auth.getUser()).data.user;
-
-  await sb.from('quotations').insert({
-    lead_id: leadId,
-    vendor_id: user.id,
-    price: price
-  });
-
-  alert("Quote sent!");
-}
-</script>
-   <script>
-const sb = supabase.createClient(
+const sb = window.supabase.createClient(
   "https://cxxxstxmfgcznsvuuloh.supabase.co",
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4eHhzdHhtZmdjem5zdnV1bG9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTcxOTgsImV4cCI6MjA5MTk5MzE5OH0.58KX8QoJ8sYF5JW-_o8WqtCr4skG5OK60v6sTm_3ir4"
 );
 
+// AUTH GUARD — redirect if not logged in
+(async function() {
+  const { data: { user } } = await sb.auth.getUser();
+  if (!user) window.location.href = 'vendor-register.html';
+  else {
+    // Show vendor name in topbar if available
+    const { data } = await sb.from('vendors').select('name').eq('id', user.id).single();
+    if (data && data.name) {
+      document.getElementById('top-name').textContent = data.name;
+      document.getElementById('top-av').textContent = data.name.slice(0,2).toUpperCase();
+    }
+  }
+})();
+
+// LOAD LEADS from Vercel API
 async function loadLeads() {
   const { data: { user } } = await sb.auth.getUser();
+  if (!user) return;
 
-  const { data, error } = await sb
-    .from('leads')
-    .select('*')
-    .eq('vendor_id', user.id);
+  const container = document.getElementById('all-enq-cards');
+  container.innerHTML = '<div style="padding:20px;text-align:center;color:var(--textL);font-size:13px">Loading leads...</div>';
 
-  if (error) {
-    console.log(error);
+  const res  = await fetch('https://xspare-backend.vercel.app/api/leads?vendor_id=' + user.id);
+  const json = await res.json();
+
+  if (!json.success) { console.error(json.error); return; }
+
+  container.innerHTML = '';
+
+  if (!json.leads.length) {
+    container.innerHTML = `<div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:40px;text-align:center">
+      <div style="font-size:32px;margin-bottom:12px">📭</div>
+      <div style="font-size:15px;font-weight:600;color:var(--textD);margin-bottom:6px">No leads yet</div>
+      <div style="font-size:13px;color:var(--textL)">You'll be notified when matching enquiries come in.</div>
+    </div>`;
     return;
   }
 
-  const container = document.getElementById('all-enq-cards');
-  container.innerHTML = '';
+  // Update badge count
+  const newCount = json.leads.filter(l => l.status === 'sent').length;
+  document.getElementById('enq-badge').textContent = newCount;
+  document.getElementById('enq-count-label').textContent = `${newCount} new lead${newCount===1?'':'s'} waiting`;
 
-  data.forEach(lead => {
+  json.leads.forEach(lead => {
+    const enq     = lead.enquiries || {};
+    const vehicle = [enq.make, enq.model, enq.year].filter(Boolean).join(' ') || 'Vehicle';
+    const quoted  = lead.quotations && lead.quotations.length > 0;
+    const timeAgo = lead.created_at
+      ? new Date(lead.created_at).toLocaleString('en-IN', {dateStyle:'medium', timeStyle:'short'})
+      : '';
+
     container.innerHTML += `
-      <div class="enq-card fresh">
+      <div class="enq-card ${quoted ? 'quoted-card' : 'fresh'}">
         <div class="ec-head">
           <div>
-            <div class="ec-vehicle">${lead.vehicle || 'Vehicle'}</div>
-            <div class="ec-part">${lead.part_name || 'Part'}</div>
+            <div class="ec-vehicle">${vehicle}</div>
+            <div class="ec-part">${enq.part || 'Part'}</div>
           </div>
+          <span class="tag ${quoted ? 'tag-quoted' : 'tag-new'}">${quoted ? 'QUOTED' : 'NEW'}</span>
         </div>
-
+        <div class="ec-meta">
+          <div class="ec-m">📍 ${lead.district || enq.district || '—'}</div>
+          <div class="ec-m">🕒 ${timeAgo}</div>
+        </div>
+        ${enq.notes ? `<div class="ec-notes">"${enq.notes}"</div>` : ''}
         <div class="ec-actions">
-          <button class="btn btn-orange" onclick="sendQuote('${lead.id}')">
-            Send Quote
-          </button>
+          ${!quoted
+            ? `<button class="btn btn-orange" onclick="openQuoteModalReal('${lead.id}','${(enq.part||'').replace(/'/g,"\\'")}','${vehicle.replace(/'/g,"\\'")}')">
+                 Send Quote
+               </button>
+               <button class="btn btn-danger" onclick="markNotAvailable('${lead.id}')">Not available</button>`
+            : `<div style="font-size:13px;color:var(--blue);font-weight:500;padding:4px 0">
+                 ✓ Quoted ₹${lead.quotations[0].price?.toLocaleString('en-IN')} · Grade ${lead.quotations[0].grade}
+               </div>`
+          }
         </div>
-      </div>
-    `;
+      </div>`;
   });
-async function sendQuote(leadId) {
-  try {
-    const price = prompt("Enter price");
-
-    if (!price) return;
-
-    const { data, error: userError } = await supabaseClient.auth.getUser();
-
-    if (userError || !data.user) {
-      alert("User not logged in");
-      return;
-    }
-
-    const user = data.user;
-
-    const { error } = await supabaseClient
-      .from('quotations')
-      .insert({
-        lead_id: leadId,
-        vendor_id: user.id,
-        price: price
-      });
-
-    if (error) {
-      alert("Error sending quote");
-      console.log(error);
-      return;
-    }
-
-    alert("Quote sent successfully");
-
-  } catch (err) {
-    console.log("CRASH:", err);
-    alert("Something broke. Check console.");
-  }
 }
 
-// load when enquiries page opens
-document.getElementById("nl-enquiries").addEventListener("click", () => {
+// OPEN QUOTE MODAL with real lead id
+function openQuoteModalReal(lead_id, part, vehicle) {
+  document.getElementById('qm-title').textContent = 'Quote for ' + part + ' — ' + vehicle;
+  document.getElementById('qm-price').value = '';
+  document.getElementById('qm-note').value  = '';
+  qGrade = '';
+  ['A','B','C'].forEach(g => document.getElementById('gs-'+g).className = 'gs');
+  // Override submit button to use real API
+  const submitBtn = document.querySelector('#quote-modal .btn-orange');
+  submitBtn.onclick = () => sendQuoteReal(lead_id);
+  document.getElementById('quote-modal').classList.add('open');
+}
+
+// SEND QUOTE via Vercel API
+async function sendQuoteReal(lead_id) {
+  const price = document.getElementById('qm-price').value;
+  const note  = document.getElementById('qm-note').value;
+  if (!price || +price <= 0) { toast('Enter a valid price', 'err'); return; }
+  if (!qGrade) { toast('Select part condition grade', 'err'); return; }
+
+  const { data: { user } } = await sb.auth.getUser();
+  if (!user) { toast('Not logged in', 'err'); return; }
+
+  const res  = await fetch('https://xspare-backend.vercel.app/api/quote', {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ lead_id, vendor_id: user.id, price, grade: qGrade, note })
+  });
+
+  const json = await res.json();
+  if (!json.success) { toast('Quote failed: ' + json.error, 'err'); return; }
+
+  closeModal('quote-modal');
+  toast('Quote sent ✓', 'ok');
+  loadLeads(); // refresh
+}
+
+// MARK NOT AVAILABLE
+async function markNotAvailable(lead_id) {
+  const { data: { user } } = await sb.auth.getUser();
+  if (!user) return;
+  await sb.from('leads').update({ status: 'lost' }).eq('id', lead_id).eq('vendor_id', user.id);
+  toast('Marked not available', '');
+  loadLeads();
+}
+
+// Hook into Enquiries nav click
+document.getElementById('nl-enquiries').addEventListener('click', () => {
   setTimeout(loadLeads, 200);
 });
-      <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </script>
-   <script>
-const supabaseClient = supabase.createClient(
-  "YOUR_SUPABASE_URL",
-  "YOUR_SUPABASE_ANON_KEY"
-);
 
-// 🔥 LOAD ENQUIRIES
-async function loadEnquiries() {
-  const { data: { user } } = await supabaseClient.auth.getUser();
-
-  if (!user) {
-    console.log("User not logged in");
-    return;
-  }
-
-  const { data, error } = await supabaseClient
-    .from('leads')
-    .select('*')
-    .eq('vendor_id', user.id)
-    .order('created_at', { ascending: false });
-
-  if (error) {
-    console.log(error);
-    return;
-  }
-
-  const container = document.getElementById('all-enq-cards');
-  container.innerHTML = '';
-
-  if (!data || data.length === 0) {
-    container.innerHTML = "<p>No enquiries found</p>";
-    return;
-  }
-
-  data.forEach(lead => {
-    container.innerHTML += `
-      <div class="enq-card ${lead.status === 'quoted' ? 'quoted-card' : 'fresh'}">
-        
-        <div class="ec-head">
-          <div>
-            <div class="ec-vehicle">${lead.vehicle || 'Vehicle not specified'}</div>
-            <div class="ec-part">${lead.part_name || 'Part not specified'}</div>
-          </div>
-        </div>
-
-        <div class="ec-meta">
-          <div class="ec-m">📍 ${lead.location || 'Unknown'}</div>
-          <div class="ec-m">🕒 ${new Date(lead.created_at).toLocaleString()}</div>
-        </div>
-
-        ${lead.notes ? `<div class="ec-notes">${lead.notes}</div>` : ''}
-
-        <div class="ec-actions">
-          <button class="btn btn-orange" onclick="sendQuote('${lead.id}')">
-            Send Quote
-          </button>
-        </div>
-
-      </div>
-    `;
-  });
-}
-
-// 🔥 SEND QUOTE
-async function sendQuote(leadId) {
-  const price = prompt("Enter price");
-
-  if (!price) return;
-
-  const { data: { user } } = await supabaseClient.auth.getUser();
-
-  const { error } = await supabaseClient
-    .from('quotations')
-    .insert({
-      lead_id: leadId,
-      vendor_id: user.id,
-      price: price
-    });
-
-  if (error) {
-    alert("Error sending quote");
-    console.log(error);
-    return;
-  }
-
-  alert("Quote sent successfully");
-  loadEnquiries(); // refresh UI
-}
-
-// 🔥 HOOK INTO YOUR EXISTING NAVIGATION
-document.getElementById("nl-enquiries").addEventListener("click", () => {
-  setTimeout(loadEnquiries, 200);
-});
-</script>
-   <script>
-const vendor = localStorage.getItem("vendorLoggedIn");
-
-if (vendor !== "true") {
-  // Not logged in → send to register
-  window.location.href = "vendor-register.html";
-}
-</script>
 </body>
 </html>
