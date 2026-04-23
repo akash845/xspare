@@ -5,23 +5,295 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Xspare — Vendor Registration</title>
 <style>
+/* ═══════════════════════════════════════════
+   XSPARE DESIGN SYSTEM
+   Primary: #F97316  Dark: #0F172A  BG: #FAFAF8
+   ═══════════════════════════════════════════ */
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
 
 :root{
-  --orange:#F97316;--orange2:#EA6A0A;--orangeL:#FFF4ED;--orangeB:rgba(249,115,22,.2);
-  --dark:#0F172A;--bg:#FAFAF8;--card:#FFFFFF;--text:#64748B;--textD:#1E293B;--textL:#94A3B8;
-  --success:#16A34A;--successL:#F0FDF4;--successB:rgba(22,163,74,.2);
-  --warning:#D97706;--warningL:#FFFBEB;--red:#DC2626;--redL:#FEF2F2;--redB:rgba(220,38,38,.15);
-  --blue:#2563EB;--blueL:#EFF6FF;--border:rgba(15,23,42,.10);--border2:rgba(15,23,42,.06);
-  --shadow:0 1px 3px rgba(15,23,42,.08),0 1px 2px rgba(15,23,42,.04);
-  --shadow2:0 4px 16px rgba(15,23,42,.10);--r:12px;--r2:8px;
+  --orange:   #F97316;
+  --orange2:  #EA6A0A;
+  --orangeL:  #FFF4ED;
+  --orangeB:  rgba(249,115,22,.2);
+  --dark:     #0F172A;
+  --bg:       #FAFAF8;
+  --card:     #FFFFFF;
+  --text:     #64748B;
+  --textD:    #1E293B;
+  --textL:    #94A3B8;
+  --success:  #16A34A;
+  --successL: #F0FDF4;
+  --successB: rgba(22,163,74,.2);
+  --warning:  #D97706;
+  --warningL: #FFFBEB;
+  --red:      #DC2626;
+  --redL:     #FEF2F2;
+  --redB:     rgba(220,38,38,.15);
+  --blue:     #2563EB;
+  --blueL:    #EFF6FF;
+  --border:   rgba(15,23,42,.10);
+  --border2:  rgba(15,23,42,.06);
+  --shadow:   0 1px 3px rgba(15,23,42,.08), 0 1px 2px rgba(15,23,42,.04);
+  --shadow2:  0 4px 16px rgba(15,23,42,.10);
+  --r:        12px;
+  --r2:       8px;
+  --sidebar:  240px;
+  --topbar:   60px;
 }
+
 *{box-sizing:border-box;margin:0;padding:0}
 html{font-size:14px}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.5;min-height:100vh}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
 input,select,textarea,button{font-family:'DM Sans',sans-serif}
 a{text-decoration:none;color:inherit}
 
+/* ── TYPOGRAPHY ── */
+.bebas{font-family:'Bebas Neue',cursive;letter-spacing:.5px}
+.mono{font-family:'DM Mono',monospace}
+h1,h2,h3,h4{color:var(--textD);font-weight:600;line-height:1.2}
+h1{font-size:1.75rem}
+h2{font-size:1.375rem}
+h3{font-size:1.1rem}
+
+/* ── LAYOUT ── */
+.app-shell{display:grid;grid-template-columns:var(--sidebar) 1fr;grid-template-rows:var(--topbar) 1fr;height:100vh;overflow:hidden}
+.main-scroll{overflow-y:auto;background:var(--bg)}
+.main-scroll::-webkit-scrollbar{width:4px}
+.main-scroll::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.page{padding:28px;min-height:100%}
+.page.hidden{display:none}
+
+/* ── TOPBAR ── */
+.topbar{grid-column:1/-1;background:var(--card);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;z-index:20;box-shadow:var(--shadow)}
+.topbar-logo{font-family:'Bebas Neue',cursive;font-size:22px;color:var(--dark);letter-spacing:1px}
+.topbar-logo span{color:var(--orange)}
+.topbar-tag{font-size:11px;color:var(--textL);margin-left:12px;padding-left:12px;border-left:1px solid var(--border)}
+.topbar-right{display:flex;align-items:center;gap:8px}
+.icon-btn{width:36px;height:36px;border-radius:var(--r2);border:1px solid var(--border);background:var(--card);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text);transition:all .15s}
+.icon-btn:hover{background:var(--bg);border-color:var(--border)}
+.icon-btn svg{width:18px;height:18px;stroke:currentColor}
+.notif-wrap{position:relative}
+.notif-dot{position:absolute;top:7px;right:7px;width:7px;height:7px;background:var(--red);border-radius:50%;border:2px solid var(--card)}
+.user-chip{display:flex;align-items:center;gap:8px;padding:4px 10px 4px 4px;background:var(--bg);border:1px solid var(--border);border-radius:99px;cursor:pointer;transition:border-color .15s}
+.user-chip:hover{border-color:var(--orange)}
+.user-av{width:28px;height:28px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#fff;font-family:'Bebas Neue',cursive;letter-spacing:.5px}
+.user-name{font-size:13px;font-weight:500;color:var(--textD)}
+
+/* ── SIDEBAR ── */
+.sidebar{background:var(--card);border-right:1px solid var(--border);overflow-y:auto;padding:16px 12px}
+.sidebar::-webkit-scrollbar{width:0}
+.nav-group{margin-bottom:20px}
+.nav-group-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--textL);padding:0 10px;margin-bottom:6px}
+.nav-link{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--r2);cursor:pointer;color:var(--text);font-size:13px;font-weight:500;transition:all .15s;position:relative}
+.nav-link:hover{background:var(--bg);color:var(--textD)}
+.nav-link.active{background:var(--orangeL);color:var(--orange);font-weight:600}
+.nav-link svg{width:16px;height:16px;stroke:currentColor;flex-shrink:0}
+.nav-link .nbadge{margin-left:auto;background:var(--red);color:#fff;font-size:9px;font-weight:700;min-width:16px;height:16px;border-radius:99px;display:flex;align-items:center;justify-content:center;padding:0 4px}
+.nav-link.active .nbadge{background:var(--orange)}
+
+/* ── CARDS ── */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
+.card-body{padding:20px}
+.card-title{font-size:14px;font-weight:600;color:var(--textD);margin-bottom:14px}
+
+/* ── STAT CARDS ── */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:24px}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);display:flex;align-items:flex-start;justify-content:space-between}
+.stat-icon{width:44px;height:44px;border-radius:var(--r2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.stat-icon svg{width:20px;height:20px;stroke:currentColor}
+.stat-label{font-size:12px;color:var(--textL);margin-bottom:6px}
+.stat-val{font-size:26px;font-weight:700;color:var(--textD);line-height:1;font-family:'Bebas Neue',cursive;letter-spacing:.5px}
+.stat-trend{font-size:12px;color:var(--success);margin-top:4px;font-weight:500}
+.stat-trend.neg{color:var(--red)}
+.stat-trend.neu{color:var(--textL)}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:0 16px;height:36px;border-radius:var(--r2);font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .15s;white-space:nowrap}
+.btn:active{transform:scale(.98)}
+.btn svg{width:14px;height:14px;stroke:currentColor;flex-shrink:0}
+.btn-orange{background:var(--orange);color:#fff}
+.btn-orange:hover{background:var(--orange2)}
+.btn-ghost{background:var(--card);color:var(--textD);border:1px solid var(--border)}
+.btn-ghost:hover{border-color:var(--orange);color:var(--orange)}
+.btn-success{background:var(--successL);color:var(--success);border:1px solid var(--successB)}
+.btn-danger{background:var(--redL);color:var(--red);border:1px solid var(--redB)}
+.btn-blue{background:var(--blueL);color:var(--blue);border:1px solid rgba(37,99,235,.2)}
+.btn-lg{height:44px;padding:0 24px;font-size:14px}
+.btn-full{width:100%;justify-content:center;height:44px;font-size:14px}
+
+/* ── TAGS ── */
+.tag{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:99px;font-size:11px;font-weight:600;white-space:nowrap}
+.tag-orange{background:var(--orangeL);color:var(--orange)}
+.tag-green{background:var(--successL);color:var(--success)}
+.tag-red{background:var(--redL);color:var(--red)}
+.tag-blue{background:var(--blueL);color:var(--blue)}
+.tag-amber{background:var(--warningL);color:var(--warning)}
+.tag-gray{background:var(--bg);color:var(--textL);border:1px solid var(--border)}
+.tag-new{background:#FFF4ED;color:var(--orange);border:1.5px solid var(--orangeB);font-weight:700}
+.tag-quoted{background:var(--blueL);color:var(--blue);border:1px solid rgba(37,99,235,.2)}
+.tag-won{background:var(--successL);color:var(--success);border:1px solid var(--successB)}
+
+/* ── FORM FIELDS ── */
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+.field-row{display:grid;gap:12px;grid-template-columns:1fr 1fr}
+.field-row.c3{grid-template-columns:1fr 1fr 1fr}
+.f-label{font-size:12px;font-weight:600;color:var(--textD)}
+.f-label .req{color:var(--red);margin-left:2px}
+.f-input,.f-select,.f-textarea{width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:var(--r2);font-size:13px;font-family:'DM Sans',sans-serif;color:var(--textD);background:var(--card);outline:none;transition:border-color .2s,box-shadow .2s;appearance:none}
+.f-input:focus,.f-select:focus,.f-textarea:focus{border-color:var(--orange);box-shadow:0 0 0 3px var(--orangeB)}
+.f-input::placeholder,.f-textarea::placeholder{color:var(--textL)}
+.f-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2394A3B8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:30px;cursor:pointer}
+.f-textarea{resize:vertical;min-height:80px;line-height:1.5}
+.f-hint{font-size:11px;color:var(--textL)}
+.f-error{font-size:11px;color:var(--red);display:none}
+.f-input.err,.f-select.err{border-color:var(--red)}
+.field.has-err .f-error{display:block}
+
+/* ── CHECKBOX CARD ── */
+.check-card{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:var(--bg);border:1.5px solid var(--border);border-radius:var(--r2);cursor:pointer;transition:border-color .2s}
+.check-card:hover{border-color:var(--orange)}
+.check-card input{width:15px;height:15px;accent-color:var(--orange);margin-top:1px;cursor:pointer;flex-shrink:0}
+.check-card-text{font-size:13px;color:var(--textD);line-height:1.4}
+.check-card-sub{font-size:11px;color:var(--textL);margin-top:2px}
+.check-card.highlight{background:var(--orangeL);border-color:var(--orange)}
+
+/* ── PROGRESS BARS ── */
+.pbar-wrap{margin-bottom:12px}
+.pbar-row{display:flex;justify-content:space-between;margin-bottom:5px;align-items:center}
+.pbar-label{font-size:13px;color:var(--textD)}
+.pbar-val{font-size:13px;font-weight:600;color:var(--textD)}
+.pbar-track{height:8px;background:var(--bg);border:1px solid var(--border);border-radius:4px;overflow:hidden}
+.pbar-fill{height:100%;border-radius:4px;background:var(--orange);transition:width 1s ease}
+.pbar-fill.green{background:var(--success)}
+.pbar-fill.blue{background:var(--blue)}
+
+/* ── UPLOAD ZONE ── */
+.upload-zone{border:2px dashed var(--border);border-radius:var(--r);padding:24px;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg)}
+.upload-zone:hover{border-color:var(--orange);background:var(--orangeL)}
+.uz-ico{font-size:26px;margin-bottom:8px}
+.uz-title{font-size:13px;font-weight:500;color:var(--textD);margin-bottom:3px}
+.uz-sub{font-size:11px;color:var(--textL)}
+
+/* ── PHOTO SLOTS ── */
+.photo-strip{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.photo-slot{width:76px;height:76px;border-radius:var(--r2);border:1.5px dashed var(--border);background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;gap:3px;transition:all .2s;position:relative;overflow:hidden}
+.photo-slot:hover{border-color:var(--orange);background:var(--orangeL)}
+.photo-slot svg{width:18px;height:18px;stroke:var(--textL)}
+.photo-slot span{font-size:10px;color:var(--textL)}
+.photo-slot.filled{border-style:solid;border-color:var(--successB);background:var(--successL)}
+.photo-slot.filled::after{content:'✓';position:absolute;top:4px;right:5px;font-size:10px;color:var(--success);font-weight:700}
+.photo-req{font-size:11px;color:var(--red);margin-left:4px}
+
+/* ── TABLES ── */
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--textL);padding:10px 14px;border-bottom:1px solid var(--border);text-align:left;background:var(--bg)}
+.tbl td{padding:12px 14px;border-bottom:1px solid var(--border2);font-size:13px;vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:#FAFAF8}
+.part-name{font-weight:600;color:var(--textD)}
+.part-sub{font-size:11px;color:var(--textL);margin-top:1px}
+.grade-pill{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:6px;font-weight:700;font-size:13px}
+.gA{background:#F0FDF4;color:var(--success)}
+.gB{background:#FFFBEB;color:var(--warning)}
+.gC{background:#FEF2F2;color:var(--red)}
+
+/* ── NOTICE ── */
+.notice{display:flex;align-items:flex-start;gap:8px;padding:12px 14px;border-radius:var(--r2);font-size:13px;line-height:1.5;margin-bottom:14px}
+.notice svg{width:15px;height:15px;stroke:currentColor;flex-shrink:0;margin-top:1px}
+.notice-info{background:var(--blueL);color:var(--blue);border:1px solid rgba(37,99,235,.15)}
+.notice-warn{background:var(--warningL);color:var(--warning);border:1px solid rgba(217,119,6,.2)}
+.notice-success{background:var(--successL);color:var(--success);border:1px solid var(--successB)}
+.notice-orange{background:var(--orangeL);color:var(--orange);border:1px solid var(--orangeB)}
+
+/* ── SCORE RING ── */
+.score-ring{position:relative;width:96px;height:96px;flex-shrink:0}
+.score-ring svg{transform:rotate(-90deg)}
+.score-ring-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}
+.score-num{font-family:'Bebas Neue',cursive;font-size:28px;color:var(--textD);line-height:1;letter-spacing:.5px}
+.score-sub{font-size:9px;color:var(--textL);text-transform:uppercase;letter-spacing:.08em}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:100;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px)}
+.modal-overlay.open{display:flex}
+.modal{background:var(--card);border-radius:var(--r);box-shadow:0 20px 60px rgba(15,23,42,.2);width:100%;max-width:580px;max-height:92vh;overflow-y:auto}
+.modal-head{padding:20px 24px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--card);z-index:2}
+.modal-title{font-size:16px;font-weight:600;color:var(--textD)}
+.modal-close{width:30px;height:30px;border-radius:6px;border:1px solid var(--border);background:var(--bg);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--textL);font-size:16px}
+.modal-close:hover{color:var(--red)}
+.modal-body{padding:20px 24px}
+.modal-foot{padding:14px 24px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--dark);color:#fff;padding:12px 18px;border-radius:var(--r);font-size:13px;font-weight:500;z-index:999;opacity:0;transform:translateY(6px);transition:all .25s;pointer-events:none;display:flex;align-items:center;gap:8px;box-shadow:var(--shadow2);max-width:340px}
+.toast.show{opacity:1;transform:translateY(0)}
+.toast.ok{background:var(--success)}
+.toast.err{background:var(--red)}
+.toast svg{width:15px;height:15px;stroke:#fff;flex-shrink:0}
+
+/* ── ENQUIRY CARDS ── */
+.enq-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.enq-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;transition:box-shadow .2s}
+.enq-card:hover{box-shadow:var(--shadow2)}
+.enq-card.fresh{border-top:3px solid var(--orange)}
+.enq-card.quoted-card{border-top:3px solid var(--blue)}
+.ec-head{padding:16px 16px 10px;display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.ec-vehicle{font-size:12px;font-weight:600;color:var(--textL);margin-bottom:4px;text-transform:uppercase;letter-spacing:.04em}
+.ec-part{font-size:16px;font-weight:700;color:var(--orange)}
+.ec-meta{padding:0 16px 10px;display:flex;gap:12px;flex-wrap:wrap}
+.ec-m{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--textL)}
+.ec-m svg{width:12px;height:12px;stroke:currentColor}
+.ec-notes{padding:8px 16px;background:var(--bg);border-top:1px solid var(--border2);font-size:12px;color:var(--text);font-style:italic}
+.ec-actions{padding:12px 16px;border-top:1px solid var(--border);display:flex;gap:8px}
+
+/* ── QUICK TIPS ── */
+.tips-banner{background:var(--orange);border-radius:var(--r);padding:20px 24px;color:#fff;margin-top:24px}
+.tips-title{font-family:'Bebas Neue',cursive;font-size:22px;letter-spacing:.5px;margin-bottom:10px;opacity:.95}
+.tips-list{list-style:none;display:flex;flex-direction:column;gap:6px}
+.tips-list li{font-size:13px;opacity:.9;display:flex;align-items:center;gap:6px}
+.tips-list li::before{content:'•';font-size:16px}
+
+/* ── STEPPER ── */
+.stepper{display:flex;align-items:center;margin-bottom:28px;gap:0}
+.step-item{display:flex;align-items:center;gap:0;flex:1}
+.step-circle{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;transition:all .3s;border:2px solid var(--border)}
+.step-circle.done{background:var(--success);border-color:var(--success);color:#fff}
+.step-circle.active{background:var(--orange);border-color:var(--orange);color:#fff}
+.step-circle.pending{background:var(--card);color:var(--textL)}
+.step-info{margin-left:8px}
+.step-name{font-size:12px;font-weight:600;white-space:nowrap}
+.step-name.done{color:var(--success)}
+.step-name.active{color:var(--orange)}
+.step-name.pending{color:var(--textL)}
+.step-desc{font-size:10px;color:var(--textL)}
+.step-line{flex:1;height:2px;background:var(--border);margin:0 8px}
+.step-line.done{background:var(--success)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1024px){
+  :root{--sidebar:56px}
+  .nav-group-label,.nav-link span,.nav-link .nbadge-text,.topbar-tag,.user-name{display:none}
+  .nav-link{justify-content:center;padding:10px}
+  .nav-link svg{width:20px;height:20px}
+  .nav-link .nbadge{position:absolute;top:4px;right:4px;min-width:14px;height:14px;font-size:8px}
+  .sidebar{padding:10px 8px}
+  .nav-group{margin-bottom:8px}
+  .field-row.c3{grid-template-columns:1fr 1fr}
+}
+@media(max-width:700px){
+  :root{--sidebar:0px}
+  .sidebar{display:none}
+  .app-shell{grid-template-columns:1fr}
+  .page{padding:16px}
+  .stats-row{grid-template-columns:1fr 1fr}
+  .enq-cards{grid-template-columns:1fr}
+  .field-row,.field-row.c3{grid-template-columns:1fr}
+  .stepper .step-info,.stepper .step-line{display:none}
+}
+
+</style>
+<style>
+body{min-height:100vh;display:flex;flex-direction:column;background:var(--bg)}
 .onb-shell{min-height:100vh;display:grid;grid-template-columns:1fr 1fr}
 .onb-left{background:var(--dark);display:flex;flex-direction:column;justify-content:space-between;padding:40px;position:relative;overflow:hidden}
 .onb-left::before{content:'';position:absolute;top:-80px;right:-80px;width:300px;height:300px;background:radial-gradient(circle,rgba(249,115,22,.25) 0%,transparent 70%);pointer-events:none}
@@ -29,6 +301,7 @@ a{text-decoration:none;color:inherit}
 .onb-logo{font-family:'Bebas Neue',cursive;font-size:32px;color:#fff;letter-spacing:1px;margin-bottom:4px}
 .onb-logo span{color:var(--orange)}
 .onb-tagline{font-size:13px;color:rgba(255,255,255,.45);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.1em}
+.onb-hero{position:relative;z-index:1}
 .onb-hero h2{font-family:'Bebas Neue',cursive;font-size:42px;color:#fff;letter-spacing:.5px;line-height:1.1;margin-bottom:16px}
 .onb-hero h2 span{color:var(--orange)}
 .onb-hero p{font-size:14px;color:rgba(255,255,255,.55);line-height:1.6;max-width:340px}
@@ -38,66 +311,33 @@ a{text-decoration:none;color:inherit}
 .onb-feat-ico svg{width:15px;height:15px;stroke:var(--orange)}
 .onb-right{display:flex;flex-direction:column;padding:40px;overflow-y:auto}
 .onb-right-inner{max-width:480px;width:100%;margin:0 auto;flex:1;display:flex;flex-direction:column;justify-content:center}
+.onb-right-head{margin-bottom:28px}
 .onb-step-label{font-size:12px;font-weight:600;color:var(--orange);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
 .onb-step-title{font-size:22px;font-weight:700;color:var(--textD);margin-bottom:4px}
 .onb-step-sub{font-size:13px;color:var(--textL)}
-.onb-right-head{margin-bottom:28px}
 
+/* OTP flow */
 .otp-row{display:flex;gap:10px;margin-bottom:14px}
 .otp-box{flex:1;height:52px;border:1.5px solid var(--border);border-radius:var(--r2);font-size:24px;font-family:'DM Mono',monospace;font-weight:500;color:var(--textD);text-align:center;outline:none;background:var(--card);transition:border-color .2s}
 .otp-box:focus{border-color:var(--orange);box-shadow:0 0 0 3px var(--orangeB)}
 .resend-row{font-size:12px;color:var(--textL);text-align:center;margin-top:10px}
 .resend-row b{color:var(--orange);cursor:pointer;font-weight:600}
 
+/* step panels */
 .step-panel{display:none}
 .step-panel.active{display:block;animation:fadein .25s ease}
 @keyframes fadein{from{opacity:0;transform:translateX(8px)}to{opacity:1;transform:translateX(0)}}
 
+/* mini stepper */
 .mini-steps{display:flex;align-items:center;gap:6px;margin-bottom:28px}
 .ms{width:28px;height:5px;border-radius:3px;background:var(--border);transition:background .3s}
 .ms.done{background:var(--success)}
 .ms.active{background:var(--orange)}
 
-.field{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
-.field-row{display:grid;gap:12px;grid-template-columns:1fr 1fr}
-.f-label{font-size:12px;font-weight:600;color:var(--textD)}
-.f-label .req{color:var(--red);margin-left:2px}
-.f-input,.f-select{width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:var(--r2);font-size:13px;color:var(--textD);background:var(--card);outline:none;transition:border-color .2s,box-shadow .2s;appearance:none}
-.f-input:focus,.f-select:focus{border-color:var(--orange);box-shadow:0 0 0 3px var(--orangeB)}
-.f-input::placeholder{color:var(--textL)}
-.f-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2394A3B8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:30px;cursor:pointer}
-.f-hint{font-size:11px;color:var(--textL)}
-
-.btn{display:inline-flex;align-items:center;gap:6px;padding:0 16px;height:36px;border-radius:var(--r2);font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .15s;white-space:nowrap}
-.btn-orange{background:var(--orange);color:#fff}
-.btn-orange:hover{background:var(--orange2)}
-.btn-ghost{background:var(--card);color:var(--textD);border:1px solid var(--border)}
-.btn-ghost:hover{border-color:var(--orange);color:var(--orange)}
-.btn-full{width:100%;justify-content:center;height:44px;font-size:14px}
-.btn-lg{height:44px;padding:0 24px;font-size:14px}
-
-.check-card{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:var(--bg);border:1.5px solid var(--border);border-radius:var(--r2);cursor:pointer;transition:border-color .2s;margin-bottom:8px}
-.check-card:hover{border-color:var(--orange)}
-.check-card input{width:15px;height:15px;accent-color:var(--orange);margin-top:1px;cursor:pointer;flex-shrink:0}
-.check-card-text{font-size:13px;color:var(--textD);line-height:1.4;font-weight:600}
-.check-card-sub{font-size:11px;color:var(--textL);margin-top:2px}
-.check-card.highlight{background:var(--orangeL);border-color:var(--orange)}
-
-.notice{display:flex;align-items:flex-start;gap:8px;padding:12px 14px;border-radius:var(--r2);font-size:13px;line-height:1.5;margin-bottom:14px}
-.notice-orange{background:var(--orangeL);color:var(--orange);border:1px solid var(--orangeB)}
-.notice-info{background:var(--blueL);color:var(--blue);border:1px solid rgba(37,99,235,.15)}
-
-.cat-chip{padding:6px 13px;border-radius:99px;font-size:12px;font-weight:500;border:1.5px solid var(--border);background:var(--card);color:var(--text);cursor:pointer;transition:all .15s;user-select:none}
-.cat-chip:hover{border-color:var(--orange);color:var(--orange)}
-.cat-chip.sel{background:var(--orange);border-color:var(--orange);color:#fff}
-
-.toast{position:fixed;bottom:24px;right:24px;background:var(--dark);color:#fff;padding:12px 18px;border-radius:var(--r);font-size:13px;font-weight:500;z-index:999;opacity:0;transform:translateY(6px);transition:all .25s;pointer-events:none;display:flex;align-items:center;gap:8px;box-shadow:var(--shadow2);max-width:340px}
-.toast.show{opacity:1;transform:translateY(0)}
-.toast.ok{background:var(--success)}
-.toast.err{background:var(--red)}
-
-/* TEST MODE BANNER */
-.test-banner{background:#1E293B;border:1px solid rgba(249,115,22,.4);border-radius:var(--r2);padding:10px 14px;margin-bottom:16px;font-size:12px;color:var(--orange);font-family:'DM Mono',monospace;display:flex;align-items:center;gap:8px}
+/* doc status */
+.doc-row{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--bg);border:1px solid var(--border);border-radius:var(--r2);font-size:13px;margin-bottom:8px}
+.doc-name{font-weight:500;color:var(--textD)}
+.doc-status{display:flex;align-items:center;gap:5px}
 
 @media(max-width:900px){
   .onb-shell{grid-template-columns:1fr}
@@ -117,7 +357,7 @@ a{text-decoration:none;color:inherit}
     </div>
     <div class="onb-hero">
       <h2>Grow your <span>auto parts</span> business across Kerala</h2>
-      <p>Join verified salvage vendors. Get matched leads, send quotes, and manage orders — all in one place.</p>
+      <p>Join 200+ verified salvage vendors. Get matched leads, send quotes, and manage orders — all in one place.</p>
     </div>
     <div class="onb-features">
       <div class="onb-feat">
@@ -133,13 +373,14 @@ a{text-decoration:none;color:inherit}
         Secure payments — 8% commission only on sales
       </div>
     </div>
-    <div style="font-size:11px;color:rgba(255,255,255,.25)">© 2026 Xspare Technologies Pvt. Ltd.</div>
+    <div style="font-size:11px;color:rgba(255,255,255,.25)">© 2025 Xspare Technologies Pvt. Ltd.</div>
   </div>
 
   <!-- RIGHT PANEL -->
   <div class="onb-right">
     <div class="onb-right-inner">
 
+      <!-- mini step dots -->
       <div class="mini-steps">
         <div class="ms active" id="ms-1"></div>
         <div class="ms" id="ms-2"></div>
@@ -148,18 +389,13 @@ a{text-decoration:none;color:inherit}
         <div class="ms" id="ms-5"></div>
       </div>
 
-      <!-- STEP 1: PHONE -->
+      <!-- ── STEP 1: PHONE ── -->
       <div class="step-panel active" id="sp-1">
         <div class="onb-right-head">
           <div class="onb-step-label">Step 1 of 5</div>
           <div class="onb-step-title">Enter your mobile number</div>
-          <div class="onb-step-sub">We'll send an OTP to verify your number</div>
+          <div class="onb-step-sub">We'll send an OTP to verify your WhatsApp number</div>
         </div>
-
-        <div class="test-banner">
-          🧪 TEST MODE — Enter any number, OTP will be <b style="color:#fff;margin-left:4px">123456</b>
-        </div>
-
         <div class="field">
           <div class="f-label">Mobile number <span class="req">*</span></div>
           <div style="display:flex;gap:0">
@@ -167,27 +403,19 @@ a{text-decoration:none;color:inherit}
             <input class="f-input" id="phone-in" type="tel" inputmode="numeric" maxlength="10" placeholder="98xxxxxxxx" style="border-radius:0 var(--r2) var(--r2) 0" oninput="this.value=this.value.replace(/\D/g,'')">
           </div>
         </div>
-
-        <button class="btn btn-orange btn-full" onclick="handleSendOTP()">
-          Send OTP →
-        </button>
-        <div style="text-align:center;margin-top:16px;font-size:12px;color:var(--textL)">
+<button class="btn btn-orange btn-full" onclick="sendOTP(); goStep(2)">
+   <div style="text-align:center;margin-top:16px;font-size:12px;color:var(--textL)">
           Already registered? <a href="vendor-dashboard.html" style="color:var(--orange);font-weight:600">Login →</a>
         </div>
       </div>
 
-      <!-- STEP 2: OTP -->
+      <!-- ── STEP 2: OTP ── -->
       <div class="step-panel" id="sp-2">
         <div class="onb-right-head">
           <div class="onb-step-label">Step 2 of 5</div>
           <div class="onb-step-title">Verify your number</div>
           <div class="onb-step-sub" id="otp-sent-label">OTP sent to +91 98xxxxxxxx</div>
         </div>
-
-        <div class="test-banner">
-          🧪 TEST MODE — Enter <b style="color:#fff;margin-left:4px">1 2 3 4 5 6</b>
-        </div>
-
         <div class="otp-row">
           <input class="otp-box" id="o1" type="tel" inputmode="numeric" maxlength="1" oninput="oNav(this,null,'o2')">
           <input class="otp-box" id="o2" type="tel" inputmode="numeric" maxlength="1" oninput="oNav(this,'o1','o3')">
@@ -196,16 +424,12 @@ a{text-decoration:none;color:inherit}
           <input class="otp-box" id="o5" type="tel" inputmode="numeric" maxlength="1" oninput="oNav(this,'o4','o6')">
           <input class="otp-box" id="o6" type="tel" inputmode="numeric" maxlength="1" oninput="oNav(this,'o5',null)">
         </div>
-
-        <button class="btn btn-orange btn-full" id="otp-verify-btn" onclick="handleVerifyOTP()">
-          Verify & Continue →
-        </button>
-        <div class="resend-row">
-          Didn't receive? <b onclick="handleSendOTP()">Resend OTP</b> · <b onclick="actualGoStep(1)">Change number</b>
-        </div>
+<button class="btn btn-orange btn-full" id="otp-verify-btn" onclick="verifyOTP(); goStep(3)">
+   <div class="resend-row">Didn't receive? <b onclick="toast('OTP resent','ok')">Resend OTP</b> · <b onclick="goStep(1)">Change number</b></div>
+        <div style="text-align:center;margin-top:8px;font-size:11px;color:var(--textL)">Demo: any 6 digits work</div>
       </div>
 
-      <!-- STEP 3: BUSINESS INFO -->
+      <!-- ── STEP 3: BUSINESS INFO ── -->
       <div class="step-panel" id="sp-3">
         <div class="onb-right-head">
           <div class="onb-step-label">Step 3 of 5</div>
@@ -259,71 +483,100 @@ a{text-decoration:none;color:inherit}
             <div class="cat-chip" onclick="toggleCat(this)" data-cat="All parts">All parts</div>
           </div>
         </div>
-        <button class="btn btn-orange btn-full" onclick="goStep4()" style="margin-top:8px">Continue →</button>
-        <button class="btn btn-ghost btn-full" onclick="actualGoStep(2)" style="margin-top:8px">← Back</button>
+        <button class="btn btn-orange btn-full" onclick="goStep(4)" style="margin-top:8px">Continue →</button>
+        <button class="btn btn-ghost btn-full" onclick="goStep(2)" style="margin-top:8px">← Back</button>
       </div>
 
-      <!-- STEP 4: COMPLIANCE -->
+      <!-- ── STEP 4: COMPLIANCE ── -->
       <div class="step-panel" id="sp-4">
         <div class="onb-right-head">
           <div class="onb-step-label">Step 4 of 5</div>
           <div class="onb-step-title">Compliance & documents</div>
           <div class="onb-step-sub">Verified vendors get priority in lead routing</div>
         </div>
-        <div class="notice notice-orange">
-          <svg fill="none" viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;flex-shrink:0"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+
+        <div class="notice notice-orange" style="margin-bottom:16px">
+          <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
           RVSF registered vendors rank higher in our matching algorithm and build more customer trust.
         </div>
+
         <div class="field">
           <div class="f-label">RVSF registration</div>
-          <label class="check-card highlight">
+          <label class="check-card highlight" id="rvsf-wrap">
             <input type="checkbox" id="rvsf-check" onchange="toggleRVSF(this.checked)">
             <div>
-              <div class="check-card-text">I am a Registered Vehicle Scrapping Facility (RVSF)</div>
+              <div class="check-card-text" style="font-weight:600">I am a Registered Vehicle Scrapping Facility (RVSF)</div>
               <div class="check-card-sub">Registered under India's Vehicle Scrappage Policy (MoRTH). Priority routing, higher trust score.</div>
             </div>
           </label>
         </div>
+
         <div class="field" id="rvsf-num-field" style="display:none">
           <div class="f-label">RVSF Registration number</div>
           <input class="f-input" id="rvsf-num" placeholder="KL-RVSF-2024-XXXX">
+          <div class="f-hint">Find this on your MoRTH portal registration certificate</div>
         </div>
+
         <div class="field">
           <div class="f-label">Upload documents</div>
-          <label class="check-card" onclick="toast('Document upload coming soon','')">
-            <input type="checkbox" id="doc-gst" style="accent-color:var(--orange)">
-            <div><div class="check-card-text">GST Certificate <span style="font-size:11px;color:var(--textL)">(optional)</span></div><div class="check-card-sub">Tap to upload</div></div>
-          </label>
-          <label class="check-card" onclick="toast('Document upload coming soon','')">
-            <input type="checkbox" id="doc-aadhar" style="accent-color:var(--orange)">
-            <div><div class="check-card-text">Aadhaar / PAN <span style="color:var(--orange)">*</span></div><div class="check-card-sub">Tap to upload</div></div>
-          </label>
-          <label class="check-card" id="rvsf-doc-card" style="display:none" onclick="toast('Document upload coming soon','')">
-            <input type="checkbox" id="doc-rvsf" style="accent-color:var(--orange)">
-            <div><div class="check-card-text">RVSF Certificate</div><div class="check-card-sub">Tap to upload</div></div>
-          </label>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <label class="check-card" style="cursor:pointer" onclick="toast('Document upload ready in production','')">
+              <input type="checkbox" id="doc-gst" style="accent-color:var(--orange)">
+              <div>
+                <div class="check-card-text">GST Certificate <span style="font-size:11px;color:var(--textL)">(optional)</span></div>
+                <div class="check-card-sub">Tap to upload</div>
+              </div>
+            </label>
+            <label class="check-card" style="cursor:pointer" onclick="toast('Document upload ready in production','')">
+              <input type="checkbox" id="doc-aadhar" style="accent-color:var(--orange)">
+              <div>
+                <div class="check-card-text">Aadhaar / PAN <span style="font-size:11px;color:var(--orange)">*</span></div>
+                <div class="check-card-sub">Tap to upload</div>
+              </div>
+            </label>
+            <label class="check-card" id="rvsf-doc-card" style="cursor:pointer;display:none" onclick="toast('Document upload ready in production','')">
+              <input type="checkbox" id="doc-rvsf" style="accent-color:var(--orange)">
+              <div>
+                <div class="check-card-text">RVSF Certificate</div>
+                <div class="check-card-sub">Tap to upload</div>
+              </div>
+            </label>
+          </div>
         </div>
-        <button class="btn btn-orange btn-full" onclick="completeRegistration()">Submit Registration →</button>
-        <button class="btn btn-ghost btn-full" onclick="actualGoStep(3)" style="margin-top:8px">← Back</button>
+
+<button class="btn btn-orange btn-full" onclick="completeRegistration()">
+  Continue →
+</button>
+         <button class="btn btn-ghost btn-full" onclick="goStep(3)" style="margin-top:8px">← Back</button>
       </div>
 
-      <!-- STEP 5: DONE -->
+      <!-- ── STEP 5: DONE ── -->
       <div class="step-panel" id="sp-5">
         <div style="text-align:center;padding:20px 0">
           <div style="width:72px;height:72px;border-radius:50%;background:var(--successL);border:2px solid var(--successB);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:32px">✓</div>
           <h2 style="color:var(--textD);margin-bottom:8px">Registration submitted!</h2>
-          <p id="success-name" style="font-size:15px;font-weight:600;color:var(--orange);margin-bottom:8px"></p>
-          <p style="font-size:13px;color:var(--textL);line-height:1.6;max-width:340px;margin:0 auto 24px">Your profile has been saved. Our team will verify and approve you within 24 hours. You'll be notified on WhatsApp.</p>
+          <p style="font-size:13px;color:var(--textL);line-height:1.6;max-width:340px;margin:0 auto 24px">Our team will verify your documents within 24 hours. You'll receive a WhatsApp message once approved.</p>
+
           <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:16px;text-align:left;margin-bottom:24px">
             <div style="font-size:12px;font-weight:600;color:var(--textL);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">What happens next</div>
             <div style="display:flex;flex-direction:column;gap:8px">
-              <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--textD)"><div style="width:22px;height:22px;border-radius:50%;background:var(--orangeL);color:var(--orange);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">1</div>Akash reviews your profile (24 hrs)</div>
-              <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--textD)"><div style="width:22px;height:22px;border-radius:50%;background:var(--orangeL);color:var(--orange);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">2</div>WhatsApp confirmation sent to you</div>
-              <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--textD)"><div style="width:22px;height:22px;border-radius:50%;background:var(--orangeL);color:var(--orange);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">3</div>Start receiving matched leads</div>
+              <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--textD)">
+                <div style="width:22px;height:22px;border-radius:50%;background:var(--orangeL);color:var(--orange);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">1</div>
+                Document review (24–48 hrs)
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--textD)">
+                <div style="width:22px;height:22px;border-radius:50%;background:var(--orangeL);color:var(--orange);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">2</div>
+                WhatsApp confirmation sent
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--textD)">
+                <div style="width:22px;height:22px;border-radius:50%;background:var(--orangeL);color:var(--orange);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">3</div>
+                Start receiving matched leads
+              </div>
             </div>
           </div>
+
           <a href="vendor-dashboard.html" class="btn btn-orange btn-full btn-lg" style="display:flex">Go to Dashboard →</a>
-          <a href="index.html" style="display:block;margin-top:10px;font-size:12px;color:var(--textL)">Back to Xspare</a>
+          <a href="../xspare-customer.html" style="display:block;margin-top:10px;font-size:12px;color:var(--textL)">Back to Xspare customer site</a>
         </div>
       </div>
 
@@ -333,155 +586,148 @@ a{text-decoration:none;color:inherit}
 
 <div class="toast" id="toast-el"></div>
 
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<style>
+.cat-chip{padding:6px 13px;border-radius:99px;font-size:12px;font-weight:500;border:1.5px solid var(--border);background:var(--card);color:var(--text);cursor:pointer;transition:all .15s;user-select:none}
+.cat-chip:hover{border-color:var(--orange);color:var(--orange)}
+.cat-chip.sel{background:var(--orange);border-color:var(--orange);color:#fff}
+</style>
+
 <script>
-// ── SUPABASE ──
+let curStep = 1
+
+function goStep(n) {
+  // validate
+  if (n === 2) {
+    const p = document.getElementById('phone-in').value
+    if (p.length < 10) { toast('Enter valid 10-digit number','err'); return }
+    document.getElementById('otp-sent-label').textContent = `OTP sent to +91 ${p.slice(0,5)}XXXXX`
+    ;['o1','o2','o3','o4','o5','o6'].forEach(id => document.getElementById(id).value = '')
+    setTimeout(() => document.getElementById('o1').focus(), 100)
+  }
+  if (n === 3) {
+    const otp = ['o1','o2','o3','o4','o5','o6'].map(i => document.getElementById(i).value).join('')
+    if (otp.length < 6) { toast('Enter all 6 digits','err'); return }
+  }
+  if (n === 4) {
+    if (!document.getElementById('biz-name').value.trim()) { toast('Enter business name','err'); return }
+    if (!document.getElementById('owner-name').value.trim()) { toast('Enter owner name','err'); return }
+    if (!document.getElementById('district').value) { toast('Select your district','err'); return }
+    const cats = document.querySelectorAll('.cat-chip.sel')
+    if (!cats.length) { toast('Select at least one part category','err'); return }
+  }
+  if (n === 5) {
+    toast('Submitting registration...','')
+    setTimeout(() => { actualGoStep(5) }, 800)
+    return
+  }
+  actualGoStep(n)
+}
+
+function actualGoStep(n) {
+  document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'))
+  document.getElementById('sp-' + n).classList.add('active')
+  ;['ms-1','ms-2','ms-3','ms-4','ms-5'].forEach((id, i) => {
+    const el = document.getElementById(id)
+    el.className = 'ms' + (i + 1 < n ? ' done' : i + 1 === n ? ' active' : '')
+  })
+  curStep = n
+  window.scrollTo(0,0)
+}
+
+function oNav(el, prev, next) {
+  if (el.value.length === 1 && next) document.getElementById(next).focus()
+  if (el.value.length === 0 && prev) document.getElementById(prev).focus()
+  const otp = ['o1','o2','o3','o4','o5','o6'].map(i => document.getElementById(i).value).join('')
+  if (otp.length === 6) setTimeout(() => goStep(3), 150)
+}
+
+function toggleCat(el) { el.classList.toggle('sel') }
+
+function toggleRVSF(checked) {
+  document.getElementById('rvsf-num-field').style.display = checked ? 'flex' : 'none'
+  document.getElementById('rvsf-doc-card').style.display = checked ? 'flex' : 'none'
+}
+
+function toast(msg, type) {
+  const el = document.getElementById('toast-el')
+  const ico = type === 'ok' ? '✓' : type === 'err' ? '✕' : 'ℹ'
+  el.innerHTML = `<span>${ico}</span> ${msg}`
+  el.className = 'toast show' + (type ? ' ' + type : '')
+  clearTimeout(el._t)
+  el._t = setTimeout(() => el.classList.remove('show'), 2600)
+}
+</script>
+ <!-- PASTE THIS replacing everything from the supabase script tag to </body> in vendor-register.html -->
+
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
+<script>
 const sb = window.supabase.createClient(
   "https://cxxxstxmfgcznsvuuloh.supabase.co",
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4eHhzdHhtZmdjem5zdnV1bG9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTcxOTgsImV4cCI6MjA5MTk5MzE5OH0.58KX8QoJ8sYF5JW-_o8WqtCr4skG5OK60v6sTm_3ir4"
 );
 
-// ── TEST MODE — set to false when Twilio is live ──
-const TEST_MODE = true;
-const TEST_OTP  = '123456';
-let testUserId  = null; // stores a fake UUID in test mode
-
-// ── STEP NAV ──
-function actualGoStep(n) {
-  document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
-  document.getElementById('sp-' + n).classList.add('active');
-  ['ms-1','ms-2','ms-3','ms-4','ms-5'].forEach((id, i) => {
-    const el = document.getElementById(id);
-    el.className = 'ms' + (i+1 < n ? ' done' : i+1 === n ? ' active' : '');
-  });
-  window.scrollTo(0, 0);
-}
-
-function oNav(el, prev, next) {
-  if (el.value.length === 1 && next) document.getElementById(next).focus();
-  if (el.value.length === 0 && prev) document.getElementById(prev).focus();
-  const otp = ['o1','o2','o3','o4','o5','o6'].map(i => document.getElementById(i).value).join('');
-  if (otp.length === 6) setTimeout(() => handleVerifyOTP(), 150);
-}
-
-function toggleCat(el) { el.classList.toggle('sel'); }
-function toggleRVSF(checked) {
-  document.getElementById('rvsf-num-field').style.display = checked ? 'flex' : 'none';
-  document.getElementById('rvsf-doc-card').style.display  = checked ? 'flex' : 'none';
-}
-
-function toast(msg, type) {
-  const el = document.getElementById('toast-el');
-  const ico = type==='ok' ? '✓' : type==='err' ? '✕' : 'ℹ';
-  el.innerHTML = `<span>${ico}</span> ${msg}`;
-  el.className = 'toast show' + (type ? ' '+type : '');
-  clearTimeout(el._t);
-  el._t = setTimeout(() => el.classList.remove('show'), 3000);
-}
-
-// ── SEND OTP ──
-async function handleSendOTP() {
+// SEND OTP
+async function sendOTP() {
   const raw = document.getElementById('phone-in').value.trim();
   if (raw.length < 10) { toast('Enter valid 10-digit number', 'err'); return; }
-
-  document.getElementById('otp-sent-label').textContent = `OTP sent to +91 ${raw.slice(0,5)}XXXXX`;
-  ['o1','o2','o3','o4','o5','o6'].forEach(id => document.getElementById(id).value = '');
-
-  if (TEST_MODE) {
-    toast(`TEST: use OTP 123456`, 'ok');
-    actualGoStep(2);
-    setTimeout(() => document.getElementById('o1').focus(), 100);
-    return;
-  }
-
-  // Real OTP
-  const { error } = await sb.auth.signInWithOtp({ phone: '+91' + raw });
+  const phone = '+91' + raw;
+  const { error } = await sb.auth.signInWithOtp({ phone });
   if (error) { toast('OTP failed: ' + error.message, 'err'); return; }
-  toast('OTP sent ✓', 'ok');
-  actualGoStep(2);
-  setTimeout(() => document.getElementById('o1').focus(), 100);
+  toast('OTP sent to ' + phone, 'ok');
 }
 
-// ── VERIFY OTP ──
-async function handleVerifyOTP() {
-  const otp = ['o1','o2','o3','o4','o5','o6'].map(i => document.getElementById(i).value).join('');
-  if (otp.length < 6) { toast('Enter all 6 digits', 'err'); return; }
-
-  if (TEST_MODE) {
-    if (otp !== TEST_OTP) { toast('Wrong OTP — use 123456', 'err'); return; }
-    // Generate a fake UUID for test mode so we can save to vendors table
-    testUserId = 'test-' + Date.now() + '-' + Math.random().toString(36).slice(2,8);
-    toast('Verified ✓', 'ok');
-    actualGoStep(3);
-    return;
-  }
-
-  // Real OTP verify
+// VERIFY OTP
+async function verifyOTP() {
   const phone = '+91' + document.getElementById('phone-in').value.trim();
-  const { error } = await sb.auth.verifyOtp({ phone, token: otp, type: 'sms' });
-  if (error) { toast('Invalid OTP — try again', 'err'); return; }
-  toast('Verified ✓', 'ok');
-  actualGoStep(3);
+  const token = ['o1','o2','o3','o4','o5','o6']
+    .map(id => document.getElementById(id).value).join('');
+  const { error } = await sb.auth.verifyOtp({ phone, token, type: 'sms' });
+  if (error) { toast('Invalid OTP — try again', 'err'); return false; }
+  toast('Number verified ✓', 'ok');
+  return true;
 }
 
-// ── STEP 3 → 4 VALIDATION ──
-function goStep4() {
-  if (!document.getElementById('biz-name').value.trim())  { toast('Enter business name', 'err'); return; }
-  if (!document.getElementById('owner-name').value.trim()){ toast('Enter owner name', 'err'); return; }
-  if (!document.getElementById('district').value)          { toast('Select your district', 'err'); return; }
-  const cats = document.querySelectorAll('.cat-chip.sel');
-  if (!cats.length) { toast('Select at least one part category', 'err'); return; }
-  actualGoStep(4);
-}
+// SAVE VENDOR via Vercel API
+async function saveVendor() {
+  const { data: { user } } = await sb.auth.getUser();
+  if (!user) { toast('Session expired — re-enter OTP', 'err'); return false; }
 
-// ── SAVE VENDOR + COMPLETE ──
-async function completeRegistration() {
-  toast('Saving profile...', '');
-
-  let userId = testUserId;
-
-  if (!TEST_MODE) {
-    const { data: { user } } = await sb.auth.getUser();
-    if (!user) { toast('Session expired — go back to step 1', 'err'); return; }
-    userId = user.id;
-  }
-
-  const bizName = document.getElementById('biz-name').value.trim();
-  const categories = Array.from(document.querySelectorAll('.cat-chip.sel')).map(el => el.dataset.cat);
+  const categories = Array.from(document.querySelectorAll('.cat-chip.sel'))
+    .map(el => el.dataset.cat);
   const rvsfChecked = document.getElementById('rvsf-check').checked;
 
-  try {
-    const res = await fetch('https://xspare-backend.vercel.app/api/vendor', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        user_id:         userId,
-        name:            bizName,
-        owner_name:      document.getElementById('owner-name').value.trim(),
-        phone:           document.getElementById('phone-in').value.trim(),
-        district:        document.getElementById('district').value,
-        radius:          document.getElementById('radius').value,
-        gst:             document.getElementById('gst').value.trim(),
-        part_categories: categories,
-        rvsf_registered: rvsfChecked,
-        rvsf_number:     rvsfChecked ? document.getElementById('rvsf-num').value.trim() : null,
-      })
-    });
+  const res = await fetch('https://xspare-backend.vercel.app/api/vendor', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      user_id:         user.id,
+      name:            document.getElementById('biz-name').value.trim(),
+      owner_name:      document.getElementById('owner-name').value.trim(),
+      phone:           document.getElementById('phone-in').value.trim(),
+      district:        document.getElementById('district').value,
+      radius:          document.getElementById('radius').value,
+      gst:             document.getElementById('gst').value.trim(),
+      part_categories: categories,
+      rvsf_registered: rvsfChecked,
+      rvsf_number:     rvsfChecked ? document.getElementById('rvsf-num').value.trim() : null,
+    })
+  });
 
-    const json = await res.json();
-    if (!json.success) { toast('Save failed: ' + json.error, 'err'); return; }
+  const json = await res.json();
+  if (!json.success) { toast('Save failed: ' + json.error, 'err'); return false; }
+  return true;
+}
 
-    localStorage.setItem('vendorLoggedIn', 'true');
-    localStorage.setItem('vendorName', bizName);
-    document.getElementById('success-name').textContent = bizName;
-    toast('Registration saved ✓', 'ok');
-    actualGoStep(5);
-
-  } catch(err) {
-    toast('Network error — check connection', 'err');
-    console.error(err);
-  }
+// COMPLETE REGISTRATION — called by final Continue button
+async function completeRegistration() {
+  toast('Saving profile...', '');
+  const ok = await saveVendor();
+  if (!ok) return;
+  localStorage.setItem('vendorLoggedIn', 'true');
+  goStep(5);
 }
 </script>
+
 </body>
 </html>
