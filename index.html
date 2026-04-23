@@ -1455,13 +1455,21 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 </script>
   <script>
-window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-  size: 'normal'
+window.onload = function () {
+  window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+    size: 'normal'
+  });
+};
 });
 </script>
   <script>
 function sendOTP() {
-  const phoneNumber = document.getElementById('cust-phone').value;
+  let phoneNumber = document.getElementById('cust-phone').value;
+
+  // auto add +91 if missing
+  if (!phoneNumber.startsWith("+")) {
+    phoneNumber = "+91" + phoneNumber;
+  }
 
   firebase.auth().signInWithPhoneNumber(phoneNumber, window.recaptchaVerifier)
     .then((confirmationResult) => {
@@ -1470,19 +1478,7 @@ function sendOTP() {
     })
     .catch((error) => {
       console.error(error);
-      alert("Error sending OTP ❌");
-    });
-}
-
-function verifyOTP() {
-  const code = document.getElementById('otp').value;
-
-  confirmationResult.confirm(code)
-    .then(() => {
-      alert("Login success ✅");
-    })
-    .catch(() => {
-      alert("Invalid OTP ❌");
+      alert(error.message); // shows real error
     });
 }
 </script>
