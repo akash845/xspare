@@ -657,87 +657,77 @@ function toast(msg, type) {
   el._t = setTimeout(() => el.classList.remove('show'), 2600)
 }
 </script>
-   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+ <!-- PASTE THIS replacing everything from the supabase script tag to </body> in vendor-register.html -->
+
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 
 <script>
-const SUPABASE_URL = "https://cxxxstxmfgcznsvuuloh.supabase.co";
-const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4eHhzdHhtZmdjem5zdnV1bG9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTcxOTgsImV4cCI6MjA5MTk5MzE5OH0.58KX8QoJ8sYF5JW-_o8WqtCr4skG5OK60v6sTm_3ir4";
-
-const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+const sb = window.supabase.createClient(
+  "https://cxxxstxmfgcznsvuuloh.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4eHhzdHhtZmdjem5zdnV1bG9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTcxOTgsImV4cCI6MjA5MTk5MzE5OH0.58KX8QoJ8sYF5JW-_o8WqtCr4skG5OK60v6sTm_3ir4"
+);
 
 // SEND OTP
 async function sendOTP() {
-  const phone = "+91" + document.getElementById('phone-in').value;
-
+  const raw = document.getElementById('phone-in').value.trim();
+  if (raw.length < 10) { toast('Enter valid 10-digit number', 'err'); return; }
+  const phone = '+91' + raw;
   const { error } = await sb.auth.signInWithOtp({ phone });
-
-  if (error) {
-    toast("OTP failed: " + error.message, "err");
-    return;
-  }
-
-  toast("OTP sent (check Supabase logs)", "ok");
+  if (error) { toast('OTP failed: ' + error.message, 'err'); return; }
+  toast('OTP sent to ' + phone, 'ok');
 }
 
 // VERIFY OTP
 async function verifyOTP() {
-  const phone = "+91" + document.getElementById('phone-in').value;
-
-  const otp = ['o1','o2','o3','o4','o5','o6']
-    .map(id => document.getElementById(id).value)
-    .join('');
-
-  const { error } = await sb.auth.verifyOtp({
-    phone,
-    token: otp,
-    type: 'sms'
-  });
-
-  if (error) {
-    toast("Invalid OTP", "err");
-    return;
-  }
-
-  toast("Login success", "ok");
+  const phone = '+91' + document.getElementById('phone-in').value.trim();
+  const token = ['o1','o2','o3','o4','o5','o6']
+    .map(id => document.getElementById(id).value).join('');
+  const { error } = await sb.auth.verifyOtp({ phone, token, type: 'sms' });
+  if (error) { toast('Invalid OTP — try again', 'err'); return false; }
+  toast('Number verified ✓', 'ok');
+  return true;
 }
-   async function saveVendor() {
-  const user = (await sb.auth.getUser()).data.user;
 
-  if (!user) {
-    toast("User not logged in", "err");
-    return;
-  }
+// SAVE VENDOR via Vercel API
+async function saveVendor() {
+  const { data: { user } } = await sb.auth.getUser();
+  if (!user) { toast('Session expired — re-enter OTP', 'err'); return false; }
 
   const categories = Array.from(document.querySelectorAll('.cat-chip.sel'))
     .map(el => el.dataset.cat);
+  const rvsfChecked = document.getElementById('rvsf-check').checked;
 
-  const { error } = await sb.from('vendors').upsert({
-    id: user.id,
-    name: document.getElementById('biz-name').value,
-    phone: document.getElementById('phone-in').value,
-    district: document.getElementById('district').value,
-    part_categories: categories
+  const res = await fetch('https://xspare-backend.vercel.app/api/vendor', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      user_id:         user.id,
+      name:            document.getElementById('biz-name').value.trim(),
+      owner_name:      document.getElementById('owner-name').value.trim(),
+      phone:           document.getElementById('phone-in').value.trim(),
+      district:        document.getElementById('district').value,
+      radius:          document.getElementById('radius').value,
+      gst:             document.getElementById('gst').value.trim(),
+      part_categories: categories,
+      rvsf_registered: rvsfChecked,
+      rvsf_number:     rvsfChecked ? document.getElementById('rvsf-num').value.trim() : null,
+    })
   });
 
-  if (error) {
-    toast("Error saving vendor", "err");
-    return;
-  }
+  const json = await res.json();
+  if (!json.success) { toast('Save failed: ' + json.error, 'err'); return false; }
+  return true;
+}
 
-  toast("Vendor profile saved", "ok");
+// COMPLETE REGISTRATION — called by final Continue button
+async function completeRegistration() {
+  toast('Saving profile...', '');
+  const ok = await saveVendor();
+  if (!ok) return;
+  localStorage.setItem('vendorLoggedIn', 'true');
+  goStep(5);
 }
 </script>
-   <script>
-function completeRegistration() {
-  // Save login state
-  localStorage.setItem("vendorLoggedIn", "true");
 
-  // Save vendor first (your existing function)
-  saveVendor();
-
-  // Go to dashboard
-  window.location.href = "vendor-dashboard.html";
-}
-</script>
 </body>
 </html>
