@@ -403,7 +403,7 @@ body{min-height:100vh;display:flex;flex-direction:column;background:var(--bg)}
             <input class="f-input" id="phone-in" type="tel" inputmode="numeric" maxlength="10" placeholder="98xxxxxxxx" style="border-radius:0 var(--r2) var(--r2) 0" oninput="this.value=this.value.replace(/\D/g,'')">
           </div>
         </div>
-<button class="btn btn-orange btn-full" onclick="sendOTP(); goStep(2)">
+<button class="btn btn-orange btn-full" onclick="handleSendOTP()">
    <div style="text-align:center;margin-top:16px;font-size:12px;color:var(--textL)">
           Already registered? <a href="vendor-dashboard.html" style="color:var(--orange);font-weight:600">Login →</a>
         </div>
@@ -424,7 +424,7 @@ body{min-height:100vh;display:flex;flex-direction:column;background:var(--bg)}
           <input class="otp-box" id="o5" type="tel" inputmode="numeric" maxlength="1" oninput="oNav(this,'o4','o6')">
           <input class="otp-box" id="o6" type="tel" inputmode="numeric" maxlength="1" oninput="oNav(this,'o5',null)">
         </div>
-<button class="btn btn-orange btn-full" id="otp-verify-btn" onclick="verifyOTP(); goStep(3)">
+<button class="btn btn-orange btn-full" id="otp-verify-btn" onclick="handleVerifyOTP()">
    <div class="resend-row">Didn't receive? <b onclick="toast('OTP resent','ok')">Resend OTP</b> · <b onclick="goStep(1)">Change number</b></div>
         <div style="text-align:center;margin-top:8px;font-size:11px;color:var(--textL)">Demo: any 6 digits work</div>
       </div>
@@ -638,7 +638,7 @@ function oNav(el, prev, next) {
   if (el.value.length === 1 && next) document.getElementById(next).focus()
   if (el.value.length === 0 && prev) document.getElementById(prev).focus()
   const otp = ['o1','o2','o3','o4','o5','o6'].map(i => document.getElementById(i).value).join('')
-  if (otp.length === 6) setTimeout(() => goStep(3), 150)
+
 }
 
 function toggleCat(el) { el.classList.toggle('sel') }
@@ -670,13 +670,24 @@ const sb = window.supabase.createClient(
 // SEND OTP
 async function sendOTP() {
   const raw = document.getElementById('phone-in').value.trim();
-  if (raw.length < 10) { toast('Enter valid 10-digit number', 'err'); return; }
-  const phone = '+91' + raw;
-  const { error } = await sb.auth.signInWithOtp({ phone });
-  if (error) { toast('OTP failed: ' + error.message, 'err'); return; }
-  toast('OTP sent to ' + phone, 'ok');
-}
 
+  if (raw.length < 10) {
+    toast('Enter valid 10-digit number', 'err');
+    return false;
+  }
+
+  const phone = '+91' + raw;
+
+  const { error } = await sb.auth.signInWithOtp({ phone });
+
+  if (error) {
+    toast('OTP failed: ' + error.message, 'err');
+    return false;
+  }
+
+  toast('OTP sent to ' + phone, 'ok');
+  return true; // 🔥 IMPORTANT
+}
 // VERIFY OTP
 async function verifyOTP() {
   const phone = '+91' + document.getElementById('phone-in').value.trim();
@@ -727,6 +738,21 @@ async function completeRegistration() {
   localStorage.setItem('vendorLoggedIn', 'true');
   goStep(5);
 }
+   <script>
+async function handleSendOTP() {
+  const ok = await sendOTP();
+  if (ok) {
+    goStep(2);
+  }
+}
+
+async function handleVerifyOTP() {
+  const ok = await verifyOTP();
+  if (ok) {
+    goStep(3);
+  }
+}
+</script>
 </script>
 
 </body>
