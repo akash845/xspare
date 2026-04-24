@@ -413,7 +413,7 @@ body{min-height:100vh;display:flex;flex-direction:column;background:var(--bg)}
     Login →
   </a>
 </div>
-
+</div>
       <!-- ── STEP 2: OTP ── -->
       <div class="step-panel" id="sp-2">
         <div class="onb-right-head">
@@ -430,9 +430,14 @@ body{min-height:100vh;display:flex;flex-direction:column;background:var(--bg)}
           <input class="otp-box" id="o6" type="tel" inputmode="numeric" maxlength="1" oninput="oNav(this,'o5',null)">
         </div>
 <button class="btn btn-orange btn-full" id="otp-verify-btn" onclick="handleVerifyOTP()">
-   <div class="resend-row">Didn't receive? <b onclick="toast('OTP resent','ok')">Resend OTP</b> · <b onclick="goStep(1)">Change number</b></div>
-        <div style="text-align:center;margin-top:8px;font-size:11px;color:var(--textL)">Demo: any 6 digits work</div>
-      </div>
+  Verify OTP →
+</button>
+
+<div class="resend-row">
+  Didn't receive? 
+  <b onclick="toast('OTP resent','ok')">Resend OTP</b> · 
+  <b onclick="goStep(1)">Change number</b>
+</div>
 
       <!-- ── STEP 3: BUSINESS INFO ── -->
       <div class="step-panel" id="sp-3">
@@ -743,7 +748,7 @@ async function completeRegistration() {
   localStorage.setItem('vendorLoggedIn', 'true');
   goStep(5);
 }
-   <script>
+ 
 async function handleSendOTP() {
   const ok = await sendOTP();
   if (ok) {
