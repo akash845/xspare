@@ -1268,7 +1268,7 @@ const sb = window.supabase.createClient(
 );
 
 // AUTH GUARD — redirect if not logged in
-(async function() {
+/* (async function() {
   const { data: { user } } = await sb.auth.getUser();
   if (!user) window.location.href = 'vendor-register.html';
   else {
@@ -1279,7 +1279,7 @@ const sb = window.supabase.createClient(
       document.getElementById('top-av').textContent = data.name.slice(0,2).toUpperCase();
     }
   }
-})();
+})(); */
 
 // LOAD LEADS from Vercel API
 async function loadLeads() {
