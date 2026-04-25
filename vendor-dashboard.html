@@ -371,8 +371,35 @@ h3{font-size:1.1rem}
 .bc-labels{display:flex;justify-content:space-between}
 .bc-label{flex:1;text-align:center;font-size:10px;color:var(--textL);font-family:'DM Mono',monospace}
 </style>
+   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyCdFeY7nmiy8F_zH0BwIXIEGPesZBAwPwQ",
+  authDomain: "xspare-502fc.firebaseapp.com",
+  projectId: "xspare-502fc",
+};
+
+firebase.initializeApp(firebaseConfig);
+</script>
 </head>
 <body>
+   <script>
+firebase.auth().onAuthStateChanged(function(user) {
+  if (!user) {
+    console.log("Not logged in ❌");
+
+    // Redirect to register/login
+    window.location.href = "vendor-register.html";
+  } else {
+    console.log("Logged in ✅", user.uid);
+
+    // OPTIONAL: store for later use
+    window.currentUser = user;
+  }
+});
+</script>
 <div class="app-shell" id="app-shell">
 
 <!-- ══════════ TOPBAR ══════════ -->
@@ -1365,11 +1392,7 @@ document.getElementById('nl-enquiries').addEventListener('click', () => {
   setTimeout(loadLeads, 200);
 });
 </script>
-   <script>
-if (localStorage.getItem("vendorLoggedIn") !== "true") {
-  window.location.href = "vendor-register.html";
-}
-</script>
+  
 
 </body>
 </html>
