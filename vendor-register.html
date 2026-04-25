@@ -435,12 +435,8 @@ body{min-height:100vh;display:flex;flex-direction:column;background:var(--bg)}
   Verify OTP →
 </button>
 
-<div class="resend-row">
-  Didn't receive? 
-  <b onclick="toast('OTP resent','ok')">Resend OTP</b> · 
-  <b onclick="goStep(1)">Change number</b>
-</div>
-
+<div class="resend-row">Didn't receive? <b onclick="handleSendOTP()">Resend OTP</b> · <b onclick="actualGoStep(1)">Change number</b></div>
+      </div>  ← ADD THIS CLOSING DIV for sp-2
       <!-- ── STEP 3: BUSINESS INFO ── -->
       <div class="step-panel" id="sp-3">
         <div class="onb-right-head">
@@ -679,91 +675,7 @@ const sb = window.supabase.createClient(
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4eHhzdHhtZmdjem5zdnV1bG9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTcxOTgsImV4cCI6MjA5MTk5MzE5OH0.58KX8QoJ8sYF5JW-_o8WqtCr4skG5OK60v6sTm_3ir4"
 );
 
-// SEND OTP
-async function sendOTP() {
-  const raw = document.getElementById('phone-in').value.trim();
 
-  if (raw.length < 10) {
-    toast('Enter valid 10-digit number', 'err');
-    return false;
-  }
-
-  const phone = '+91' + raw;
-
-  const { error } = await sb.auth.signInWithOtp({ phone });
-
-  if (error) {
-    toast('OTP failed: ' + error.message, 'err');
-    return false;
-  }
-
-  toast('OTP sent to ' + phone, 'ok');
-  return true; // 🔥 IMPORTANT
-}
-// VERIFY OTP
-async function verifyOTP() {
-  const phone = '+91' + document.getElementById('phone-in').value.trim();
-  const token = ['o1','o2','o3','o4','o5','o6']
-    .map(id => document.getElementById(id).value).join('');
-  const { error } = await sb.auth.verifyOtp({ phone, token, type: 'sms' });
-  if (error) { toast('Invalid OTP — try again', 'err'); return false; }
-  toast('Number verified ✓', 'ok');
-  return true;
-}
-
-// SAVE VENDOR via Vercel API
-async function saveVendor() {
-  const { data: { user } } = await sb.auth.getUser();
-  if (!user) { toast('Session expired — re-enter OTP', 'err'); return false; }
-
-  const categories = Array.from(document.querySelectorAll('.cat-chip.sel'))
-    .map(el => el.dataset.cat);
-  const rvsfChecked = document.getElementById('rvsf-check').checked;
-
-  const res = await fetch('https://xspare-backend.vercel.app/api/vendor', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      user_id:         user.id,
-      name:            document.getElementById('biz-name').value.trim(),
-      owner_name:      document.getElementById('owner-name').value.trim(),
-      phone:           document.getElementById('phone-in').value.trim(),
-      district:        document.getElementById('district').value,
-      radius:          document.getElementById('radius').value,
-      gst:             document.getElementById('gst').value.trim(),
-      part_categories: categories,
-      rvsf_registered: rvsfChecked,
-      rvsf_number:     rvsfChecked ? document.getElementById('rvsf-num').value.trim() : null,
-    })
-  });
-
-  const json = await res.json();
-  if (!json.success) { toast('Save failed: ' + json.error, 'err'); return false; }
-  return true;
-}
-
-// COMPLETE REGISTRATION — called by final Continue button
-async function completeRegistration() {
-  toast('Saving profile...', '');
-  const ok = await saveVendor();
-  if (!ok) return;
-  localStorage.setItem('vendorLoggedIn', 'true');
-  goStep(5);
-}
- 
-async function handleSendOTP() {
-  const ok = await sendOTP();
-  if (ok) {
-    goStep(2);
-  }
-}
-
-async function handleVerifyOTP() {
-  const ok = await verifyOTP();
-  if (ok) {
-    goStep(3);
-  }
-}
 
 </script>
 
@@ -801,14 +713,14 @@ function sendOTP() {
   phone = '+91' + phone;
 
   window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-    size: 'normal'
+    size: 'invisible'
   });
 
   firebase.auth().signInWithPhoneNumber(phone, window.recaptchaVerifier)
     .then((confirmationResult) => {
       window.confirmationResult = confirmationResult;
       toast('OTP sent ✅', 'ok');
-      goStep(2);
+actualGoStep(2);
     })
     .catch((error) => {
       toast(error.message, 'err');
@@ -833,7 +745,7 @@ function verifyOTP() {
       localStorage.setItem("vendorLoggedIn", "true");
 
       toast('Verified ✅', 'ok');
-      goStep(3);
+   actualGoStep(3);
     })
     .catch(() => {
       toast('Invalid OTP ❌', 'err');
