@@ -383,8 +383,20 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 </script>
+
+   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
+<script>
+const sb = window.supabase.createClient(
+  "https://cxxxstxmfgcznsvuuloh.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4eHhzdHhtZmdjem5zdnV1bG9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTcxOTgsImV4cCI6MjA5MTk5MzE5OH0.58KX8QoJ8sYF5JW-_o8WqtCr4skG5OK60v6sTm_3ir4"
+);
+</script>
+   
 </head>
 <body>
+
+   
  <script>
 let authReady = false;
 
@@ -404,6 +416,38 @@ firebase.auth().onAuthStateChanged(function(user) {
       }
     }, 1500); // 🔥 important delay
   }
+});
+</script>
+
+   <script>
+firebase.auth().onAuthStateChanged(async function(user) {
+
+  if (user) {
+    console.log("✅ Logged in:", user.uid);
+
+    // 🔥 FETCH FROM SUPABASE
+    const { data, error } = await sb
+      .from('vendors')
+      .select('*')
+      .eq('firebase_uid', user.uid)
+      .single();
+
+    if (error) {
+      console.error("Error fetching vendor:", error);
+      return;
+    }
+
+    console.log("Vendor Data:", data);
+
+    // 🔥 DISPLAY DATA
+    document.getElementById("top-name").innerText = data.name;
+    document.getElementById("vendor-phone").innerText = data.phone;
+    document.getElementById("vendor-district").innerText = data.district;
+
+  } else {
+    window.location.href = "vendor-register.html";
+  }
+
 });
 </script>
 <div class="app-shell" id="app-shell">
@@ -1259,13 +1303,8 @@ goPage('dashboard')
 
 </script>
 
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 
-<script>
-const sb = window.supabase.createClient(
-  "https://cxxxstxmfgcznsvuuloh.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4eHhzdHhtZmdjem5zdnV1bG9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTcxOTgsImV4cCI6MjA5MTk5MzE5OH0.58KX8QoJ8sYF5JW-_o8WqtCr4skG5OK60v6sTm_3ir4"
-);
+   <script>
 
 // AUTH GUARD — redirect if not logged in
 /* (async function() {
