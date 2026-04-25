@@ -763,48 +763,53 @@ function handleVerifyOTP() {
 </script>
 
 
-   <script>
-function completeRegistration() {
-   alert("working");
-  // Get values
+  <script>
+async function completeRegistration() {
   const bizName = document.getElementById('biz-name').value.trim();
   const owner = document.getElementById('owner-name').value.trim();
   const district = document.getElementById('district').value;
   const phone = document.getElementById('phone-in').value;
 
-  // Get selected categories
   const categories = [...document.querySelectorAll('.cat-chip.sel')]
     .map(el => el.dataset.cat);
 
-  // Validation (extra safety)
   if (!bizName || !owner || !district || categories.length === 0) {
     toast('Fill all required fields properly', 'err');
     return;
   }
 
-  // Prepare data
+  // 🔥 VERY IMPORTANT: get logged-in user
+  const { data: { user }, error: userError } = await sb.auth.getUser();
+
+  if (userError || !user) {
+    toast('User not logged in ❌', 'err');
+    return;
+  }
+
   const vendorData = {
-    phone: '+91' + phone,
-    business_name: bizName,
+    id: user.id, // ✅ REQUIRED (foreign key)
+    name: bizName, // ✅ correct column
     owner_name: owner,
+    phone: '+91' + phone,
+    whatsapp: '+91' + phone,
+    whatsapp_number: '+91' + phone,
     district: district,
-    categories: categories,
-    created_at: new Date()
+    part_categories: categories, // ✅ correct column
+    radius: document.getElementById('radius').value || '20 km',
+    gst_number: document.getElementById('gst').value || null,
+    rvsf_registered: document.getElementById('rvsf-check').checked,
+    rvsf_number: document.getElementById('rvsf-num').value || null
   };
 
-  // 🔥 SAVE TO SUPABASE
-  sb.from('vendors').insert([vendorData])
-    .then(({ error }) => {
-      if (error) {
-        console.error(error);
-        toast('Error saving data ❌', 'err');
-      } else {
-        toast('Registration completed ✅', 'ok');
+  const { error } = await sb.from('vendors').insert([vendorData]);
 
-        // Move to success screen
-        actualGoStep(5);
-      }
-    });
+  if (error) {
+    console.error(error);
+    toast('Error saving data ❌', 'err');
+  } else {
+    toast('Registration completed ✅', 'ok');
+    actualGoStep(5);
+  }
 }
 </script>
 </body>
