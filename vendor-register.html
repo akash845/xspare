@@ -778,23 +778,23 @@ async function completeRegistration() {
     return;
   }
 
-  // 🔥 VERY IMPORTANT: get logged-in user
-  const { data: { user }, error: userError } = await sb.auth.getUser();
+  // 🔥 Get Firebase user
+  const firebaseUser = window.firebaseUser;
 
-  if (userError || !user) {
-    toast('User not logged in ❌', 'err');
+  if (!firebaseUser) {
+    toast('OTP not verified ❌', 'err');
     return;
   }
 
   const vendorData = {
-    id: user.id, // ✅ REQUIRED (foreign key)
-    name: bizName, // ✅ correct column
+    id: firebaseUser.uid, // ✅ Firebase UID
+    name: bizName,
     owner_name: owner,
     phone: '+91' + phone,
     whatsapp: '+91' + phone,
     whatsapp_number: '+91' + phone,
     district: district,
-    part_categories: categories, // ✅ correct column
+    part_categories: categories,
     radius: document.getElementById('radius').value || '20 km',
     gst_number: document.getElementById('gst').value || null,
     rvsf_registered: document.getElementById('rvsf-check').checked,
