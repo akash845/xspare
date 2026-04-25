@@ -414,9 +414,9 @@ body{min-height:100vh;display:flex;flex-direction:column;background:var(--bg)}
 
 <div style="text-align:center;margin-top:16px;font-size:12px;color:var(--textL)">
   Already registered? 
-  <a href="vendor-dashboard.html" style="color:var(--orange);font-weight:600">
+  <span onclick="goToDashboard()" style="color:var(--orange);font-weight:600;cursor:pointer">
     Login →
-  </a>
+  </span>
 </div>
 </div>
       <!-- ── STEP 2: OTP ── -->
@@ -815,6 +815,28 @@ async function completeRegistration() {
     actualGoStep(5);
   }
 }
+</script>
+
+   <script>
+function goToDashboard() {
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      // ✅ Already logged in
+      window.location.href = "vendor-dashboard.html";
+    } else {
+      // ❌ Not logged in
+      toast("Please verify OTP first", "err");
+    }
+  });
+}
+</script>
+
+   <script>
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    window.location.href = "vendor-dashboard.html";
+  }
+});
 </script>
 </body>
 </html>
