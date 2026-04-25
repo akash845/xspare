@@ -347,12 +347,7 @@ body{min-height:100vh;display:flex;flex-direction:column;background:var(--bg)}
 }
 </style>
    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-   <script>
-const sb = window.supabase.createClient(
-  "https://cxxxstxmfgcznsvuuloh.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4eHhzdHhtZmdjem5zdnV1bG9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTcxOTgsImV4cCI6MjA5MTk5MzE5OH0.58KX8QoJ8sYF5JW-_o8WqtCr4skG5OK60v6sTm_3ir4"
-);
-</script>
+
 </head>
 <body>
 
@@ -773,20 +768,6 @@ function handleVerifyOTP() {
 
   <script>
 async function completeRegistration() {
-  const bizName = document.getElementById('biz-name').value.trim();
-  const owner = document.getElementById('owner-name').value.trim();
-  const district = document.getElementById('district').value;
-  const phone = document.getElementById('phone-in').value;
-
-  const categories = [...document.querySelectorAll('.cat-chip.sel')]
-    .map(el => el.dataset.cat);
-
-  if (!bizName || !owner || !district || categories.length === 0) {
-    toast('Fill all required fields properly', 'err');
-    return;
-  }
-
-  // 🔥 Get Firebase user
   const firebaseUser = window.firebaseUser;
 
   if (!firebaseUser) {
@@ -795,25 +776,28 @@ async function completeRegistration() {
   }
 
   const vendorData = {
-    id: firebaseUser.uid, // ✅ Firebase UID
-    name: bizName,
-    owner_name: owner,
-    phone: '+91' + phone,
-    whatsapp: '+91' + phone,
-    whatsapp_number: '+91' + phone,
-    district: district,
-    part_categories: categories,
-    radius: document.getElementById('radius').value || '20 km',
+    id: firebaseUser.uid,
+    name: document.getElementById('biz-name').value.trim(),
+    owner_name: document.getElementById('owner-name').value.trim(),
+    phone: '+91' + document.getElementById('phone-in').value,
+    whatsapp: '+91' + document.getElementById('phone-in').value,
+    whatsapp_number: '+91' + document.getElementById('phone-in').value,
+    district: document.getElementById('district').value,
+    part_categories: [...document.querySelectorAll('.cat-chip.sel')]
+      .map(el => el.dataset.cat),
+    radius: document.getElementById('radius').value,
     gst_number: document.getElementById('gst').value || null,
     rvsf_registered: document.getElementById('rvsf-check').checked,
     rvsf_number: document.getElementById('rvsf-num').value || null
   };
 
-  const { error } = await sb.from('vendors').insert([vendorData]);
+  const { error } = await sb
+    .from('vendors')
+    .upsert([vendorData], { onConflict: 'phone' });
 
   if (error) {
-    console.error(error);
-    toast('Error saving data ❌', 'err');
+    console.error("SUPABASE ERROR:", error);
+    toast(error.message, 'err');
   } else {
     toast('Registration completed ✅', 'ok');
     actualGoStep(5);
