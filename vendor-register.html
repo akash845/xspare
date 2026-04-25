@@ -761,5 +761,50 @@ function handleVerifyOTP() {
   verifyOTP();
 }
 </script>
+
+
+   <script>
+function completeRegistration() {
+  // Get values
+  const bizName = document.getElementById('biz-name').value.trim();
+  const owner = document.getElementById('owner-name').value.trim();
+  const district = document.getElementById('district').value;
+  const phone = document.getElementById('phone-in').value;
+
+  // Get selected categories
+  const categories = [...document.querySelectorAll('.cat-chip.sel')]
+    .map(el => el.dataset.cat);
+
+  // Validation (extra safety)
+  if (!bizName || !owner || !district || categories.length === 0) {
+    toast('Fill all required fields properly', 'err');
+    return;
+  }
+
+  // Prepare data
+  const vendorData = {
+    phone: '+91' + phone,
+    business_name: bizName,
+    owner_name: owner,
+    district: district,
+    categories: categories,
+    created_at: new Date()
+  };
+
+  // 🔥 SAVE TO SUPABASE
+  sb.from('vendors').insert([vendorData])
+    .then(({ error }) => {
+      if (error) {
+        console.error(error);
+        toast('Error saving data ❌', 'err');
+      } else {
+        toast('Registration completed ✅', 'ok');
+
+        // Move to success screen
+        actualGoStep(5);
+      }
+    });
+}
+</script>
 </body>
 </html>
