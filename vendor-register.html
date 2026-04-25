@@ -766,7 +766,7 @@ function handleVerifyOTP() {
 </script>
 
 
-  <script>
+ <script>
 async function completeRegistration() {
   const firebaseUser = window.firebaseUser;
 
@@ -775,17 +775,29 @@ async function completeRegistration() {
     return;
   }
 
+  const bizName = document.getElementById('biz-name').value.trim();
+  const owner = document.getElementById('owner-name').value.trim();
+  const district = document.getElementById('district').value;
+  const phone = document.getElementById('phone-in').value;
+
+  const categories = [...document.querySelectorAll('.cat-chip.sel')]
+    .map(el => el.dataset.cat);
+
+  if (!bizName || !owner || !district || categories.length === 0) {
+    toast('Fill all required fields properly', 'err');
+    return;
+  }
+
   const vendorData = {
-    id: firebaseUser.uid,
-    name: document.getElementById('biz-name').value.trim(),
-    owner_name: document.getElementById('owner-name').value.trim(),
-    phone: '+91' + document.getElementById('phone-in').value,
-    whatsapp: '+91' + document.getElementById('phone-in').value,
-    whatsapp_number: '+91' + document.getElementById('phone-in').value,
-    district: document.getElementById('district').value,
-    part_categories: [...document.querySelectorAll('.cat-chip.sel')]
-      .map(el => el.dataset.cat),
-    radius: document.getElementById('radius').value,
+    firebase_uid: firebaseUser.uid,   // ✅ STORE HERE
+    name: bizName,
+    owner_name: owner,
+    phone: '+91' + phone,
+    whatsapp: '+91' + phone,
+    whatsapp_number: '+91' + phone,
+    district: district,
+    part_categories: categories,
+    radius: document.getElementById('radius').value || '20 km',
     gst_number: document.getElementById('gst').value || null,
     rvsf_registered: document.getElementById('rvsf-check').checked,
     rvsf_number: document.getElementById('rvsf-num').value || null
