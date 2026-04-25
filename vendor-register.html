@@ -403,6 +403,8 @@ body{min-height:100vh;display:flex;flex-direction:column;background:var(--bg)}
             <input class="f-input" id="phone-in" type="tel" inputmode="numeric" maxlength="10" placeholder="98xxxxxxxx" style="border-radius:0 var(--r2) var(--r2) 0" oninput="this.value=this.value.replace(/\D/g,'')">
           </div>
         </div>
+
+         <div id="recaptcha-container"></div>
 <button class="btn btn-orange btn-full" onclick="handleSendOTP()">
   Send OTP →
 </button>
@@ -669,7 +671,7 @@ function toast(msg, type) {
 </script>
  <!-- PASTE THIS replacing everything from the supabase script tag to </body> in vendor-register.html -->
 
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
 
 <script>
 const sb = window.supabase.createClient(
@@ -765,5 +767,87 @@ async function handleVerifyOTP() {
 
 </script>
 
+
+
+
+
+
+
+
+
+   <!-- 🔥 FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyCdFeY7nmiy8F_zH0BwIXIEGPesZBAwPwQ",
+  authDomain: "xspare-502fc.firebaseapp.com",
+  projectId: "xspare-502fc",
+};
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+
+// SEND OTP
+function sendOTP() {
+  let phone = document.getElementById('phone-in').value.trim();
+
+  if (phone.length < 10) {
+    toast('Enter valid number', 'err');
+    return;
+  }
+
+  phone = '+91' + phone;
+
+  window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+    size: 'normal'
+  });
+
+  firebase.auth().signInWithPhoneNumber(phone, window.recaptchaVerifier)
+    .then((confirmationResult) => {
+      window.confirmationResult = confirmationResult;
+      toast('OTP sent ✅', 'ok');
+      goStep(2);
+    })
+    .catch((error) => {
+      toast(error.message, 'err');
+    });
+}
+
+// VERIFY OTP
+function verifyOTP() {
+  const code = ['o1','o2','o3','o4','o5','o6']
+    .map(id => document.getElementById(id).value).join('');
+
+  if (!window.confirmationResult) {
+    toast('Send OTP first', 'err');
+    return;
+  }
+
+  window.confirmationResult.confirm(code)
+    .then((result) => {
+      window.firebaseUser = result.user;
+
+      // ✅ LOGIN SUCCESS
+      localStorage.setItem("vendorLoggedIn", "true");
+
+      toast('Verified ✅', 'ok');
+      goStep(3);
+    })
+    .catch(() => {
+      toast('Invalid OTP ❌', 'err');
+    });
+}
+
+// BUTTON HANDLERS
+function handleSendOTP() {
+  sendOTP();
+}
+
+function handleVerifyOTP() {
+  verifyOTP();
+}
+</script>
 </body>
 </html>
