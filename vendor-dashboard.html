@@ -385,18 +385,24 @@ firebase.initializeApp(firebaseConfig);
 </script>
 </head>
 <body>
-   <script>
+  <script>
+let authReady = false;
+
 firebase.auth().onAuthStateChanged(function(user) {
-  if (!user) {
-    console.log("Not logged in ❌");
-
-    // Redirect to register/login
-    window.location.href = "vendor-register.html";
-  } else {
-    console.log("Logged in ✅", user.uid);
-
-    // OPTIONAL: store for later use
+  if (user) {
+    console.log("✅ Logged in:", user.uid);
     window.currentUser = user;
+    authReady = true;
+  } else {
+    console.log("⏳ Checking session...");
+
+    // ⛔ WAIT before redirect
+    setTimeout(() => {
+      if (!authReady) {
+        console.log("❌ No session, redirecting...");
+        window.location.href = "vendor-register.html";
+      }
+    }, 1500); // 🔥 important delay
   }
 });
 </script>
